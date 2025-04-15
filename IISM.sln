@@ -2,6 +2,16 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApp", "WebApp\WebApp.csproj", "{072F47B9-4926-4B72-8259-AC4FDB40D27C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "APP", "APP", "{FEAD9E5C-C9FD-4CCF-ABF4-D10627E337B6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BASE", "BASE", "{E54161AF-736E-49DB-8496-F3D77648640A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "!Solution Item", "!Solution Item", "{02CA8C38-9770-496E-96F6-468978FA6545}"
+	ProjectSection(SolutionItems) = preProject
+		..\Directory.Build.props = ..\Directory.Build.props
+		..\README.md = ..\README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +22,8 @@ Global
 		{072F47B9-4926-4B72-8259-AC4FDB40D27C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{072F47B9-4926-4B72-8259-AC4FDB40D27C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{072F47B9-4926-4B72-8259-AC4FDB40D27C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{072F47B9-4926-4B72-8259-AC4FDB40D27C} = {FEAD9E5C-C9FD-4CCF-ABF4-D10627E337B6}
 	EndGlobalSection
 EndGlobal

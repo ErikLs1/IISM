@@ -15,8 +15,8 @@ public class Order : BaseEntity
     [MaxLength(50)]
     public string OrderStatus { get; set; } = default!;
     public decimal OrderTotalPrice { get; set; }
-    public DateTime CreatedAt { get; set; }
-    public DateTime UpdatedAt { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     
     public Person? Person { get; set; }
     public ICollection<OrderProduct> OrderProducts { get; set; } = new List<OrderProduct>();

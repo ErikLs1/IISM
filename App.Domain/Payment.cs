@@ -15,7 +15,7 @@ public class Payment : BaseEntity
     [MaxLength(50)] 
     public string PaymentStatus { get; set; } = default!;
     public decimal PaymentAmount { get; set; }
-    public DateTime PaymentDate { get; set; }
+    public DateTime PaymentDate { get; set; } = DateTime.UtcNow;
     
     public Order? Order { get; set; }
 }

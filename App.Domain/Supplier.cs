@@ -16,8 +16,8 @@ public class Supplier : BaseEntity
     
     [MaxLength(200)]
     public string SupplierAddress { get; set; } = default!;
-    public DateTime CreatedAt { get; set; }
-    public DateTime UpdatedAt { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
     public ICollection<StockOrder> StockOrders { get; set; } = new List<StockOrder>();
     public ICollection<ProductSupplier> ProductSuppliers { get; set; } = new List<ProductSupplier>();

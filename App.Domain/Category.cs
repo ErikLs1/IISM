@@ -10,8 +10,8 @@ public class Category : BaseEntity
     
     [MaxLength(250)]
     public string CategoryDescription { get; set; } = default!;
-    public DateTime CreatedAt { get; set; }
-    public DateTime UpdatedAt { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     
     public ICollection<Product> Products { get; set; } = new List<Product>();
 

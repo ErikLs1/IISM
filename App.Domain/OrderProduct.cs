@@ -12,8 +12,8 @@ public class OrderProduct : BaseEntity
     public Guid OrderId { get; set; }
     public int Quantity { get; set; }
     public decimal TotalPrice { get; set; }
-    public DateTime CreatedAt { get; set; }
-    public DateTime UpdatedAt { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     
     public Product? Product { get; set; }
     public Order? Order { get; set; }

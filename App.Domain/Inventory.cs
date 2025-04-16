@@ -11,8 +11,8 @@ public class Inventory : BaseEntity
     [ForeignKey(nameof(Warehouse))]
     public Guid WarehouseId { get; set; }
     public int Quantity { get; set; }
-    public DateTime CreatedAt { get; set; }
-    public DateTime UpdatedAt { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     
     public Product? Product { get; set; }
     public Warehouse? Warehouse { get; set; }

@@ -22,7 +22,7 @@ public class Person : BaseEntity
     [MaxLength(20)]
     public string PersonGender { get; set; } = default!;
     
-    public DateTime? PersonDateOfBirth { get; set; } = default!;
+    public DateTime? PersonDateOfBirth { get; set; } = DateTime.UtcNow;
 
     public ICollection<Order> Orders { get; set; } = new List<Order>();
 

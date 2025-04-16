@@ -18,8 +18,8 @@ public class Product : BaseEntity
     
     [MaxLength(50)]
     public string ProductStatus { get; set; } = default!;
-    public DateTime CreatedAt { get; set; }
-    public DateTime UpdatedAt { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
   
     public Category? Category { get; set; }
     public ICollection<ProductSupplier> ProductSuppliers { get; set; } = new List<ProductSupplier>();

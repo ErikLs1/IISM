@@ -12,8 +12,8 @@ public class Warehouse : BaseEntity
     public string WarehouseEmail { get; set; } = default!;
     public int WarehouseCapacity { get; set; }
     
-    public DateTime CreatedAt { get; set; }
-    public DateTime UpdatedAt { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
     public ICollection<StockOrder> StockOrders { get; set; } = new List<StockOrder>();
     public ICollection<Inventory> Inventories { get; set; }= new List<Inventory>();

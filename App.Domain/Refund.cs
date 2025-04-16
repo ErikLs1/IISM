@@ -15,8 +15,8 @@ public class Refund : BaseEntity
 
     [MaxLength(50)]
     public string RefundStatus { get; set; } = default!;
-    public DateTime CreatedAt { get; set; }
-    public DateTime UpdatedAt { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     
     public OrderProduct? OrderProduct { get; set; }
 

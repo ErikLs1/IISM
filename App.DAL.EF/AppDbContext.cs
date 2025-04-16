@@ -1,6 +1,8 @@
+using System.Reflection;
 using App.Domain;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace App.DAL.EF;
 
@@ -22,7 +24,32 @@ public class AppDbContext : IdentityDbContext
     
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
-        
     }
 
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        // Call the base implementation first (especially needed for Identity)
+        base.OnModelCreating(modelBuilder);
+
+        // Define the converter to enforce UTC on DateTime values.
+        var dateTimeConverter = new ValueConverter<DateTime?, DateTime?>(
+            v => v.HasValue ? DateTime.SpecifyKind(v.Value, DateTimeKind.Utc) : v,
+            v => v);
+
+        // Loop through all entity types to set the converter for each DateTime property.
+        foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+        {
+            // Use reflection to get all properties of type DateTime or DateTime?
+            var dateTimeProperties = entityType.ClrType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                .Where(p => p.PropertyType == typeof(DateTime) || p.PropertyType == typeof(DateTime?));
+
+            foreach (var property in dateTimeProperties)
+            {
+                // Use the CLR type to register the conversion.
+                modelBuilder.Entity(entityType.ClrType)
+                    .Property(property.Name)
+                    .HasConversion(dateTimeConverter);
+            }
+        }
+    }
 }

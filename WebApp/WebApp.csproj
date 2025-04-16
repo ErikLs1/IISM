@@ -5,6 +5,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <UserSecretsId>aspnet-WebApp-38b574c1-8215-4193-8b8a-83f16ebbea55</UserSecretsId>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
     <ItemGroup>
@@ -13,10 +14,79 @@
         <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="9.0.0"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.0"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.0"/>
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.1" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\App.DAL.EF\App.DAL.EF.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Views\Products\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Products\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Products\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Products\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Products\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Warehouses\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Warehouses\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Warehouses\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Warehouses\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Warehouses\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\ProductSuppliers\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\ProductSuppliers\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\ProductSuppliers\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\ProductSuppliers\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\ProductSuppliers\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\StockOrderItems\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\StockOrderItems\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\StockOrderItems\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\StockOrderItems\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\StockOrderItems\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Refunds\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Refunds\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Refunds\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Refunds\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Refunds\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Suppliers\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Suppliers\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Suppliers\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Suppliers\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Suppliers\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\StockOrders\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\StockOrders\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\StockOrders\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\StockOrders\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\StockOrders\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Persons\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Persons\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Persons\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Persons\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Persons\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Payments\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Payments\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Payments\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Payments\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Payments\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Orders\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Orders\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Orders\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Orders\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Orders\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\OrderProducts\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\OrderProducts\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\OrderProducts\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\OrderProducts\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\OrderProducts\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Inventories\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Inventories\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Inventories\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Inventories\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Inventories\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Categories\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Categories\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Categories\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Categories\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Categories\Index.cshtml" />
     </ItemGroup>
 
 </Project>

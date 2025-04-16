@@ -16,8 +16,8 @@ public class StockOrder : BaseEntity
     [Required] 
     [MaxLength(50)] 
     public string Status { get; set; } = default!;
-    public DateTime CreatedAt { get; set; }
-    public DateTime UpdatedAt { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     
     public Supplier? Supplier { get; set; }
     public Warehouse? Warehouse { get; set; }

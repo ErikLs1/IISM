@@ -224,6 +224,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL0Vycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[/Users/eriklihhats/Desktop/Dev/IISM/WebApp/Views/Shared/_LanguageSelection.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19MYW5ndWFnZVNlbGVjdGlvbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [/Users/eriklihhats/Desktop/Dev/IISM/WebApp/Views/Shared/_LoginPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19Mb2dpblBhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 

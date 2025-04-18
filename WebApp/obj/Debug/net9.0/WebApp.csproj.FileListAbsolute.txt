@@ -427,3 +427,11 @@
 /Users/eriklihhats/Desktop/Dev/IISM/WebApp/obj/Debug/net9.0/WebApp.pdb
 /Users/eriklihhats/Desktop/Dev/IISM/WebApp/obj/Debug/net9.0/WebApp.genruntimeconfig.cache
 /Users/eriklihhats/Desktop/Dev/IISM/WebApp/obj/Debug/net9.0/ref/WebApp.dll
+/Users/eriklihhats/Desktop/Dev/IISM/WebApp/bin/Debug/net9.0/App.Resources.dll
+/Users/eriklihhats/Desktop/Dev/IISM/WebApp/bin/Debug/net9.0/Base.Resources.dll
+/Users/eriklihhats/Desktop/Dev/IISM/WebApp/bin/Debug/net9.0/App.Resources.pdb
+/Users/eriklihhats/Desktop/Dev/IISM/WebApp/bin/Debug/net9.0/Base.Resources.pdb
+/Users/eriklihhats/Desktop/Dev/IISM/WebApp/bin/Debug/net9.0/et/Base.Resources.resources.dll
+/Users/eriklihhats/Desktop/Dev/IISM/WebApp/bin/Debug/net9.0/et/App.Resources.resources.dll
+/Users/eriklihhats/Desktop/Dev/IISM/WebApp/bin/Debug/net9.0/ru/App.Resources.resources.dll
+/Users/eriklihhats/Desktop/Dev/IISM/WebApp/bin/Debug/net9.0/ru/Base.Resources.resources.dll

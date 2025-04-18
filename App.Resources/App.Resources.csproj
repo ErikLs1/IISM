@@ -1,0 +1,132 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Update="Domain\Person.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>Person.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Domain\Category.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>Category.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Domain\Inventory.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>Inventory.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Domain\Order.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>Order.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Domain\OrderProduct.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>OrderProduct.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Domain\Payment.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>Payment.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Domain\Product.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>Product.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Domain\ProductSupplier.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>ProductSupplier.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Domain\Refund.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>Refund.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Domain\SrockOrder.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>SrockOrder.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Domain\StockOrderItem.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>StockOrderItem.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Domain\Supplier.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>Supplier.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Domain\Warehouse.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>Warehouse.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Domain\Person.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Person.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Domain\Category.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Category.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Domain\Inventory.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Inventory.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Domain\Order.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Order.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Domain\OrderProduct.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>OrderProduct.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Domain\Payment.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Payment.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Domain\Product.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Product.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Domain\ProductSupplier.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>ProductSupplier.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Domain\Refund.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Refund.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Domain\SrockOrder.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>SrockOrder.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Domain\StockOrderItem.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>StockOrderItem.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Domain\Supplier.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Supplier.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Domain\Warehouse.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Warehouse.resx</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+</Project>

@@ -9,6 +9,8 @@
       "WebApp/1.0.0": {
         "dependencies": {
           "App.DAL.EF": "1.0.0",
+          "App.Resources": "1.0.0",
+          "Base.Resources": "1.0.0",
           "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": "9.0.0",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "9.0.0",
           "Microsoft.AspNetCore.Identity.UI": "9.0.0",
@@ -2293,7 +2295,9 @@
       },
       "App.Domain/1.0.0": {
         "dependencies": {
+          "App.Resources": "1.0.0",
           "Base.Domain": "1.0.0",
+          "Base.Resources": "1.0.0",
           "Microsoft.EntityFrameworkCore.SqlServer": "9.0.0",
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "9.0.0"
         },
@@ -2304,11 +2308,37 @@
           }
         }
       },
+      "App.Resources/1.0.0": {
+        "runtime": {
+          "App.Resources.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        },
+        "resources": {
+          "et/App.Resources.resources.dll": {
+            "locale": "et"
+          }
+        }
+      },
       "Base.Domain/1.0.0": {
         "runtime": {
           "Base.Domain.dll": {
             "assemblyVersion": "1.0.0",
             "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "Base.Resources/1.0.0": {
+        "runtime": {
+          "Base.Resources.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        },
+        "resources": {
+          "et/Base.Resources.resources.dll": {
+            "locale": "et"
           }
         }
       }
@@ -3548,7 +3578,17 @@
       "serviceable": false,
       "sha512": ""
     },
+    "App.Resources/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
     "Base.Domain/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Base.Resources/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

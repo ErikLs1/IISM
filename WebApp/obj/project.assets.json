@@ -3241,7 +3241,9 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v9.0",
         "dependencies": {
+          "App.Resources": "1.0.0",
           "Base.Domain": "1.0.0",
+          "Base.Resources": "1.0.0",
           "Microsoft.EntityFrameworkCore.SqlServer": "9.0.0",
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "9.0.0"
         },
@@ -3252,6 +3254,16 @@
           "bin/placeholder/App.Domain.dll": {}
         }
       },
+      "App.Resources/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "compile": {
+          "bin/placeholder/App.Resources.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/App.Resources.dll": {}
+        }
+      },
       "Base.Domain/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v9.0",
@@ -3260,6 +3272,16 @@
         },
         "runtime": {
           "bin/placeholder/Base.Domain.dll": {}
+        }
+      },
+      "Base.Resources/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "compile": {
+          "bin/placeholder/Base.Resources.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Base.Resources.dll": {}
         }
       }
     }
@@ -8564,15 +8586,27 @@
       "path": "../App.Domain/App.Domain.csproj",
       "msbuildProject": "../App.Domain/App.Domain.csproj"
     },
+    "App.Resources/1.0.0": {
+      "type": "project",
+      "path": "../App.Resources/App.Resources.csproj",
+      "msbuildProject": "../App.Resources/App.Resources.csproj"
+    },
     "Base.Domain/1.0.0": {
       "type": "project",
       "path": "../Base.Domain/Base.Domain.csproj",
       "msbuildProject": "../Base.Domain/Base.Domain.csproj"
+    },
+    "Base.Resources/1.0.0": {
+      "type": "project",
+      "path": "../Base.Resources/Base.Resources.csproj",
+      "msbuildProject": "../Base.Resources/Base.Resources.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net9.0": [
       "App.DAL.EF >= 1.0.0",
+      "App.Resources >= 1.0.0",
+      "Base.Resources >= 1.0.0",
       "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore >= 9.0.0",
       "Microsoft.AspNetCore.Identity.EntityFrameworkCore >= 9.0.0",
       "Microsoft.AspNetCore.Identity.UI >= 9.0.0",
@@ -8608,6 +8642,12 @@
           "projectReferences": {
             "/Users/eriklihhats/Desktop/Dev/IISM/App.DAL.EF/App.DAL.EF.csproj": {
               "projectPath": "/Users/eriklihhats/Desktop/Dev/IISM/App.DAL.EF/App.DAL.EF.csproj"
+            },
+            "/Users/eriklihhats/Desktop/Dev/IISM/App.Resources/App.Resources.csproj": {
+              "projectPath": "/Users/eriklihhats/Desktop/Dev/IISM/App.Resources/App.Resources.csproj"
+            },
+            "/Users/eriklihhats/Desktop/Dev/IISM/Base.Resources/Base.Resources.csproj": {
+              "projectPath": "/Users/eriklihhats/Desktop/Dev/IISM/Base.Resources/Base.Resources.csproj"
             }
           }
         }

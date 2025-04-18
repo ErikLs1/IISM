@@ -46,42 +46,7 @@
                             <li><a class="dropdown-item" asp-area="" asp-controller="Warehouses" asp-action="Index">Warehouses</a></li>
                         </ul>
                     </li>
-                    @*<li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Inventories" asp-action="Index">Inventories</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="OrderProducts" asp-action="Index">OrderProducts</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Orders" asp-action="Index">Orders</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Payments" asp-action="Index">Payments</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Persons" asp-action="Index">Persons</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="Index">Products</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="ProductSuppliers" asp-action="Index">ProductSuppliers</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Refunds" asp-action="Index">Refunds</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="StockOrderItems" asp-action="Index">StockOrderItems</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="StockOrders" asp-action="Index">StockOrders</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Suppliers" asp-action="Index">Suppliers</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Warehouses" asp-action="Index">Warehouses</a>
-                    </li>*@
+                    <partial name="_LanguageSelection"/>
                 </ul>
                 <partial name="_LoginPartial"/>
             </div>
@@ -96,7 +61,8 @@
 
 <footer class="border-top footer text-muted">
     <div class="container">
-        &copy; 2025 - WebApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        &copy; 2025 - WebApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">@Base.Resources.Common.Privacy</a>
+        @Thread.CurrentThread.CurrentCulture.Name | @Thread.CurrentThread.CurrentUICulture.Name
     </div>
 </footer>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>

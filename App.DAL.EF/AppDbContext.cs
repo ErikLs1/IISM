@@ -26,7 +26,7 @@ public class AppDbContext : IdentityDbContext
     {
     }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    /*protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         // Call the base implementation first (especially needed for Identity)
         base.OnModelCreating(modelBuilder);
@@ -51,5 +51,5 @@ public class AppDbContext : IdentityDbContext
                     .HasConversion(dateTimeConverter);
             }
         }
-    }
+    }*/
 }

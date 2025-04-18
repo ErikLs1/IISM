@@ -59,6 +59,8 @@ namespace WebApp.Controllers
             if (ModelState.IsValid)
             {
                 person.Id = Guid.NewGuid();
+                person.PersonDateOfBirth = DateTime.SpecifyKind(person.PersonDateOfBirth!.Value, DateTimeKind.Utc)
+                    .ToUniversalTime(); // Change later to DateOnly
                 _context.Add(person);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

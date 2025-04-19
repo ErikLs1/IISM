@@ -14,21 +14,21 @@ namespace App.Resources.Domain {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class SrockOrder {
+    public class StockOrder {
         
         private static System.Resources.ResourceManager resourceMan;
         
         private static System.Globalization.CultureInfo resourceCulture;
         
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal SrockOrder() {
+        internal StockOrder() {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static System.Resources.ResourceManager ResourceManager {
+        public static System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.Equals(null, resourceMan)) {
-                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("App.Resources.Domain.SrockOrder", typeof(SrockOrder).Assembly);
+                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("App.Resources.Domain.StockOrder", typeof(StockOrder).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -36,12 +36,36 @@ namespace App.Resources.Domain {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static System.Globalization.CultureInfo Culture {
+        public static System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        public static string TotalCost {
+            get {
+                return ResourceManager.GetString("TotalCost", resourceCulture);
+            }
+        }
+        
+        public static string Status {
+            get {
+                return ResourceManager.GetString("Status", resourceCulture);
+            }
+        }
+        
+        public static string Supplier {
+            get {
+                return ResourceManager.GetString("Supplier", resourceCulture);
+            }
+        }
+        
+        public static string Warehouse {
+            get {
+                return ResourceManager.GetString("Warehouse", resourceCulture);
             }
         }
     }

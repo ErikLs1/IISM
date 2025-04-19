@@ -14,7 +14,7 @@ namespace App.Resources.Domain {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Supplier {
+    public class Supplier {
         
         private static System.Resources.ResourceManager resourceMan;
         
@@ -25,7 +25,7 @@ namespace App.Resources.Domain {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static System.Resources.ResourceManager ResourceManager {
+        public static System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.Equals(null, resourceMan)) {
                     System.Resources.ResourceManager temp = new System.Resources.ResourceManager("App.Resources.Domain.Supplier", typeof(Supplier).Assembly);
@@ -36,12 +36,36 @@ namespace App.Resources.Domain {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static System.Globalization.CultureInfo Culture {
+        public static System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        public static string SupplierName {
+            get {
+                return ResourceManager.GetString("SupplierName", resourceCulture);
+            }
+        }
+        
+        public static string SupplierPhoneNumber {
+            get {
+                return ResourceManager.GetString("SupplierPhoneNumber", resourceCulture);
+            }
+        }
+        
+        public static string SupplierEmail {
+            get {
+                return ResourceManager.GetString("SupplierEmail", resourceCulture);
+            }
+        }
+        
+        public static string SupplierAddress {
+            get {
+                return ResourceManager.GetString("SupplierAddress", resourceCulture);
             }
         }
     }

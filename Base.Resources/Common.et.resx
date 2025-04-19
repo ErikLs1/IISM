@@ -14,4 +14,10 @@
     <data name="Privacy" xml:space="preserve">
         <value>Privaatsus</value>
     </data>
+    <data name="CreatedAt" xml:space="preserve">
+        <value>Loodud kell</value>
+    </data>
+    <data name="UpdatedAt" xml:space="preserve">
+        <value>Uuendatud kell</value>
+    </data>
 </root>

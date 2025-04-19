@@ -18,4 +18,19 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
+    <data name="PaymentMethod" xml:space="preserve">
+        <value>Payment Method</value>
+    </data>
+    <data name="PaymentStatus" xml:space="preserve">
+        <value>Payment Status</value>
+    </data>
+    <data name="PaymentAmount" xml:space="preserve">
+        <value>Payment Amount</value>
+    </data>
+    <data name="PaymentDate" xml:space="preserve">
+        <value>Payment Date</value>
+    </data>
+    <data name="Order" xml:space="preserve">
+        <value>Order</value>
+    </data>
 </root>

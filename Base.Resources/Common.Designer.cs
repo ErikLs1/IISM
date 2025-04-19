@@ -50,5 +50,17 @@ namespace Base.Resources {
                 return ResourceManager.GetString("Privacy", resourceCulture);
             }
         }
+        
+        public static string CreatedAt {
+            get {
+                return ResourceManager.GetString("CreatedAt", resourceCulture);
+            }
+        }
+        
+        public static string UpdatedAt {
+            get {
+                return ResourceManager.GetString("UpdatedAt", resourceCulture);
+            }
+        }
     }
 }

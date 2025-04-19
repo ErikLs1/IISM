@@ -14,7 +14,7 @@ namespace App.Resources.Domain {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Refund {
+    public class Refund {
         
         private static System.Resources.ResourceManager resourceMan;
         
@@ -25,7 +25,7 @@ namespace App.Resources.Domain {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static System.Resources.ResourceManager ResourceManager {
+        public static System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.Equals(null, resourceMan)) {
                     System.Resources.ResourceManager temp = new System.Resources.ResourceManager("App.Resources.Domain.Refund", typeof(Refund).Assembly);
@@ -36,12 +36,36 @@ namespace App.Resources.Domain {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static System.Globalization.CultureInfo Culture {
+        public static System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        public static string RefundAmount {
+            get {
+                return ResourceManager.GetString("RefundAmount", resourceCulture);
+            }
+        }
+        
+        public static string RefundReason {
+            get {
+                return ResourceManager.GetString("RefundReason", resourceCulture);
+            }
+        }
+        
+        public static string RefundStatus {
+            get {
+                return ResourceManager.GetString("RefundStatus", resourceCulture);
+            }
+        }
+        
+        public static string OrderProduct {
+            get {
+                return ResourceManager.GetString("OrderProduct", resourceCulture);
             }
         }
     }

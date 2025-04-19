@@ -18,4 +18,13 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
+    <data name="WarehouseCapacity" xml:space="preserve">
+        <value>Warehouse Capacity</value>
+    </data>
+    <data name="WarehouseEmail" xml:space="preserve">
+        <value>Warehouse Email</value>
+    </data>
+    <data name="WarehouseAddress" xml:space="preserve">
+        <value>Warehouse Address</value>
+    </data>
 </root>

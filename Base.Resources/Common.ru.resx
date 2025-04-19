@@ -14,4 +14,10 @@
     <data name="Privacy" xml:space="preserve">
         <value>Конфиденциальность</value>
     </data>
+    <data name="CreatedAt" xml:space="preserve">
+        <value>Создано в</value>
+    </data>
+    <data name="UpdatedAt" xml:space="preserve">
+        <value>Обновлено в</value>
+    </data>
 </root>

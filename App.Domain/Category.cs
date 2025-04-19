@@ -12,7 +12,11 @@ public class Category : BaseEntity
     [MaxLength(250)]
     [Display(Name = nameof(CategoryDescription), Prompt = nameof(CategoryDescription), ResourceType = typeof(App.Resources.Domain.Category))]
     public string CategoryDescription { get; set; } = default!;
+    
+    [Display(Name = nameof(CreatedAt), Prompt = nameof(CreatedAt), ResourceType = typeof(Base.Resources.Common))]
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    
+    [Display(Name = nameof(UpdatedAt), Prompt = nameof(UpdatedAt), ResourceType = typeof(Base.Resources.Common))]
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     
     public ICollection<Product> Products { get; set; } = new List<Product>();

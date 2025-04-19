@@ -14,7 +14,7 @@ namespace App.Resources.Domain {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Payment {
+    public class Payment {
         
         private static System.Resources.ResourceManager resourceMan;
         
@@ -25,7 +25,7 @@ namespace App.Resources.Domain {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static System.Resources.ResourceManager ResourceManager {
+        public static System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.Equals(null, resourceMan)) {
                     System.Resources.ResourceManager temp = new System.Resources.ResourceManager("App.Resources.Domain.Payment", typeof(Payment).Assembly);
@@ -36,12 +36,42 @@ namespace App.Resources.Domain {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static System.Globalization.CultureInfo Culture {
+        public static System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        public static string PaymentMethod {
+            get {
+                return ResourceManager.GetString("PaymentMethod", resourceCulture);
+            }
+        }
+        
+        public static string PaymentStatus {
+            get {
+                return ResourceManager.GetString("PaymentStatus", resourceCulture);
+            }
+        }
+        
+        public static string PaymentAmount {
+            get {
+                return ResourceManager.GetString("PaymentAmount", resourceCulture);
+            }
+        }
+        
+        public static string PaymentDate {
+            get {
+                return ResourceManager.GetString("PaymentDate", resourceCulture);
+            }
+        }
+        
+        public static string Order {
+            get {
+                return ResourceManager.GetString("Order", resourceCulture);
             }
         }
     }

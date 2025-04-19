@@ -14,7 +14,7 @@ namespace App.Resources.Domain {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class StockOrderItem {
+    public class StockOrderItem {
         
         private static System.Resources.ResourceManager resourceMan;
         
@@ -25,7 +25,7 @@ namespace App.Resources.Domain {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static System.Resources.ResourceManager ResourceManager {
+        public static System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.Equals(null, resourceMan)) {
                     System.Resources.ResourceManager temp = new System.Resources.ResourceManager("App.Resources.Domain.StockOrderItem", typeof(StockOrderItem).Assembly);
@@ -36,12 +36,36 @@ namespace App.Resources.Domain {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static System.Globalization.CultureInfo Culture {
+        public static System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        public static string Quantity {
+            get {
+                return ResourceManager.GetString("Quantity", resourceCulture);
+            }
+        }
+        
+        public static string Cost {
+            get {
+                return ResourceManager.GetString("Cost", resourceCulture);
+            }
+        }
+        
+        public static string StockOrder {
+            get {
+                return ResourceManager.GetString("StockOrder", resourceCulture);
+            }
+        }
+        
+        public static string Product {
+            get {
+                return ResourceManager.GetString("Product", resourceCulture);
             }
         }
     }

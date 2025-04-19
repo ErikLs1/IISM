@@ -18,4 +18,16 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
+    <data name="Quantity" xml:space="preserve">
+        <value>Quantity</value>
+    </data>
+    <data name="Cost" xml:space="preserve">
+        <value>Cost</value>
+    </data>
+    <data name="StockOrder" xml:space="preserve">
+        <value>Stock Order</value>
+    </data>
+    <data name="Product" xml:space="preserve">
+        <value>Product</value>
+    </data>
 </root>

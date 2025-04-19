@@ -14,7 +14,7 @@ namespace App.Resources.Domain {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class ProductSupplier {
+    public class ProductSupplier {
         
         private static System.Resources.ResourceManager resourceMan;
         
@@ -25,7 +25,7 @@ namespace App.Resources.Domain {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static System.Resources.ResourceManager ResourceManager {
+        public static System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.Equals(null, resourceMan)) {
                     System.Resources.ResourceManager temp = new System.Resources.ResourceManager("App.Resources.Domain.ProductSupplier", typeof(ProductSupplier).Assembly);
@@ -36,12 +36,30 @@ namespace App.Resources.Domain {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static System.Globalization.CultureInfo Culture {
+        public static System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        public static string UnitCost {
+            get {
+                return ResourceManager.GetString("UnitCost", resourceCulture);
+            }
+        }
+        
+        public static string Supplier {
+            get {
+                return ResourceManager.GetString("Supplier", resourceCulture);
+            }
+        }
+        
+        public static string Product {
+            get {
+                return ResourceManager.GetString("Product", resourceCulture);
             }
         }
     }

@@ -20,4 +20,85 @@
     <data name="UpdatedAt" xml:space="preserve">
         <value>Обновлено в</value>
     </data>
+    <data name="Home" xml:space="preserve">
+        <value>Главная</value>
+    </data>
+    <data name="Langugages" xml:space="preserve">
+        <value>Язык</value>
+    </data>
+    <data name="Data" xml:space="preserve">
+        <value>Данные</value>
+    </data>
+    <data name="Category" xml:space="preserve">
+        <value>Категории</value>
+    </data>
+    <data name="Inventory" xml:space="preserve">
+        <value>Инвентарь</value>
+    </data>
+    <data name="Login" xml:space="preserve">
+        <value>Войти</value>
+    </data>
+    <data name="Order" xml:space="preserve">
+        <value>Заказы</value>
+    </data>
+    <data name="OrderProduct" xml:space="preserve">
+        <value>Заказы продукта</value>
+    </data>
+    <data name="Payment" xml:space="preserve">
+        <value>Платежи</value>
+    </data>
+    <data name="Person" xml:space="preserve">
+        <value>Личности</value>
+    </data>
+    <data name="ProdcutSupplier" xml:space="preserve">
+        <value>Поставщики продукта</value>
+    </data>
+    <data name="Product" xml:space="preserve">
+        <value>Товары</value>
+    </data>
+    <data name="Refund" xml:space="preserve">
+        <value>Возвраты</value>
+    </data>
+    <data name="Register" xml:space="preserve">
+        <value>Регистрация</value>
+    </data>
+    <data name="StockOrder" xml:space="preserve">
+        <value>Заказы товара</value>
+    </data>
+    <data name="StockOrderItem" xml:space="preserve">
+        <value>Товыра в заказе</value>
+    </data>
+    <data name="Supplier" xml:space="preserve">
+        <value>Поставщики</value>
+    </data>
+    <data name="Warehouse" xml:space="preserve">
+        <value>Склады</value>
+    </data>
+    <data name="BackToList" xml:space="preserve">
+        <value>Вернуться к списку</value>
+    </data>
+    <data name="SaveButton" xml:space="preserve">
+        <value>Сохранить</value>
+    </data>
+    <data name="DeleteButton" xml:space="preserve">
+        <value>Удалить</value>
+    </data>
+    <data name="CreateButton" xml:space="preserve">
+        <value>Создать</value>
+    </data>
+    <data name="DeleteLink" xml:space="preserve">
+        <value>Удалить</value>
+    </data>
+    <data name="CreateNewLink" xml:space="preserve">
+        <value>Создать</value>
+    </data>
+    <data name="DetailsLink" xml:space="preserve">
+        <value>Подробности</value>
+    </data>
+    <data name="EditLink" xml:space="preserve">
+        <value>Изменить</value>
+    </data>
+    <data name="DeleteMessage" xml:space="preserve">
+        <value>Вы уверены, что хотите это удалить?</value>
+    </data>
 </root>

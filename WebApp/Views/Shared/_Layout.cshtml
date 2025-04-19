@@ -21,29 +21,29 @@
             <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">@Base.Resources.Common.Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">@Base.Resources.Common.Privacy</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Data
+                            @Base.Resources.Common.Data
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" asp-area="" asp-controller="Categories" asp-action="Index">Categories</a></li>
-                            <li><a class="dropdown-item" asp-area="" asp-controller="Inventories" asp-action="Index">Inventories</a></li>
-                            <li><a class="dropdown-item" asp-area="" asp-controller="OrderProducts" asp-action="Index">OrderProducts</a></li>
-                            <li><a class="dropdown-item" asp-area="" asp-controller="Orders" asp-action="Index">Orders</a></li>
-                            <li><a class="dropdown-item" asp-area="" asp-controller="Payments" asp-action="Index">Payments</a></li>
-                            <li><a class="dropdown-item" asp-area="" asp-controller="Persons" asp-action="Index">Persons</a></li>
-                            <li><a class="dropdown-item" asp-area="" asp-controller="Products" asp-action="Index">Products</a></li>
-                            <li><a class="dropdown-item" asp-area="" asp-controller="ProductSuppliers" asp-action="Index">ProductSuppliers</a></li>
-                            <li><a class="dropdown-item" asp-area="" asp-controller="Refunds" asp-action="Index">Refunds</a></li>
-                            <li><a class="dropdown-item" asp-area="" asp-controller="StockOrderItems" asp-action="Index">StockOrderItems</a></li>
-                            <li><a class="dropdown-item" asp-area="" asp-controller="StockOrders" asp-action="Index">StockOrders</a></li>
-                            <li><a class="dropdown-item" asp-area="" asp-controller="Suppliers" asp-action="Index">Suppliers</a></li>
-                            <li><a class="dropdown-item" asp-area="" asp-controller="Warehouses" asp-action="Index">Warehouses</a></li>
+                            <li><a class="dropdown-item" asp-area="" asp-controller="Categories" asp-action="Index">@Base.Resources.Common.Category</a></li>
+                            <li><a class="dropdown-item" asp-area="" asp-controller="Inventories" asp-action="Index">@Base.Resources.Common.Inventory</a></li>
+                            <li><a class="dropdown-item" asp-area="" asp-controller="OrderProducts" asp-action="Index">@Base.Resources.Common.OrderProduct</a></li>
+                            <li><a class="dropdown-item" asp-area="" asp-controller="Orders" asp-action="Index">@Base.Resources.Common.Order</a></li>
+                            <li><a class="dropdown-item" asp-area="" asp-controller="Payments" asp-action="Index">@Base.Resources.Common.Payment</a></li>
+                            <li><a class="dropdown-item" asp-area="" asp-controller="Persons" asp-action="Index">@Base.Resources.Common.Person</a></li>
+                            <li><a class="dropdown-item" asp-area="" asp-controller="Products" asp-action="Index">@Base.Resources.Common.Product</a></li>
+                            <li><a class="dropdown-item" asp-area="" asp-controller="ProductSuppliers" asp-action="Index">@Base.Resources.Common.ProdcutSupplier</a></li>
+                            <li><a class="dropdown-item" asp-area="" asp-controller="Refunds" asp-action="Index">@Base.Resources.Common.Refund</a></li>
+                            <li><a class="dropdown-item" asp-area="" asp-controller="StockOrderItems" asp-action="Index">@Base.Resources.Common.StockOrderItem</a></li>
+                            <li><a class="dropdown-item" asp-area="" asp-controller="StockOrders" asp-action="Index">@Base.Resources.Common.StockOrder</a></li>
+                            <li><a class="dropdown-item" asp-area="" asp-controller="Suppliers" asp-action="Index">@Base.Resources.Common.Supplier</a></li>
+                            <li><a class="dropdown-item" asp-area="" asp-controller="Warehouses" asp-action="Index">@Base.Resources.Common.Warehouse</a></li>
                         </ul>
                     </li>
                     <partial name="_LanguageSelection"/>

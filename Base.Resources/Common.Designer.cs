@@ -62,5 +62,167 @@ namespace Base.Resources {
                 return ResourceManager.GetString("UpdatedAt", resourceCulture);
             }
         }
+        
+        public static string Home {
+            get {
+                return ResourceManager.GetString("Home", resourceCulture);
+            }
+        }
+        
+        public static string Data {
+            get {
+                return ResourceManager.GetString("Data", resourceCulture);
+            }
+        }
+        
+        public static string Langugages {
+            get {
+                return ResourceManager.GetString("Langugages", resourceCulture);
+            }
+        }
+        
+        public static string Register {
+            get {
+                return ResourceManager.GetString("Register", resourceCulture);
+            }
+        }
+        
+        public static string Login {
+            get {
+                return ResourceManager.GetString("Login", resourceCulture);
+            }
+        }
+        
+        public static string Category {
+            get {
+                return ResourceManager.GetString("Category", resourceCulture);
+            }
+        }
+        
+        public static string Inventory {
+            get {
+                return ResourceManager.GetString("Inventory", resourceCulture);
+            }
+        }
+        
+        public static string Order {
+            get {
+                return ResourceManager.GetString("Order", resourceCulture);
+            }
+        }
+        
+        public static string OrderProduct {
+            get {
+                return ResourceManager.GetString("OrderProduct", resourceCulture);
+            }
+        }
+        
+        public static string Payment {
+            get {
+                return ResourceManager.GetString("Payment", resourceCulture);
+            }
+        }
+        
+        public static string Person {
+            get {
+                return ResourceManager.GetString("Person", resourceCulture);
+            }
+        }
+        
+        public static string Product {
+            get {
+                return ResourceManager.GetString("Product", resourceCulture);
+            }
+        }
+        
+        public static string ProdcutSupplier {
+            get {
+                return ResourceManager.GetString("ProdcutSupplier", resourceCulture);
+            }
+        }
+        
+        public static string Refund {
+            get {
+                return ResourceManager.GetString("Refund", resourceCulture);
+            }
+        }
+        
+        public static string StockOrder {
+            get {
+                return ResourceManager.GetString("StockOrder", resourceCulture);
+            }
+        }
+        
+        public static string StockOrderItem {
+            get {
+                return ResourceManager.GetString("StockOrderItem", resourceCulture);
+            }
+        }
+        
+        public static string Supplier {
+            get {
+                return ResourceManager.GetString("Supplier", resourceCulture);
+            }
+        }
+        
+        public static string Warehouse {
+            get {
+                return ResourceManager.GetString("Warehouse", resourceCulture);
+            }
+        }
+        
+        public static string CreateNewLink {
+            get {
+                return ResourceManager.GetString("CreateNewLink", resourceCulture);
+            }
+        }
+        
+        public static string CreateButton {
+            get {
+                return ResourceManager.GetString("CreateButton", resourceCulture);
+            }
+        }
+        
+        public static string BackToList {
+            get {
+                return ResourceManager.GetString("BackToList", resourceCulture);
+            }
+        }
+        
+        public static string EditLink {
+            get {
+                return ResourceManager.GetString("EditLink", resourceCulture);
+            }
+        }
+        
+        public static string DetailsLink {
+            get {
+                return ResourceManager.GetString("DetailsLink", resourceCulture);
+            }
+        }
+        
+        public static string DeleteLink {
+            get {
+                return ResourceManager.GetString("DeleteLink", resourceCulture);
+            }
+        }
+        
+        public static string SaveButton {
+            get {
+                return ResourceManager.GetString("SaveButton", resourceCulture);
+            }
+        }
+        
+        public static string DeleteButton {
+            get {
+                return ResourceManager.GetString("DeleteButton", resourceCulture);
+            }
+        }
+        
+        public static string DeleteMessage {
+            get {
+                return ResourceManager.GetString("DeleteMessage", resourceCulture);
+            }
+        }
     }
 }

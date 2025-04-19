@@ -27,4 +27,85 @@
     <data name="UpdatedAt" xml:space="preserve">
         <value>Updated At</value>
     </data>
+    <data name="Home" xml:space="preserve">
+        <value>Home</value>
+    </data>
+    <data name="Data" xml:space="preserve">
+        <value>Data</value>
+    </data>
+    <data name="Langugages" xml:space="preserve">
+        <value>Languages</value>
+    </data>
+    <data name="Register" xml:space="preserve">
+        <value>Register</value>
+    </data>
+    <data name="Login" xml:space="preserve">
+        <value>Login</value>
+    </data>
+    <data name="Category" xml:space="preserve">
+        <value>Categories</value>
+    </data>
+    <data name="Inventory" xml:space="preserve">
+        <value>Inventories</value>
+    </data>
+    <data name="Order" xml:space="preserve">
+        <value>Orders</value>
+    </data>
+    <data name="OrderProduct" xml:space="preserve">
+        <value>Order Products</value>
+    </data>
+    <data name="Payment" xml:space="preserve">
+        <value>Payments</value>
+    </data>
+    <data name="Person" xml:space="preserve">
+        <value>Persons</value>
+    </data>
+    <data name="Product" xml:space="preserve">
+        <value>Products</value>
+    </data>
+    <data name="ProdcutSupplier" xml:space="preserve">
+        <value>Product Suppliers</value>
+    </data>
+    <data name="Refund" xml:space="preserve">
+        <value>Refunds</value>
+    </data>
+    <data name="StockOrder" xml:space="preserve">
+        <value>Stock Orders</value>
+    </data>
+    <data name="StockOrderItem" xml:space="preserve">
+        <value>Stock Order Items</value>
+    </data>
+    <data name="Supplier" xml:space="preserve">
+        <value>Suppliers</value>
+    </data>
+    <data name="Warehouse" xml:space="preserve">
+        <value>Warehouses</value>
+    </data>
+    <data name="CreateNewLink" xml:space="preserve">
+        <value>Create New</value>
+    </data>
+    <data name="CreateButton" xml:space="preserve">
+        <value>Create</value>
+    </data>
+    <data name="BackToList" xml:space="preserve">
+        <value>Back to List</value>
+    </data>
+    <data name="EditLink" xml:space="preserve">
+        <value>Edit</value>
+    </data>
+    <data name="DetailsLink" xml:space="preserve">
+        <value>Details</value>
+    </data>
+    <data name="DeleteLink" xml:space="preserve">
+        <value>Delete</value>
+    </data>
+    <data name="SaveButton" xml:space="preserve">
+        <value>Save</value>
+    </data>
+    <data name="DeleteButton" xml:space="preserve">
+        <value>Delete</value>
+    </data>
+    <data name="DeleteMessage" xml:space="preserve">
+        <value>Are you sure you want to delete this?</value>
+    </data>
 </root>

@@ -4,10 +4,10 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>@Base.Resources.Common.DetailsLink</h1>
+<h1>Details</h1>
 
 <div>
-    <h4>@Base.Resources.Common.Person</h4>
+    <h4>Person</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -46,9 +46,15 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.PersonDateOfBirth)
         </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.AppUser)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.AppUser!.Id)
+        </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">@Base.Resources.Common.EditLink</a> |
-    <a asp-action="Index">@Base.Resources.Common.BackToList</a>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
 </div>

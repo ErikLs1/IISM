@@ -1,5 +1,8 @@
 using System.ComponentModel.DataAnnotations;
+using App.Domain.Identity;
+using Base.Contracts;
 using Base.Domain;
+using Base.Domain.Identity;
 
 namespace App.Domain;
 
@@ -31,5 +34,10 @@ public class Person : BaseEntity
     public DateTime? PersonDateOfBirth { get; set; } = DateTime.UtcNow;
 
     public ICollection<Order> Orders { get; set; } = new List<Order>();
-
+    
+    public Guid AppUserId { get; set; }
+    public AppUser? AppUser { get; set; }
+    
+    /*public Guid UserId { get; set; }
+    public AppUser User { get; set; }*/
 }

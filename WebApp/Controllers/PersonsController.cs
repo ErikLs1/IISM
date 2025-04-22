@@ -1,160 +1,177 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
 using App.Domain;
+using Microsoft.AspNetCore.Authorization;
 
-namespace WebApp.Controllers
+namespace WebApp.Controllers;
+
+[Authorize]
+public class PersonsController : Controller
 {
-    public class PersonsController : Controller
+    private readonly AppDbContext _context;
+
+    public PersonsController(AppDbContext context)
     {
-        private readonly AppDbContext _context;
+        _context = context;
+    }
 
-        public PersonsController(AppDbContext context)
+    // GET: Persons
+    public async Task<IActionResult> Index()
+    {
+        // Ask only data for current user
+        var userIdStr = User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
+        var userId = Guid.Parse(userIdStr);
+        
+        var res = await _context
+            .Persons
+            .Include(p => p.AppUser)
+            .Where(p => p.AppUserId == userId)
+            .ToListAsync();
+        return View(res);
+    }
+
+    // GET: Persons/Details/5
+    public async Task<IActionResult> Details(Guid? id)
+    {
+        if (id == null)
         {
-            _context = context;
+            return NotFound();
         }
 
-        // GET: Persons
-        public async Task<IActionResult> Index()
+        var person = await _context.Persons
+            .Include(p => p.AppUser)
+            .FirstOrDefaultAsync(m => m.Id == id);
+        if (person == null)
         {
-            return View(await _context.Persons.ToListAsync());
+            return NotFound();
         }
 
-        // GET: Persons/Details/5
-        public async Task<IActionResult> Details(Guid? id)
+        return View(person);
+    }
+
+    // GET: Persons/Create
+    public IActionResult Create()
+    {
+        return View();
+    }
+
+    // POST: Persons/Create
+    // To protect from overposting attacks, enable the specific properties you want to bind to.
+    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Create(Person person)
+    {
+        var userIdStr = User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
+        var userId = Guid.Parse(userIdStr);
+        person.AppUserId = userId;
+        
+        if (ModelState.IsValid)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var person = await _context.Persons
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (person == null)
-            {
-                return NotFound();
-            }
-
-            return View(person);
-        }
-
-        // GET: Persons/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Persons/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PersonFirstName,PersonLastName,PersonPhoneNumber,PersonAddress,PersonGender,PersonDateOfBirth,Id")] Person person)
-        {
-            if (ModelState.IsValid)
-            {
-                person.Id = Guid.NewGuid();
-                person.PersonDateOfBirth = DateTime.SpecifyKind(person.PersonDateOfBirth!.Value, DateTimeKind.Utc)
-                    .ToUniversalTime(); // Change later to DateOnly
-                _context.Add(person);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(person);
-        }
-
-        // GET: Persons/Edit/5
-        public async Task<IActionResult> Edit(Guid? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var person = await _context.Persons.FindAsync(id);
-            if (person == null)
-            {
-                return NotFound();
-            }
-            return View(person);
-        }
-
-        // POST: Persons/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("PersonFirstName,PersonLastName,PersonPhoneNumber,PersonAddress,PersonGender,PersonDateOfBirth,Id")] Person person)
-        {
-            if (id != person.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(person);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!PersonExists(person.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(person);
-        }
-
-        // GET: Persons/Delete/5
-        public async Task<IActionResult> Delete(Guid? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var person = await _context.Persons
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (person == null)
-            {
-                return NotFound();
-            }
-
-            return View(person);
-        }
-
-        // POST: Persons/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(Guid id)
-        {
-            var person = await _context.Persons.FindAsync(id);
-            if (person != null)
-            {
-                _context.Persons.Remove(person);
-            }
-
+            person.Id = Guid.NewGuid();
+            _context.Add(person);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+        return View(person);
+    }
 
-        private bool PersonExists(Guid id)
+    // GET: Persons/Edit/5
+    public async Task<IActionResult> Edit(Guid? id)
+    {
+        if (id == null)
         {
-            return _context.Persons.Any(e => e.Id == id);
+            return NotFound();
         }
+
+        var person = await _context.Persons.FindAsync(id);
+        if (person == null)
+        {
+            return NotFound();
+        }
+        ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Id", person.AppUserId);
+        return View(person);
+    }
+
+    // POST: Persons/Edit/5
+    // To protect from overposting attacks, enable the specific properties you want to bind to.
+    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(Guid id, [Bind("PersonFirstName,PersonLastName,PersonPhoneNumber,PersonAddress,PersonGender,PersonDateOfBirth,AppUserId,Id")] Person person)
+    {
+        if (id != person.Id)
+        {
+            return NotFound();
+        }
+
+        if (ModelState.IsValid)
+        {
+            try
+            {
+                _context.Update(person);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!PersonExists(person.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return RedirectToAction(nameof(Index));
+        }
+        ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Id", person.AppUserId);
+        return View(person);
+    }
+
+    // GET: Persons/Delete/5
+    public async Task<IActionResult> Delete(Guid? id)
+    {
+        if (id == null)
+        {
+            return NotFound();
+        }
+
+        var person = await _context.Persons
+            .Include(p => p.AppUser)
+            .FirstOrDefaultAsync(m => m.Id == id);
+        if (person == null)
+        {
+            return NotFound();
+        }
+
+        return View(person);
+    }
+
+    // POST: Persons/Delete/5
+    [HttpPost, ActionName("Delete")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> DeleteConfirmed(Guid id)
+    {
+        var person = await _context.Persons.FindAsync(id);
+        if (person != null)
+        {
+            _context.Persons.Remove(person);
+        }
+
+        await _context.SaveChangesAsync();
+        return RedirectToAction(nameof(Index));
+    }
+
+    private bool PersonExists(Guid id)
+    {
+        return _context.Persons.Any(e => e.Id == id);
     }
 }

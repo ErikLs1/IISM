@@ -1,6 +1,6 @@
 namespace App.Domain.Identity;
 
-public class Person
+public class AppRefreshToken
 {
     
 }

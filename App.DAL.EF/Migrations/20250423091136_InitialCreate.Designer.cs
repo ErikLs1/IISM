@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace App.DAL.EF.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250422165642_InitialCreate")]
+    [Migration("20250423091136_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -280,9 +280,6 @@ namespace App.DAL.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("AppUserId")
-                        .HasColumnType("uuid");
-
                     b.Property<string>("PersonAddress")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -311,9 +308,12 @@ namespace App.DAL.EF.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)");
 
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("AppUserId")
+                    b.HasIndex("UserId")
                         .IsUnique();
 
                     b.ToTable("Persons");
@@ -636,11 +636,20 @@ namespace App.DAL.EF.Migrations
                     b.Property<Guid>("RoleId")
                         .HasColumnType("uuid");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(34)
+                        .HasColumnType("character varying(34)");
+
                     b.HasKey("UserId", "RoleId");
 
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasDiscriminator().HasValue("IdentityUserRole<Guid>");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
@@ -660,6 +669,26 @@ namespace App.DAL.EF.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("App.Domain.Identity.AppUserRole", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>");
+
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("RoleId1")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("UserId1")
+                        .HasColumnType("uuid");
+
+                    b.HasIndex("RoleId1");
+
+                    b.HasIndex("UserId1");
+
+                    b.HasDiscriminator().HasValue("AppUserRole");
                 });
 
             modelBuilder.Entity("App.Domain.Inventory", b =>
@@ -724,13 +753,13 @@ namespace App.DAL.EF.Migrations
 
             modelBuilder.Entity("App.Domain.Person", b =>
                 {
-                    b.HasOne("App.Domain.Identity.AppUser", "AppUser")
+                    b.HasOne("App.Domain.Identity.AppUser", "User")
                         .WithOne("Person")
-                        .HasForeignKey("App.Domain.Person", "AppUserId")
+                        .HasForeignKey("App.Domain.Person", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("AppUser");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("App.Domain.Product", b =>
@@ -863,14 +892,36 @@ namespace App.DAL.EF.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("App.Domain.Identity.AppUserRole", b =>
+                {
+                    b.HasOne("App.Domain.Identity.AppRole", "Role")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("RoleId1");
+
+                    b.HasOne("App.Domain.Identity.AppUser", "User")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("UserId1");
+
+                    b.Navigation("Role");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("App.Domain.Category", b =>
                 {
                     b.Navigation("Products");
                 });
 
+            modelBuilder.Entity("App.Domain.Identity.AppRole", b =>
+                {
+                    b.Navigation("UserRoles");
+                });
+
             modelBuilder.Entity("App.Domain.Identity.AppUser", b =>
                 {
                     b.Navigation("Person");
+
+                    b.Navigation("UserRoles");
                 });
 
             modelBuilder.Entity("App.Domain.Order", b =>

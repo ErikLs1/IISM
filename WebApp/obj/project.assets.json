@@ -3226,6 +3226,7 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v9.0",
         "dependencies": {
+          "App.Domain": "1.0.0",
           "Base.DAL.Contracts": "1.0.0"
         },
         "compile": {
@@ -3284,9 +3285,6 @@
       "Base.Contracts/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v9.0",
-        "dependencies": {
-          "Base.Domain": "1.0.0"
-        },
         "compile": {
           "bin/placeholder/Base.Contracts.dll": {}
         },
@@ -3298,7 +3296,7 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v9.0",
         "dependencies": {
-          "Base.Domain": "1.0.0"
+          "Base.Contracts": "1.0.0"
         },
         "compile": {
           "bin/placeholder/Base.DAL.Contracts.dll": {}
@@ -3311,8 +3309,8 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v9.0",
         "dependencies": {
+          "Base.Contracts": "1.0.0",
           "Base.DAL.Contracts": "1.0.0",
-          "Base.Domain": "1.0.0",
           "Microsoft.EntityFrameworkCore": "9.0.0"
         },
         "compile": {
@@ -3326,6 +3324,7 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v9.0",
         "dependencies": {
+          "Base.Contracts": "1.0.0",
           "Microsoft.Extensions.Identity.Stores": "9.0.0"
         },
         "compile": {
@@ -3333,6 +3332,16 @@
         },
         "runtime": {
           "bin/placeholder/Base.Domain.dll": {}
+        }
+      },
+      "Base.Helpers/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "compile": {
+          "bin/placeholder/Base.Helpers.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Base.Helpers.dll": {}
         }
       },
       "Base.Resources/1.0.0": {
@@ -8677,6 +8686,11 @@
       "path": "../Base.Domain/Base.Domain.csproj",
       "msbuildProject": "../Base.Domain/Base.Domain.csproj"
     },
+    "Base.Helpers/1.0.0": {
+      "type": "project",
+      "path": "../Base.Helpers/Base.Helpers.csproj",
+      "msbuildProject": "../Base.Helpers/Base.Helpers.csproj"
+    },
     "Base.Resources/1.0.0": {
       "type": "project",
       "path": "../Base.Resources/Base.Resources.csproj",
@@ -8687,6 +8701,7 @@
     "net9.0": [
       "App.DAL.EF >= 1.0.0",
       "App.Resources >= 1.0.0",
+      "Base.Helpers >= 1.0.0",
       "Base.Resources >= 1.0.0",
       "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore >= 9.0.0",
       "Microsoft.AspNetCore.Identity.EntityFrameworkCore >= 9.0.0",
@@ -8726,6 +8741,9 @@
             },
             "/Users/eriklihhats/Desktop/Dev/IISM/App.Resources/App.Resources.csproj": {
               "projectPath": "/Users/eriklihhats/Desktop/Dev/IISM/App.Resources/App.Resources.csproj"
+            },
+            "/Users/eriklihhats/Desktop/Dev/IISM/Base.Helpers/Base.Helpers.csproj": {
+              "projectPath": "/Users/eriklihhats/Desktop/Dev/IISM/Base.Helpers/Base.Helpers.csproj"
             },
             "/Users/eriklihhats/Desktop/Dev/IISM/Base.Resources/Base.Resources.csproj": {
               "projectPath": "/Users/eriklihhats/Desktop/Dev/IISM/Base.Resources/Base.Resources.csproj"

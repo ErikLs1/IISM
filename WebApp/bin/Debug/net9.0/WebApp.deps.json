@@ -2282,6 +2282,7 @@
       "System.Threading.Tasks.Extensions/4.5.4": {},
       "App.DAL.Contracts/1.0.0": {
         "dependencies": {
+          "App.Domain": "1.0.0",
           "Base.DAL.Contracts": "1.0.0"
         },
         "runtime": {
@@ -2340,9 +2341,6 @@
         }
       },
       "Base.Contracts/1.0.0": {
-        "dependencies": {
-          "Base.Domain": "1.0.0"
-        },
         "runtime": {
           "Base.Contracts.dll": {
             "assemblyVersion": "1.0.0",
@@ -2352,7 +2350,7 @@
       },
       "Base.DAL.Contracts/1.0.0": {
         "dependencies": {
-          "Base.Domain": "1.0.0"
+          "Base.Contracts": "1.0.0"
         },
         "runtime": {
           "Base.DAL.Contracts.dll": {
@@ -2363,8 +2361,8 @@
       },
       "Base.DAL.EF/1.0.0": {
         "dependencies": {
+          "Base.Contracts": "1.0.0",
           "Base.DAL.Contracts": "1.0.0",
-          "Base.Domain": "1.0.0",
           "Microsoft.EntityFrameworkCore": "9.0.0"
         },
         "runtime": {
@@ -2376,6 +2374,7 @@
       },
       "Base.Domain/1.0.0": {
         "dependencies": {
+          "Base.Contracts": "1.0.0",
           "Microsoft.Extensions.Identity.Stores": "9.0.0"
         },
         "runtime": {

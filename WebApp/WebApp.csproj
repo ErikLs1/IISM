@@ -20,6 +20,7 @@
     <ItemGroup>
       <ProjectReference Include="..\App.DAL.EF\App.DAL.EF.csproj" />
       <ProjectReference Include="..\App.Resources\App.Resources.csproj" />
+      <ProjectReference Include="..\Base.Helpers\Base.Helpers.csproj" />
       <ProjectReference Include="..\Base.Resources\Base.Resources.csproj" />
     </ItemGroup>
 
@@ -89,6 +90,14 @@
       <_ContentIncludedByDefault Remove="Views\Categories\Details.cshtml" />
       <_ContentIncludedByDefault Remove="Views\Categories\Edit.cshtml" />
       <_ContentIncludedByDefault Remove="Views\Categories\Index.cshtml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <UpToDateCheckInput Remove="Views\Persons\Create.cshtml" />
+      <UpToDateCheckInput Remove="Views\Persons\Delete.cshtml" />
+      <UpToDateCheckInput Remove="Views\Persons\Details.cshtml" />
+      <UpToDateCheckInput Remove="Views\Persons\Edit.cshtml" />
+      <UpToDateCheckInput Remove="Views\Persons\Index.cshtml" />
     </ItemGroup>
 
 </Project>

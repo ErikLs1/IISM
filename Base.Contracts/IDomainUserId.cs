@@ -1,15 +1,11 @@
-using Base.Domain.Identity;
-
 namespace Base.Contracts;
 
-public interface IDomainUserId : IDomainUserId<Guid, BaseUser>
+public interface IDomainUserId : IDomainUserId<Guid> 
 {
 }
 
-public interface IDomainUserId<TKey, TUser>
+public interface IDomainUserId<TKey>
     where TKey : IEquatable<TKey>
-    where TUser : BaseUser<TKey>
 {
     TKey UserId { get; set; }
-    TUser User { get; set; }
 }

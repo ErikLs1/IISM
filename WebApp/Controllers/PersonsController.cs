@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
 using App.Domain;
 using Base.Helpers;
+using Humanizer;
 
 namespace WebApp.Controllers
 {
@@ -90,35 +91,21 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, Person person)
+        public async Task<IActionResult> Edit(Guid id, Person entity)
         {
-            if (id != person.Id)
+            if (id != entity.Id)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(person);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!PersonExists(person.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                entity.UserId = User.GetUserId();
+                _repository.Update(entity);
+                await _repository.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", person.UserId);
-            return View(person);
+            return View(entity);
         }
 
         // GET: Persons/Delete/5
@@ -129,15 +116,13 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var person = await _context.Persons
-                .Include(p => p.User)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (person == null)
+            var entity = await _repository.FindAsync(id.Value, User.GetUserId());
+            if (entity == null)
             {
                 return NotFound();
             }
 
-            return View(person);
+            return View(entity);
         }
 
         // POST: Persons/Delete/5
@@ -145,19 +130,9 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var person = await _context.Persons.FindAsync(id);
-            if (person != null)
-            {
-                _context.Persons.Remove(person);
-            }
-
-            await _context.SaveChangesAsync();
+            await _repository.RemoveAsync(id, User.GetUserId());
+            await _repository.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool PersonExists(Guid id)
-        {
-            return _context.Persons.Any(e => e.Id == id);
         }
     }
 }

@@ -443,3 +443,5 @@
 /Users/eriklihhats/Desktop/Dev/IISM/WebApp/obj/Debug/net9.0/WebApp.pdb
 /Users/eriklihhats/Desktop/Dev/IISM/WebApp/obj/Debug/net9.0/WebApp.genruntimeconfig.cache
 /Users/eriklihhats/Desktop/Dev/IISM/WebApp/obj/Debug/net9.0/ref/WebApp.dll
+/Users/eriklihhats/Desktop/Dev/IISM/WebApp/bin/Debug/net9.0/Base.Helpers.dll
+/Users/eriklihhats/Desktop/Dev/IISM/WebApp/bin/Debug/net9.0/Base.Helpers.pdb

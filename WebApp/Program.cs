@@ -51,7 +51,7 @@ builder.Services.AddScoped<IPersonRepository, PersonRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IProductSupplierRepository, ProductSupplierRepository>();
 builder.Services.AddScoped<IRefundRepository, RefundRepository>();
-builder.Services.AddScoped<IStockOrderItemRepository, IStockOrderItemRepository>();
+builder.Services.AddScoped<IStockOrderItemRepository, StockOrderItemRepository>();
 builder.Services.AddScoped<IStockOrderRepository, StockOrderRepository>();
 builder.Services.AddScoped<ISupplierRepository, SupplierRepository>();
 builder.Services.AddScoped<IWarehouseRepository, WarehouseRepository>();

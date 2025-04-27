@@ -558,8 +558,7 @@ namespace App.DAL.EF.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Persons_UserId",
                 table: "Persons",
-                column: "UserId",
-                unique: true);
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_CategoryId",

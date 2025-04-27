@@ -45,7 +45,7 @@ public class BaseRepository<TEntity, TKey> : IBaseRepository<TEntity, TKey>
         return await RepositoryDbContext.SaveChangesAsync();
     }
 
-    public virtual IEnumerable<TEntity> All(TKey? userId)
+    public virtual IEnumerable<TEntity> All(TKey? userId = default!)
     {
         return GetQuery(userId)
             .ToList();
@@ -106,13 +106,13 @@ public class BaseRepository<TEntity, TKey> : IBaseRepository<TEntity, TKey>
         }
     }
 
-    public virtual bool Exists(Guid id, TKey? userId = default)
+    public virtual bool Exists(TKey id, TKey? userId = default)
     {
         var query = GetQuery(userId);
         return query.Any(e => e.Id.Equals(id));
     }
 
-    public virtual async Task<bool> ExistsAsync(Guid id, TKey? userId = default)
+    public virtual async Task<bool> ExistsAsync(TKey id, TKey? userId = default)
     {
         var query = GetQuery(userId);
         return await query.AnyAsync(e => e.Id.Equals(id));

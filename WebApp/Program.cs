@@ -42,20 +42,7 @@ else
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 // Repos
-builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
-builder.Services.AddScoped<IInventoryRepository, InventoryRepository>();
-builder.Services.AddScoped<IOrderProductRepository, OrderProductRepository>();
-builder.Services.AddScoped<IOrderRepository, OrderRepository>();
-builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
-builder.Services.AddScoped<IPersonRepository, PersonRepository>();
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
-builder.Services.AddScoped<IProductSupplierRepository, ProductSupplierRepository>();
-builder.Services.AddScoped<IRefundRepository, RefundRepository>();
-builder.Services.AddScoped<IStockOrderItemRepository, StockOrderItemRepository>();
-builder.Services.AddScoped<IStockOrderRepository, StockOrderRepository>();
-builder.Services.AddScoped<ISupplierRepository, SupplierRepository>();
-builder.Services.AddScoped<IWarehouseRepository, WarehouseRepository>();
-
+builder.Services.AddScoped<IAppUow, AppUow>();
 
 
 builder.Services.AddIdentity<AppUser, AppRole>(o => o.SignIn.RequireConfirmedAccount = false)

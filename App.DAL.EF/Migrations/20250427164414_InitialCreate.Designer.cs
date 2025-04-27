@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace App.DAL.EF.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250423091136_InitialCreate")]
+    [Migration("20250427164414_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -313,8 +313,7 @@ namespace App.DAL.EF.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId")
-                        .IsUnique();
+                    b.HasIndex("UserId");
 
                     b.ToTable("Persons");
                 });
@@ -754,8 +753,8 @@ namespace App.DAL.EF.Migrations
             modelBuilder.Entity("App.Domain.Person", b =>
                 {
                     b.HasOne("App.Domain.Identity.AppUser", "User")
-                        .WithOne("Person")
-                        .HasForeignKey("App.Domain.Person", "UserId")
+                        .WithMany("Persons")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -919,7 +918,7 @@ namespace App.DAL.EF.Migrations
 
             modelBuilder.Entity("App.Domain.Identity.AppUser", b =>
                 {
-                    b.Navigation("Person");
+                    b.Navigation("Persons");
 
                     b.Navigation("UserRoles");
                 });

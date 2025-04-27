@@ -12,8 +12,6 @@ public interface IBaseRepository<TEntity, TKey>
     where TEntity : IDomainId<TKey>
     where TKey : IEquatable<TKey>
 {
-    Task<int> SaveChangesAsync();
-    
     IEnumerable<TEntity> All(TKey? userId = default!);
     Task<IEnumerable<TEntity>> AllAsync(TKey? userId = default!);
 
@@ -29,6 +27,6 @@ public interface IBaseRepository<TEntity, TKey>
     void Remove(TKey id, TKey? userId = default!);
     Task RemoveAsync(TKey id, TKey? userId = default!);
 
-    bool Exists(Guid id, TKey? userId = default!);
-    Task<bool> ExistsAsync(Guid id, TKey? userId = default!);
+    bool Exists(TKey id, TKey? userId = default!);
+    Task<bool> ExistsAsync(TKey id, TKey? userId = default!);
 }

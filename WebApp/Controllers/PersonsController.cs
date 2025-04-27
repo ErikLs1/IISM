@@ -1,30 +1,27 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using App.DAL.Contracts;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using App.DAL.EF;
 using App.Domain;
 using Base.Helpers;
-using Humanizer;
+using WebApp.Models;
 
 namespace WebApp.Controllers
 {
     public class PersonsController : Controller
     {
-        private readonly IPersonRepository _repository;
-        public PersonsController(AppDbContext context, IPersonRepository repository)
+        private readonly IAppUow _uow;
+        public PersonsController(IAppUow uow)
         {
-            _repository = repository;
+            _uow = uow;
         }
 
         // GET: Persons
         public async Task<IActionResult> Index()
         {
-            var res = await _repository.AllAsync(User.GetUserId());
+            var res = new PersonIndexViewModel()
+            {
+                Persons = (await _uow.PersonRepository.AllAsync(User.GetUserId())).ToList(),
+                PersonCountByName = await _uow.PersonRepository.GetPersonCountByNameAsync("Bob", User.GetUserId())
+            };
             return View(res);
         }
 
@@ -36,7 +33,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var entity = await _repository.FindAsync(id.Value, User.GetUserId());
+            var entity = await _uow.PersonRepository.FindAsync(id.Value, User.GetUserId());
             
             if (entity == null)
             {
@@ -63,8 +60,8 @@ namespace WebApp.Controllers
             
             if (ModelState.IsValid)
             {
-                _repository.Add(entity);
-                await _repository.SaveChangesAsync();
+                _uow.PersonRepository.Add(entity);
+                await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(entity);
@@ -78,7 +75,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var entity = await _repository.FindAsync(id.Value, User.GetUserId());
+            var entity = await _uow.PersonRepository.FindAsync(id.Value, User.GetUserId());
             if (entity == null)
             {
                 return NotFound();
@@ -101,8 +98,8 @@ namespace WebApp.Controllers
             if (ModelState.IsValid)
             {
                 entity.UserId = User.GetUserId();
-                _repository.Update(entity);
-                await _repository.SaveChangesAsync();
+                _uow.PersonRepository.Update(entity);
+                await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(entity);
@@ -116,7 +113,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var entity = await _repository.FindAsync(id.Value, User.GetUserId());
+            var entity = await _uow.PersonRepository.FindAsync(id.Value, User.GetUserId());
             if (entity == null)
             {
                 return NotFound();
@@ -130,8 +127,8 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            await _repository.RemoveAsync(id, User.GetUserId());
-            await _repository.SaveChangesAsync();
+            await _uow.PersonRepository.RemoveAsync(id, User.GetUserId());
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
     }

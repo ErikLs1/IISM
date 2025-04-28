@@ -8,101 +8,100 @@ using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
 using App.Domain;
 
-namespace WebApp.ApiControllers
+namespace WebApp.ApiControllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class StockOrdersController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class StockOrdersController : ControllerBase
+    private readonly AppDbContext _context;
+
+    public StockOrdersController(AppDbContext context)
     {
-        private readonly AppDbContext _context;
+        _context = context;
+    }
 
-        public StockOrdersController(AppDbContext context)
+    // GET: api/StockOrders
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<StockOrder>>> GetStockOrders()
+    {
+        return await _context.StockOrders.ToListAsync();
+    }
+
+    // GET: api/StockOrders/5
+    [HttpGet("{id}")]
+    public async Task<ActionResult<StockOrder>> GetStockOrder(Guid id)
+    {
+        var stockOrder = await _context.StockOrders.FindAsync(id);
+
+        if (stockOrder == null)
         {
-            _context = context;
+            return NotFound();
         }
 
-        // GET: api/StockOrders
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<StockOrder>>> GetStockOrders()
+        return stockOrder;
+    }
+
+    // PUT: api/StockOrders/5
+    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+    [HttpPut("{id}")]
+    public async Task<IActionResult> PutStockOrder(Guid id, StockOrder stockOrder)
+    {
+        if (id != stockOrder.Id)
         {
-            return await _context.StockOrders.ToListAsync();
+            return BadRequest();
         }
 
-        // GET: api/StockOrders/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<StockOrder>> GetStockOrder(Guid id)
-        {
-            var stockOrder = await _context.StockOrders.FindAsync(id);
+        _context.Entry(stockOrder).State = EntityState.Modified;
 
-            if (stockOrder == null)
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!StockOrderExists(id))
             {
                 return NotFound();
             }
-
-            return stockOrder;
-        }
-
-        // PUT: api/StockOrders/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutStockOrder(Guid id, StockOrder stockOrder)
-        {
-            if (id != stockOrder.Id)
+            else
             {
-                return BadRequest();
+                throw;
             }
-
-            _context.Entry(stockOrder).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!StockOrderExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
         }
 
-        // POST: api/StockOrders
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<StockOrder>> PostStockOrder(StockOrder stockOrder)
+        return NoContent();
+    }
+
+    // POST: api/StockOrders
+    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+    [HttpPost]
+    public async Task<ActionResult<StockOrder>> PostStockOrder(StockOrder stockOrder)
+    {
+        _context.StockOrders.Add(stockOrder);
+        await _context.SaveChangesAsync();
+
+        return CreatedAtAction("GetStockOrder", new { id = stockOrder.Id }, stockOrder);
+    }
+
+    // DELETE: api/StockOrders/5
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteStockOrder(Guid id)
+    {
+        var stockOrder = await _context.StockOrders.FindAsync(id);
+        if (stockOrder == null)
         {
-            _context.StockOrders.Add(stockOrder);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetStockOrder", new { id = stockOrder.Id }, stockOrder);
+            return NotFound();
         }
 
-        // DELETE: api/StockOrders/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteStockOrder(Guid id)
-        {
-            var stockOrder = await _context.StockOrders.FindAsync(id);
-            if (stockOrder == null)
-            {
-                return NotFound();
-            }
+        _context.StockOrders.Remove(stockOrder);
+        await _context.SaveChangesAsync();
 
-            _context.StockOrders.Remove(stockOrder);
-            await _context.SaveChangesAsync();
+        return NoContent();
+    }
 
-            return NoContent();
-        }
-
-        private bool StockOrderExists(Guid id)
-        {
-            return _context.StockOrders.Any(e => e.Id == id);
-        }
+    private bool StockOrderExists(Guid id)
+    {
+        return _context.StockOrders.Any(e => e.Id == id);
     }
 }

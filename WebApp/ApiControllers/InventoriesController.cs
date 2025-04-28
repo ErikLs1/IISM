@@ -8,101 +8,100 @@ using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
 using App.Domain;
 
-namespace WebApp.ApiControllers
+namespace WebApp.ApiControllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class InventoriesController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class InventoriesController : ControllerBase
+    private readonly AppDbContext _context;
+
+    public InventoriesController(AppDbContext context)
     {
-        private readonly AppDbContext _context;
+        _context = context;
+    }
 
-        public InventoriesController(AppDbContext context)
+    // GET: api/Inventories
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<Inventory>>> GetInventories()
+    {
+        return await _context.Inventories.ToListAsync();
+    }
+
+    // GET: api/Inventories/5
+    [HttpGet("{id}")]
+    public async Task<ActionResult<Inventory>> GetInventory(Guid id)
+    {
+        var inventory = await _context.Inventories.FindAsync(id);
+
+        if (inventory == null)
         {
-            _context = context;
+            return NotFound();
         }
 
-        // GET: api/Inventories
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Inventory>>> GetInventories()
+        return inventory;
+    }
+
+    // PUT: api/Inventories/5
+    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+    [HttpPut("{id}")]
+    public async Task<IActionResult> PutInventory(Guid id, Inventory inventory)
+    {
+        if (id != inventory.Id)
         {
-            return await _context.Inventories.ToListAsync();
+            return BadRequest();
         }
 
-        // GET: api/Inventories/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Inventory>> GetInventory(Guid id)
-        {
-            var inventory = await _context.Inventories.FindAsync(id);
+        _context.Entry(inventory).State = EntityState.Modified;
 
-            if (inventory == null)
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!InventoryExists(id))
             {
                 return NotFound();
             }
-
-            return inventory;
-        }
-
-        // PUT: api/Inventories/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutInventory(Guid id, Inventory inventory)
-        {
-            if (id != inventory.Id)
+            else
             {
-                return BadRequest();
+                throw;
             }
-
-            _context.Entry(inventory).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!InventoryExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
         }
 
-        // POST: api/Inventories
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Inventory>> PostInventory(Inventory inventory)
+        return NoContent();
+    }
+
+    // POST: api/Inventories
+    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+    [HttpPost]
+    public async Task<ActionResult<Inventory>> PostInventory(Inventory inventory)
+    {
+        _context.Inventories.Add(inventory);
+        await _context.SaveChangesAsync();
+
+        return CreatedAtAction("GetInventory", new { id = inventory.Id }, inventory);
+    }
+
+    // DELETE: api/Inventories/5
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteInventory(Guid id)
+    {
+        var inventory = await _context.Inventories.FindAsync(id);
+        if (inventory == null)
         {
-            _context.Inventories.Add(inventory);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetInventory", new { id = inventory.Id }, inventory);
+            return NotFound();
         }
 
-        // DELETE: api/Inventories/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteInventory(Guid id)
-        {
-            var inventory = await _context.Inventories.FindAsync(id);
-            if (inventory == null)
-            {
-                return NotFound();
-            }
+        _context.Inventories.Remove(inventory);
+        await _context.SaveChangesAsync();
 
-            _context.Inventories.Remove(inventory);
-            await _context.SaveChangesAsync();
+        return NoContent();
+    }
 
-            return NoContent();
-        }
-
-        private bool InventoryExists(Guid id)
-        {
-            return _context.Inventories.Any(e => e.Id == id);
-        }
+    private bool InventoryExists(Guid id)
+    {
+        return _context.Inventories.Any(e => e.Id == id);
     }
 }

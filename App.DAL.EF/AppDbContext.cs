@@ -20,6 +20,7 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
     public DbSet<StockOrderItem> StockOrderItems { get; set; } = default!;
     public DbSet<Supplier> Suppliers { get; set; } = default!;
     public DbSet<Warehouse> Warehouses { get; set; } = default!;
+    public DbSet<AppRefreshToken> RefreshTokens { get; set; } = default!;
     
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {

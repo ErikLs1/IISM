@@ -445,3 +445,6 @@
 /Users/eriklihhats/Desktop/Dev/IISM/WebApp/obj/Debug/net9.0/ref/WebApp.dll
 /Users/eriklihhats/Desktop/Dev/IISM/WebApp/bin/Debug/net9.0/Base.Helpers.dll
 /Users/eriklihhats/Desktop/Dev/IISM/WebApp/bin/Debug/net9.0/Base.Helpers.pdb
+/Users/eriklihhats/Desktop/Dev/IISM/WebApp/bin/Debug/net9.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
+/Users/eriklihhats/Desktop/Dev/IISM/WebApp/bin/Debug/net9.0/App.DTO.dll
+/Users/eriklihhats/Desktop/Dev/IISM/WebApp/bin/Debug/net9.0/App.DTO.pdb

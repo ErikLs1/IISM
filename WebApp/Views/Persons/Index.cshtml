@@ -57,8 +57,11 @@
             <td>
                 @Html.DisplayFor(modelItem => item.PersonDateOfBirth)
             </td>
-            <td>
+            @*<td>
                 @Html.DisplayFor(modelItem => item.UserId)
+            </td>*@
+            <td>
+                @item.User!.FirstName @item.User.LastName
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

@@ -10,6 +10,13 @@ public class PersonRepository : BaseRepository<Person>, IPersonRepository
     public PersonRepository(AppDbContext repositoryDbContext) : base(repositoryDbContext)
     {
     }
+    
+    public override async Task<IEnumerable<Person>> AllAsync(Guid userId = default)
+    {
+        var query = GetQuery(userId);
+        query = query.Include(p => p.User);
+        return await query.ToListAsync();
+    }
 
     public async Task<int> GetPersonCountByNameAsync(string name, Guid userId)
     {

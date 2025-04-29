@@ -15,12 +15,6 @@ public class Inventory : BaseEntity
     [Display(Name = nameof(Quantity), Prompt = nameof(Quantity), ResourceType = typeof(App.Resources.Domain.Inventory))]
     public int Quantity { get; set; }
     
-    [Display(Name = nameof(CreatedAt), Prompt = nameof(CreatedAt), ResourceType = typeof(Base.Resources.Common))]
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-    
-    [Display(Name = nameof(UpdatedAt), Prompt = nameof(UpdatedAt), ResourceType = typeof(Base.Resources.Common))]
-    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
-    
     [Display(Name = nameof(Product), Prompt = nameof(Product), ResourceType = typeof(App.Resources.Domain.Inventory))]
     public Product? Product { get; set; }
     

@@ -1,12 +1,14 @@
 using App.DAL.Contracts;
+using App.DAL.DTO;
+using App.DAL.EF.Mappers;
 using App.Domain;
 using Base.DAL.EF;
 
 namespace App.DAL.EF.Repositories;
 
-public class OrderRepository : BaseRepository<Order>, IOrderRepository
+public class OrderRepository : BaseRepository<OrderDto, Order>, IOrderRepository
 {
-    public OrderRepository(AppDbContext repositoryDbContext) : base(repositoryDbContext)
+    public OrderRepository(AppDbContext repositoryDbContext) : base(repositoryDbContext, new OrderMapper())
     {
     }
 }

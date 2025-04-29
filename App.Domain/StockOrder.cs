@@ -20,11 +20,6 @@ public class StockOrder : BaseEntity
     [Display(Name = nameof(Status), Prompt = nameof(Status), ResourceType = typeof(App.Resources.Domain.StockOrder))]
     public string Status { get; set; } = default!;
     
-    [Display(Name = nameof(CreatedAt), Prompt = nameof(CreatedAt), ResourceType = typeof(Base.Resources.Common))]
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-    
-    [Display(Name = nameof(UpdatedAt), Prompt = nameof(UpdatedAt), ResourceType = typeof(Base.Resources.Common))]
-    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     
     [Display(Name = nameof(Supplier), Prompt = nameof(Supplier), ResourceType = typeof(App.Resources.Domain.StockOrder))]
     public Supplier? Supplier { get; set; }

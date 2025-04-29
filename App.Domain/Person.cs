@@ -4,7 +4,7 @@ using Base.Domain;
 
 namespace App.Domain;
 
-public class Person : BaseEntityUser<AppUser, AppRole>
+public class Person : BaseEntityUser<AppUser>
 {
     [Required]
     [MaxLength(50)]

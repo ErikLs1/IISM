@@ -1,12 +1,14 @@
 using App.DAL.Contracts;
+using App.DAL.DTO;
+using App.DAL.EF.Mappers;
 using App.Domain;
 using Base.DAL.EF;
 
 namespace App.DAL.EF.Repositories;
 
-public class SupplierRepository : BaseRepository<Supplier>, ISupplierRepository
+public class SupplierRepository : BaseRepository<SupplierDto, Supplier>, ISupplierRepository
 {
-    public SupplierRepository(AppDbContext repositoryDbContext) : base(repositoryDbContext)
+    public SupplierRepository(AppDbContext repositoryDbContext) : base(repositoryDbContext, new SupplierMapper())
     {
     }
 }

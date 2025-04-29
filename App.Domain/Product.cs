@@ -23,12 +23,6 @@ public class Product : BaseEntity
     [MaxLength(50)]
     [Display(Name = nameof(ProductStatus), Prompt = nameof(ProductStatus), ResourceType = typeof(App.Resources.Domain.Product))]
     public string ProductStatus { get; set; } = default!;
-    
-    [Display(Name = nameof(CreatedAt), Prompt = nameof(CreatedAt), ResourceType = typeof(Base.Resources.Common))]
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-    
-    [Display(Name = nameof(UpdatedAt), Prompt = nameof(UpdatedAt), ResourceType = typeof(Base.Resources.Common))]
-    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
   
     [Display(Name = nameof(Category), Prompt = nameof(Category), ResourceType = typeof(App.Resources.Domain.Product))]
     public Category? Category { get; set; }

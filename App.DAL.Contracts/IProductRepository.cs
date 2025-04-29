@@ -1,9 +1,9 @@
-using App.Domain;
+using App.DAL.DTO;
 using Base.DAL.Contracts;
 
 namespace App.DAL.Contracts;
 
-public interface IProductRepository : IBaseRepository<Product>
+public interface IProductRepository : IBaseRepository<ProductDto>
 {
     
 }

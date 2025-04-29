@@ -1,11 +1,14 @@
 using App.Domain;
 using App.Domain.Identity;
+using Base.Contracts;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace App.DAL.EF;
 
-public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
+public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid, IdentityUserClaim<Guid>, AppUserRole,
+    IdentityUserLogin<Guid>, IdentityRoleClaim<Guid>, IdentityUserToken<Guid>>
 {
     public DbSet<Category> Categories { get; set; } = default!;
     public DbSet<Inventory> Inventories { get; set; } = default!;
@@ -24,5 +27,31 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
     
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
+    }
+
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+    {
+        var addedEntries = ChangeTracker.Entries()
+            .Where(e => e is { Entity: IDomainMeta });
+
+        foreach (var entry in addedEntries)
+        {
+            if (entry.State == EntityState.Added)
+            {
+                (entry.Entity as IDomainMeta)!.CreatedAt = DateTime.UtcNow;
+                (entry.Entity as IDomainMeta)!.CreatedBy = "system";
+            }
+            else if (entry.State == EntityState.Modified)
+            {
+                (entry.Entity as IDomainMeta)!.CreatedAt = DateTime.UtcNow;
+                (entry.Entity as IDomainMeta)!.CreatedBy = "system";
+
+                entry.Property("CreatedAt").IsModified = false;
+                entry.Property("CreateBy").IsModified = false;
+                entry.Property("UserId").IsModified = false;
+            }
+        }
+        
+        return base.SaveChangesAsync(cancellationToken);
     }
 }

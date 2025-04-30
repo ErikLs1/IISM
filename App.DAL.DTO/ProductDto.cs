@@ -28,9 +28,9 @@ public class ProductDto : IDomainId
     public string ProductStatus { get; set; } = default!;
   
     [Display(Name = nameof(Category), Prompt = nameof(Category), ResourceType = typeof(App.Resources.Domain.Product))]
-    public Category? Category { get; set; }
-    public ICollection<ProductSupplier> ProductSuppliers { get; set; } = new List<ProductSupplier>();
-    public ICollection<OrderProduct> OrderProducts { get; set; } = new List<OrderProduct>();
-    public ICollection<Inventory> Inventories { get; set; } = new List<Inventory>();
-    public ICollection<StockOrderItem> StockOrderItems { get; set; } = new List<StockOrderItem>();
+    public CategoryDto? Category { get; set; }
+    public ICollection<ProductSupplierDto>? ProductSuppliers { get; set; } = new List<ProductSupplierDto>();
+    public ICollection<OrderProductDto>? OrderProducts { get; set; } = new List<OrderProductDto>();
+    public ICollection<InventoryDto>? Inventories { get; set; } = new List<InventoryDto>();
+    public ICollection<StockOrderItemDto>? StockOrderItems { get; set; } = new List<StockOrderItemDto>();
 }

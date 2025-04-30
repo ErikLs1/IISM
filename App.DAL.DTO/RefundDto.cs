@@ -24,6 +24,6 @@ public class RefundDto : IDomainId
     public string RefundStatus { get; set; } = default!;
     
     [Display(Name = nameof(OrderProduct), Prompt = nameof(OrderProduct), ResourceType = typeof(App.Resources.Domain.Refund))]
-    public OrderProduct? OrderProduct { get; set; }
+    public OrderProductDto? OrderProduct { get; set; }
 
 }

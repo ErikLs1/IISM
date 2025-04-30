@@ -33,5 +33,5 @@ public class PersonDto : IDomainId
     [Display(Name = nameof(PersonDateOfBirth), Prompt = nameof(PersonDateOfBirth), ResourceType = typeof(App.Resources.Domain.Person))]
     public DateTime? PersonDateOfBirth { get; set; } = DateTime.UtcNow;
 
-    public ICollection<Order> Orders { get; set; } = new List<Order>();
+    public ICollection<OrderDto>? Orders { get; set; } = new List<OrderDto>();
 }

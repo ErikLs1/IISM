@@ -22,8 +22,8 @@ public class StockOrderItemDto : IDomainId
     public decimal Cost { get; set; }
     
     [Display(Name = nameof(StockOrder), Prompt = nameof(StockOrder), ResourceType = typeof(App.Resources.Domain.StockOrderItem))]
-    public StockOrder? StockOrder { get; set; }
+    public StockOrderDto? StockOrder { get; set; }
     
     [Display(Name = nameof(Product), Prompt = nameof(Product), ResourceType = typeof(App.Resources.Domain.StockOrderItem))]
-    public Product? Product { get; set; }
+    public ProductDto? Product { get; set; }
 }

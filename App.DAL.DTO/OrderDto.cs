@@ -24,7 +24,7 @@ public class OrderDto : IDomainId
     public decimal OrderTotalPrice { get; set; }
     
     [Display(Name = nameof(Person), Prompt = nameof(Person), ResourceType = typeof(App.Resources.Domain.Order))]
-    public Person? Person { get; set; }
-    public ICollection<OrderProduct> OrderProducts { get; set; } = new List<OrderProduct>();
-    public ICollection<Payment> Payments { get; set; } = new List<Payment>();
+    public PersonDto? Person { get; set; }
+    public ICollection<OrderProductDto>? OrderProducts { get; set; } = new List<OrderProductDto>();
+    public ICollection<PaymentDto>? Payments { get; set; } = new List<PaymentDto>();
 }

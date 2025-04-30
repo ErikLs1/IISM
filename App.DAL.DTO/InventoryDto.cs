@@ -19,9 +19,9 @@ public class InventoryDto : IDomainId
     public int Quantity { get; set; }
     
     [Display(Name = nameof(Product), Prompt = nameof(Product), ResourceType = typeof(App.Resources.Domain.Inventory))]
-    public Product? Product { get; set; }
+    public ProductDto? Product { get; set; }
     
     [Display(Name = nameof(Warehouse), Prompt = nameof(Warehouse), ResourceType = typeof(App.Resources.Domain.Inventory))]
-    public Warehouse? Warehouse { get; set; }
+    public WarehouseDto? Warehouse { get; set; }
 
 }

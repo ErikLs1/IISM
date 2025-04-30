@@ -22,9 +22,9 @@ public class OrderProductDto : IDomainId
     public decimal TotalPrice { get; set; }
     
     [Display(Name = nameof(Product), Prompt = nameof(Product), ResourceType = typeof(App.Resources.Domain.OrderProduct))]
-    public Product? Product { get; set; }
+    public ProductDto? Product { get; set; }
     
     [Display(Name = nameof(Order), Prompt = nameof(Order), ResourceType = typeof(App.Resources.Domain.OrderProduct))]
-    public Order? Order { get; set; }
-    public ICollection<Refund> Refunds { get; set; } = new List<Refund>();
+    public OrderDto? Order { get; set; }
+    public ICollection<RefundDto>? Refunds { get; set; } = new List<RefundDto>();
 }

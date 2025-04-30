@@ -19,8 +19,8 @@ public class ProductSupplierDto : IDomainId
     public decimal UnitCost { get; set; }
     
     [Display(Name = nameof(Supplier), Prompt = nameof(Supplier), ResourceType = typeof(App.Resources.Domain.ProductSupplier))]
-    public Supplier? Supplier { get; set; }
+    public SupplierDto? Supplier { get; set; }
     
     [Display(Name = nameof(Product), Prompt = nameof(Product), ResourceType = typeof(App.Resources.Domain.ProductSupplier))]
-    public Product? Product { get; set; }
+    public ProductDto? Product { get; set; }
 }

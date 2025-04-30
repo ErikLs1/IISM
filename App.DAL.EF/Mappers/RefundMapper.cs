@@ -6,13 +6,44 @@ namespace App.DAL.EF.Mappers;
 
 public class RefundMapper : IMapper<RefundDto, Refund>
 {
-    public RefundDto? Map(Refund? entity)
+    private readonly OrderProductMapper _orderProductMapper;
+
+    public RefundMapper(OrderProductMapper orderProductMapper)
     {
-        throw new NotImplementedException();
+        _orderProductMapper = orderProductMapper;
     }
 
-    public Refund? Map(RefundDto? entity)
+    public RefundDto? Map(Refund? entity)
     {
-        throw new NotImplementedException();
+        if (entity == null) return null;
+
+        var dto = new RefundDto()
+        {
+            Id = entity.Id,
+            OrderProductId = entity.OrderProductId,
+            RefundAmount = entity.RefundAmount,
+            RefundReason = entity.RefundReason,
+            RefundStatus = entity.RefundStatus,
+            OrderProduct = _orderProductMapper.Map(entity.OrderProduct),
+        };
+
+        return dto;
+    }
+
+    public Refund? Map(RefundDto? dto)
+    {
+        if (dto == null) return null;
+
+        var entity = new Refund()
+        {
+            Id = dto.Id,
+            OrderProductId = dto.OrderProductId,
+            RefundAmount = dto.RefundAmount,
+            RefundReason = dto.RefundReason,
+            RefundStatus = dto.RefundStatus,
+            OrderProduct = _orderProductMapper.Map(dto.OrderProduct),
+        };
+
+        return entity;
     }
 }

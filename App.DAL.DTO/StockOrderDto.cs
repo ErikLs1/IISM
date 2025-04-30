@@ -23,12 +23,11 @@ public class StockOrderDto : IDomainId
     [Display(Name = nameof(Status), Prompt = nameof(Status), ResourceType = typeof(App.Resources.Domain.StockOrder))]
     public string Status { get; set; } = default!;
     
-    
     [Display(Name = nameof(Supplier), Prompt = nameof(Supplier), ResourceType = typeof(App.Resources.Domain.StockOrder))]
-    public Supplier? Supplier { get; set; }
+    public SupplierDto? Supplier { get; set; }
     
     [Display(Name = nameof(Warehouse), Prompt = nameof(Warehouse), ResourceType = typeof(App.Resources.Domain.StockOrder))]
-    public Warehouse? Warehouse { get; set; }
+    public WarehouseDto? Warehouse { get; set; }
 
-    public ICollection<StockOrderItem> StockOrderItems { get; set; } = new List<StockOrderItem>();
+    public ICollection<StockOrderItemDto>? StockOrderItems { get; set; } = new List<StockOrderItemDto>();
 }

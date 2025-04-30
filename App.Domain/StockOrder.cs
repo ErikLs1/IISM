@@ -27,6 +27,6 @@ public class StockOrder : BaseEntity
     [Display(Name = nameof(Warehouse), Prompt = nameof(Warehouse), ResourceType = typeof(App.Resources.Domain.StockOrder))]
     public Warehouse? Warehouse { get; set; }
 
-    public ICollection<StockOrderItem> StockOrderItems { get; set; } = new List<StockOrderItem>();
+    public ICollection<StockOrderItem>? StockOrderItems { get; set; } = new List<StockOrderItem>();
 
 }

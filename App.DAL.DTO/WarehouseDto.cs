@@ -19,7 +19,7 @@ public class WarehouseDto : IDomainId
     [Display(Name = nameof(WarehouseCapacity), Prompt = nameof(WarehouseCapacity), ResourceType = typeof(App.Resources.Domain.Warehouse))]
     public int WarehouseCapacity { get; set; }
 
-    public ICollection<StockOrder> StockOrders { get; set; } = new List<StockOrder>();
-    public ICollection<Inventory> Inventories { get; set; }= new List<Inventory>();
+    public ICollection<StockOrderDto>? StockOrders { get; set; } = new List<StockOrderDto>();
+    public ICollection<InventoryDto>? Inventories { get; set; }= new List<InventoryDto>();
 
 }

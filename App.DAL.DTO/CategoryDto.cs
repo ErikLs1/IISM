@@ -16,5 +16,5 @@ public class CategoryDto : IDomainId
     [Display(Name = nameof(CategoryDescription), Prompt = nameof(CategoryDescription), ResourceType = typeof(App.Resources.Domain.Category))]
     public string CategoryDescription { get; set; } = default!;
     
-    public ICollection<Product> Products { get; set; } = new List<Product>();
+    public ICollection<ProductDto>? Products { get; set; } = new List<ProductDto>();
 }

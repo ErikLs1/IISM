@@ -6,13 +6,46 @@ namespace App.DAL.EF.Mappers;
 
 public class PaymentMapper : IMapper<PaymentDto, Payment>
 {
-    public PaymentDto? Map(Payment? entity)
+    private readonly OrderMapper _orderMapper;
+
+    public PaymentMapper(OrderMapper orderMapper)
     {
-        throw new NotImplementedException();
+        _orderMapper = orderMapper;
     }
 
-    public Payment? Map(PaymentDto? entity)
+    public PaymentDto? Map(Payment? entity)
     {
-        throw new NotImplementedException();
+        if (entity == null) return null;
+
+        var dto = new PaymentDto()
+        {
+            Id = entity.Id,
+            OrderId = entity.OrderId,
+            PaymentMethod = entity.PaymentMethod,
+            PaymentStatus = entity.PaymentStatus,
+            PaymentAmount = entity.PaymentAmount,
+            PaymentDate = entity.PaymentDate,
+            Order = _orderMapper.Map(entity.Order)
+        };
+
+        return dto;
+    }
+
+    public Payment? Map(PaymentDto? dto)
+    {
+        if (dto == null) return null;
+
+        var entity = new Payment()
+        {
+            Id = dto.Id,
+            OrderId = dto.OrderId,
+            PaymentMethod = dto.PaymentMethod,
+            PaymentStatus = dto.PaymentStatus,
+            PaymentAmount = dto.PaymentAmount,
+            PaymentDate = dto.PaymentDate,
+            Order = _orderMapper.Map(dto.Order)
+        };
+
+        return entity;
     }
 }

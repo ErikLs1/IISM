@@ -26,9 +26,9 @@ public class Product : BaseEntity
   
     [Display(Name = nameof(Category), Prompt = nameof(Category), ResourceType = typeof(App.Resources.Domain.Product))]
     public Category? Category { get; set; }
-    public ICollection<ProductSupplier> ProductSuppliers { get; set; } = new List<ProductSupplier>();
-    public ICollection<OrderProduct> OrderProducts { get; set; } = new List<OrderProduct>();
-    public ICollection<Inventory> Inventories { get; set; } = new List<Inventory>();
-    public ICollection<StockOrderItem> StockOrderItems { get; set; } = new List<StockOrderItem>();
+    public ICollection<ProductSupplier>? ProductSuppliers { get; set; } = new List<ProductSupplier>();
+    public ICollection<OrderProduct>? OrderProducts { get; set; } = new List<OrderProduct>();
+    public ICollection<Inventory>? Inventories { get; set; } = new List<Inventory>();
+    public ICollection<StockOrderItem>? StockOrderItems { get; set; } = new List<StockOrderItem>();
 
 }

@@ -24,6 +24,6 @@ public class SupplierDto : IDomainId
     [Display(Name = nameof(SupplierAddress), Prompt = nameof(SupplierAddress), ResourceType = typeof(App.Resources.Domain.Supplier))]
     public string SupplierAddress { get; set; } = default!;
 
-    public ICollection<StockOrder> StockOrders { get; set; } = new List<StockOrder>();
-    public ICollection<ProductSupplier> ProductSuppliers { get; set; } = new List<ProductSupplier>();
+    public ICollection<StockOrderDto>? StockOrders { get; set; } = new List<StockOrderDto>();
+    public ICollection<ProductSupplierDto>? ProductSuppliers { get; set; } = new List<ProductSupplierDto>();
 }

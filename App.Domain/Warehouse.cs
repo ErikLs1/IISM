@@ -16,7 +16,7 @@ public class Warehouse : BaseEntity
     [Display(Name = nameof(WarehouseCapacity), Prompt = nameof(WarehouseCapacity), ResourceType = typeof(App.Resources.Domain.Warehouse))]
     public int WarehouseCapacity { get; set; }
 
-    public ICollection<StockOrder> StockOrders { get; set; } = new List<StockOrder>();
-    public ICollection<Inventory> Inventories { get; set; }= new List<Inventory>();
+    public ICollection<StockOrder>? StockOrders { get; set; } = new List<StockOrder>();
+    public ICollection<Inventory>? Inventories { get; set; }= new List<Inventory>();
 
 }

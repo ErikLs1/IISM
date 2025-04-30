@@ -27,6 +27,6 @@ public class PaymentDto :IDomainId
     public DateTime PaymentDate { get; set; } = DateTime.UtcNow;
     
     [Display(Name = nameof(Order), Prompt = nameof(Order), ResourceType = typeof(App.Resources.Domain.Payment))]
-    public Order? Order { get; set; }
+    public OrderDto? Order { get; set; }
 
 }

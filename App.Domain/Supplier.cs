@@ -21,7 +21,7 @@ public class Supplier : BaseEntity
     [Display(Name = nameof(SupplierAddress), Prompt = nameof(SupplierAddress), ResourceType = typeof(App.Resources.Domain.Supplier))]
     public string SupplierAddress { get; set; } = default!;
 
-    public ICollection<StockOrder> StockOrders { get; set; } = new List<StockOrder>();
-    public ICollection<ProductSupplier> ProductSuppliers { get; set; } = new List<ProductSupplier>();
+    public ICollection<StockOrder>? StockOrders { get; set; } = new List<StockOrder>();
+    public ICollection<ProductSupplier>? ProductSuppliers { get; set; } = new List<ProductSupplier>();
 
 }

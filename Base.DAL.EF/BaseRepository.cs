@@ -78,9 +78,18 @@ public class BaseRepository<TDalEntity, TDomainEntity, TKey> : IBaseRepository<T
         return Mapper.Map(res);
     }
 
-    public virtual void Add(TDalEntity entity)
+    public virtual void Add(TDalEntity entity, TKey? userId = default!)
     {
-        RepositoryDbSet.Add(Mapper.Map(entity)!);
+        var dbEntity = Mapper.Map(entity);
+        
+        if (typeof(IDomainUserId<TKey>).IsAssignableFrom(typeof(TDomainEntity)) &&
+            userId != null &&
+            !EqualityComparer<TKey>.Default.Equals(userId, default))
+        {
+            ((IDomainUserId<TKey>) dbEntity!).UserId = userId;
+        }
+        
+        RepositoryDbSet.Add(dbEntity!);
     }
 
     public virtual TDalEntity Update(TDalEntity entity)

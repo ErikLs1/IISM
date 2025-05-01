@@ -43,9 +43,10 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid, IdentityUs
             }
             else if (entry.State == EntityState.Modified)
             {
-                (entry.Entity as IDomainMeta)!.CreatedAt = DateTime.UtcNow;
-                (entry.Entity as IDomainMeta)!.CreatedBy = "system";
+                (entry.Entity as IDomainMeta)!.ChangedAt = DateTime.UtcNow;
+                (entry.Entity as IDomainMeta)!.ChangedBy = "system";
 
+                // Prevent overwriting CreatedBy/CreatedAt/UserId on update
                 entry.Property("CreatedAt").IsModified = false;
                 entry.Property("CreateBy").IsModified = false;
                 entry.Property("UserId").IsModified = false;

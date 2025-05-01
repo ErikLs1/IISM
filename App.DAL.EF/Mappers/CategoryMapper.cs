@@ -6,13 +6,48 @@ namespace App.DAL.EF.Mappers;
 
 public class CategoryMapper : IMapper<CategoryDto, Category>
 {
-    public CategoryDto? Map(Category? entity)
+    private readonly ProductMapper _productMapper;
+
+    public CategoryMapper(ProductMapper productMapper)
     {
-        throw new NotImplementedException();
+        _productMapper = productMapper;
     }
 
-    public Category? Map(CategoryDto? entity)
+    public CategoryDto? Map(Category? entity)
     {
-        throw new NotImplementedException();
+        if (entity == null) return null;
+
+        var dto = new CategoryDto()
+        {
+            Id = entity.Id,
+            CategoryName = entity.CategoryName,
+            CategoryDescription = entity.CategoryDescription,
+            Products = entity.Products?
+                .Select(o => _productMapper.Map(o)!)
+                .ToList(),
+        };
+
+        return dto;
+    }
+
+    public Category? Map(CategoryDto? dto)
+    {
+        if (dto == null) return null;
+
+        var entity = new Category()
+        {
+            Id = dto.Id,
+            CategoryName = dto.CategoryName,
+            CategoryDescription = dto.CategoryDescription,
+        };
+
+        if (dto.Products != null)
+        {
+            entity.Products = dto.Products?
+                .Select(o => _productMapper.Map(o)!)
+                .ToList();
+        }
+
+        return entity;
     }
 }

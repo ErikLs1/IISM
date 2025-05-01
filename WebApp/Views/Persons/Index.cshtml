@@ -31,9 +31,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.Persons.First().PersonDateOfBirth)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Persons.First().User)
-            </th>
             <th></th>
         </tr>
     </thead>
@@ -57,12 +54,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.PersonDateOfBirth)
-            </td>
-            @*<td>
-                @Html.DisplayFor(modelItem => item.UserId)
-            </td>*@
-            <td>
-                @item.User!.FirstName @item.User.LastName
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

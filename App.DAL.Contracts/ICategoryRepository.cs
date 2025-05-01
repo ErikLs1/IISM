@@ -3,7 +3,7 @@ using Base.DAL.Contracts;
 
 namespace App.DAL.Contracts;
 
-public interface ICategoryRepository : IBaseRepository<CategoryDto>
+public interface ICategoryRepository : IBaseRepository<CategoryDalDto>
 {
     
 }

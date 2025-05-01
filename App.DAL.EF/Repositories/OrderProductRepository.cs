@@ -6,9 +6,9 @@ using Base.DAL.EF;
 
 namespace App.DAL.EF.Repositories;
 
-public class OrderProductRepository : BaseRepository<OrderProductDto, OrderProduct>, IOrderProductRepository
+public class OrderProductRepository : BaseRepository<OrderProductDalDto, OrderProduct>, IOrderProductRepository
 {
-    public OrderProductRepository(AppDbContext repositoryDbContext, IMapper<OrderProductDto, OrderProduct> mapper) : base(repositoryDbContext, mapper)
+    public OrderProductRepository(AppDbContext repositoryDbContext, IUowMapper<OrderProductDalDto, OrderProduct> uowMapper) : base(repositoryDbContext, uowMapper)
     {
     }
 }

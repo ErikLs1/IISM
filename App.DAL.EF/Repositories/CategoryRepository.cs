@@ -6,9 +6,9 @@ using Base.DAL.EF;
 
 namespace App.DAL.EF.Repositories;
 
-public class CategoryRepository : BaseRepository<CategoryDto, Category>, ICategoryRepository
+public class CategoryRepository : BaseRepository<CategoryDalDto, Category>, ICategoryRepository
 {
-    public CategoryRepository(AppDbContext repositoryDbContext, IMapper<CategoryDto, Category> mapper) : base(repositoryDbContext, mapper)
+    public CategoryRepository(AppDbContext repositoryDbContext, IUowMapper<CategoryDalDto, Category> uowMapper) : base(repositoryDbContext, uowMapper)
     {
     }
 }

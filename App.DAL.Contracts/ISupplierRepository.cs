@@ -3,7 +3,7 @@ using Base.DAL.Contracts;
 
 namespace App.DAL.Contracts;
 
-public interface ISupplierRepository : IBaseRepository<SupplierDto>
+public interface ISupplierRepository : IBaseRepository<SupplierDalDto>
 {
     
 }

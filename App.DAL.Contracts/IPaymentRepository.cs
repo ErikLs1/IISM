@@ -3,7 +3,7 @@ using Base.DAL.Contracts;
 
 namespace App.DAL.Contracts;
 
-public interface IPaymentRepository : IBaseRepository<PaymentDto>
+public interface IPaymentRepository : IBaseRepository<PaymentDalDto>
 {
     
 }

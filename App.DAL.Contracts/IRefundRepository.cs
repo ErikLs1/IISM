@@ -3,7 +3,7 @@ using Base.DAL.Contracts;
 
 namespace App.DAL.Contracts;
 
-public interface IRefundRepository : IBaseRepository<RefundDto>
+public interface IRefundRepository : IBaseRepository<RefundDalDto>
 {
     
 }

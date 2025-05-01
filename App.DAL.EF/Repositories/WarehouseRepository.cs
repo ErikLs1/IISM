@@ -7,9 +7,9 @@ using Base.DAL.EF;
 
 namespace App.DAL.EF.Repositories;
 
-public class WarehouseRepository : BaseRepository<WarehouseDto, Warehouse>, IWarehouseRepository
+public class WarehouseRepository : BaseRepository<WarehouseDalDto, Warehouse>, IWarehouseRepository
 {
-    public WarehouseRepository(AppDbContext repositoryDbContext, IMapper<WarehouseDto, Warehouse> mapper) : base(repositoryDbContext, mapper)
+    public WarehouseRepository(AppDbContext repositoryDbContext, IUowMapper<WarehouseDalDto, Warehouse> uowMapper) : base(repositoryDbContext, uowMapper)
     {
     }
 }

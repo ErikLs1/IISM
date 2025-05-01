@@ -6,9 +6,9 @@ using Base.DAL.EF;
 
 namespace App.DAL.EF.Repositories;
 
-public class PaymentRepository : BaseRepository<PaymentDto, Payment>, IPaymentRepository
+public class PaymentRepository : BaseRepository<PaymentDalDto, Payment>, IPaymentRepository
 {
-    public PaymentRepository(AppDbContext repositoryDbContext, IMapper<PaymentDto, Payment> mapper) : base(repositoryDbContext, mapper)
+    public PaymentRepository(AppDbContext repositoryDbContext, IUowMapper<PaymentDalDto, Payment> uowMapper) : base(repositoryDbContext, uowMapper)
     {
     }
 }

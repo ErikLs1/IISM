@@ -3,7 +3,7 @@ using Base.DAL.Contracts;
 
 namespace App.DAL.Contracts;
 
-public interface IWarehouseRepository : IBaseRepository<WarehouseDto>
+public interface IWarehouseRepository : IBaseRepository<WarehouseDalDto>
 {
     
 }

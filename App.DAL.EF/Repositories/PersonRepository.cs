@@ -8,17 +8,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace App.DAL.EF.Repositories;
 
-public class PersonRepository : BaseRepository<PersonDto, Person>, IPersonRepository
+public class PersonRepository : BaseRepository<PersonDalDto, Person>, IPersonRepository
 {
-    public PersonRepository(AppDbContext repositoryDbContext, IMapper<PersonDto, Person> mapper) : base(repositoryDbContext, mapper)
+    public PersonRepository(AppDbContext repositoryDbContext, IUowMapper<PersonDalDto, Person> uowMapper) : base(repositoryDbContext, uowMapper)
     {
     }
     
-    public override async Task<IEnumerable<PersonDto>> AllAsync(Guid userId = default)
+    public override async Task<IEnumerable<PersonDalDto>> AllAsync(Guid userId = default)
     {
         var query = GetQuery(userId);
         query = query.Include(p => p.User);
-        return (await query.ToListAsync()).Select(e => Mapper.Map(e)!);
+        return (await query.ToListAsync()).Select(e => UowMapper.Map(e)!);
     }
 
     public async Task<int> GetPersonCountByNameAsync(string name, Guid userId)

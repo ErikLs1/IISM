@@ -7,9 +7,9 @@ using Base.DAL.EF;
 
 namespace App.DAL.EF.Repositories;
 
-public class ProductRepository : BaseRepository<ProductDto, Product>, IProductRepository
+public class ProductRepository : BaseRepository<ProductDalDto, Product>, IProductRepository
 {
-    public ProductRepository(AppDbContext repositoryDbContext, IMapper<ProductDto, Product> mapper) : base(repositoryDbContext, mapper)
+    public ProductRepository(AppDbContext repositoryDbContext, IUowMapper<ProductDalDto, Product> uowMapper) : base(repositoryDbContext, uowMapper)
     {
     }
 }

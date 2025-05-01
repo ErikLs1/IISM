@@ -3,7 +3,7 @@ using Base.DAL.Contracts;
 
 namespace App.DAL.Contracts;
 
-public interface IInventoryRepository : IBaseRepository<InventoryDto>
+public interface IInventoryRepository : IBaseRepository<InventoryDalDto>
 {
     
 }

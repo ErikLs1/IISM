@@ -4,6 +4,6 @@ namespace WebApp.Models;
 
 public class PersonIndexViewModel
 {
-    public ICollection<PersonDto> Persons { get; set; } = default!;
+    public ICollection<PersonDalDto> Persons { get; set; } = default!;
     public int PersonCountByName { get; set; }
 }

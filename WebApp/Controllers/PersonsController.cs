@@ -56,7 +56,7 @@ public class PersonsController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(PersonDto entity)
+    public async Task<IActionResult> Create(PersonDalDto entity)
     {
         if (ModelState.IsValid)
         {
@@ -88,7 +88,7 @@ public class PersonsController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(Guid id, PersonDto entity)
+    public async Task<IActionResult> Edit(Guid id, PersonDalDto entity)
     {
         if (id != entity.Id)
         {

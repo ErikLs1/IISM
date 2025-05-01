@@ -3,7 +3,7 @@ using Base.DAL.Contracts;
 
 namespace App.DAL.Contracts;
 
-public interface IStockOrderRepository : IBaseRepository<StockOrderDto>
+public interface IStockOrderRepository : IBaseRepository<StockOrderDalDto>
 {
     
 }

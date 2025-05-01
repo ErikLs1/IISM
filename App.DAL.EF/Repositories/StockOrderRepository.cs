@@ -7,9 +7,9 @@ using Base.DAL.EF;
 
 namespace App.DAL.EF.Repositories;
 
-public class StockOrderRepository : BaseRepository<StockOrderDto, StockOrder>, IStockOrderRepository
+public class StockOrderRepository : BaseRepository<StockOrderDalDto, StockOrder>, IStockOrderRepository
 {
-    public StockOrderRepository(AppDbContext repositoryDbContext, IMapper<StockOrderDto, StockOrder> mapper) : base(repositoryDbContext, mapper)
+    public StockOrderRepository(AppDbContext repositoryDbContext, IUowMapper<StockOrderDalDto, StockOrder> uowMapper) : base(repositoryDbContext, uowMapper)
     {
     }
 }

@@ -3,7 +3,7 @@ using Base.DAL.Contracts;
 
 namespace App.DAL.Contracts;
 
-public interface IOrderRepository : IBaseRepository<OrderDto>
+public interface IOrderRepository : IBaseRepository<OrderDalDto>
 {
     
 }

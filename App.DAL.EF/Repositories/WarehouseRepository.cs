@@ -9,7 +9,7 @@ namespace App.DAL.EF.Repositories;
 
 public class WarehouseRepository : BaseRepository<WarehouseDalDto, Warehouse>, IWarehouseRepository
 {
-    public WarehouseRepository(AppDbContext repositoryDbContext, IUowMapper<WarehouseDalDto, Warehouse> uowMapper) : base(repositoryDbContext, uowMapper)
+    public WarehouseRepository(AppDbContext repositoryDbContext) : base(repositoryDbContext, new WarehouseUowMapper())
     {
     }
 }

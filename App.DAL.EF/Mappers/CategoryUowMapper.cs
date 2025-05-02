@@ -6,12 +6,6 @@ namespace App.DAL.EF.Mappers;
 
 public class CategoryUowMapper : IUowMapper<CategoryDalDto, Category>
 {
-    private readonly ProductUowMapper _productUowMapper;
-
-    public CategoryUowMapper(ProductUowMapper productUowMapper)
-    {
-        _productUowMapper = productUowMapper;
-    }
 
     public CategoryDalDto? Map(Category? entity)
     {
@@ -22,9 +16,16 @@ public class CategoryUowMapper : IUowMapper<CategoryDalDto, Category>
             Id = entity.Id,
             CategoryName = entity.CategoryName,
             CategoryDescription = entity.CategoryDescription,
-            Products = entity.Products?
-                .Select(o => _productUowMapper.Map(o)!)
-                .ToList(),
+            Products = entity.Products == null ? [] : 
+                entity.Products
+                    .Select(o => new ProductDalDto()
+                    {
+                        Id =o.CategoryId,
+                        ProductName = o.ProductName,
+                        ProductDescription = o.ProductDescription,
+                        ProductPrice = o.ProductPrice,
+                        ProductStatus = o.ProductStatus
+                    }).ToList(),
         };
 
         return dto;
@@ -43,9 +44,17 @@ public class CategoryUowMapper : IUowMapper<CategoryDalDto, Category>
 
         if (dto.Products != null)
         {
-            entity.Products = dto.Products?
-                .Select(o => _productUowMapper.Map(o)!)
-                .ToList();
+            entity.Products = dto.Products == null
+                ? []
+                : dto.Products
+                    .Select(o => new Product()
+                    {
+                        Id =o.CategoryId,
+                        ProductName = o.ProductName,
+                        ProductDescription = o.ProductDescription,
+                        ProductPrice = o.ProductPrice,
+                        ProductStatus = o.ProductStatus
+                    }).ToList();
         }
 
         return entity;

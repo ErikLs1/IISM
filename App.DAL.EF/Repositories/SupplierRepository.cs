@@ -9,7 +9,7 @@ namespace App.DAL.EF.Repositories;
 
 public class SupplierRepository : BaseRepository<SupplierDalDto, Supplier>, ISupplierRepository
 {
-    public SupplierRepository(AppDbContext repositoryDbContext, IUowMapper<SupplierDalDto, Supplier> uowMapper) : base(repositoryDbContext, uowMapper)
+    public SupplierRepository(AppDbContext repositoryDbContext) : base(repositoryDbContext, new SupplierUowMapper())
     {
     }
 }

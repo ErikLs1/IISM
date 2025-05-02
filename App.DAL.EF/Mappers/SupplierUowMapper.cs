@@ -6,15 +6,6 @@ namespace App.DAL.EF.Mappers;
 
 public class SupplierUowMapper : IUowMapper<SupplierDalDto, Supplier>
 {
-    private readonly StockOrderUowMapper _stockOrderUowMapper;
-    private readonly ProductSupplierUowMapper _productSupplierUowMapper;
-
-    public SupplierUowMapper(StockOrderUowMapper stockOrderUowMapper, ProductSupplierUowMapper productSupplierUowMapper)
-    {
-        _stockOrderUowMapper = stockOrderUowMapper;
-        _productSupplierUowMapper = productSupplierUowMapper;
-    }
-
     public SupplierDalDto? Map(Supplier? entity)
     {
         if (entity == null) return null;
@@ -26,12 +17,27 @@ public class SupplierUowMapper : IUowMapper<SupplierDalDto, Supplier>
             SupplierPhoneNumber = entity.SupplierPhoneNumber,
             SupplierEmail = entity.SupplierEmail,
             SupplierAddress = entity.SupplierAddress,
-            StockOrders = entity.StockOrders?
-                .Select(o => _stockOrderUowMapper.Map(o)!)
-                .ToList(),
-            ProductSuppliers = entity.ProductSuppliers?
-                .Select(o => _productSupplierUowMapper.Map(o)!)
-                .ToList(),
+            StockOrders = entity.StockOrders == null
+                ? []
+                : entity.StockOrders
+                    .Select(o => new StockOrderDalDto()
+                    {
+                        Id = o.Id,
+                        SupplierId = o.SupplierId,
+                        WarehouseId = o.WarehouseId,
+                        TotalCost = o.TotalCost,
+                        Status = o.Status
+                    }).ToList(),
+            ProductSuppliers = entity.ProductSuppliers == null
+                ? []
+                : entity.ProductSuppliers
+                    .Select(o => new ProductSupplierDalDto()
+                    {
+                        Id = o.Id,
+                        SupplierId = o.SupplierId,
+                        ProductId = o.ProductId,
+                        UnitCost = o.UnitCost
+                    }).ToList()
         };
 
         return dto;
@@ -52,16 +58,31 @@ public class SupplierUowMapper : IUowMapper<SupplierDalDto, Supplier>
 
         if (dto.StockOrders != null)
         {
-            entity.StockOrders = dto.StockOrders?
-                .Select(o => _stockOrderUowMapper.Map(o)!)
-                .ToList();
+            entity.StockOrders = dto.StockOrders == null
+                ? []
+                : dto.StockOrders
+                    .Select(o => new StockOrder()
+                    {
+                        Id = o.Id,
+                        SupplierId = o.SupplierId,
+                        WarehouseId = o.WarehouseId,
+                        TotalCost = o.TotalCost,
+                        Status = o.Status
+                    }).ToList();
         }
 
         if (dto.ProductSuppliers != null)
         {
-            entity.ProductSuppliers = dto.ProductSuppliers?
-                .Select(o => _productSupplierUowMapper.Map(o)!)
-                .ToList();
+            entity.ProductSuppliers = dto.ProductSuppliers == null
+                ? []
+                : dto.ProductSuppliers
+                    .Select(o => new ProductSupplier()
+                    {
+                        Id = o.Id,
+                        SupplierId = o.SupplierId,
+                        ProductId = o.ProductId,
+                        UnitCost = o.UnitCost
+                    }).ToList();
         }
 
         return entity;

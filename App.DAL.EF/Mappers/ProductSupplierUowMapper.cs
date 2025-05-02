@@ -6,14 +6,6 @@ namespace App.DAL.EF.Mappers;
 
 public class ProductSupplierUowMapper : IUowMapper<ProductSupplierDalDto, ProductSupplier>
 {
-    private readonly SupplierUowMapper _supplierUowMapper;
-    private readonly ProductUowMapper _productUowMapper;
-
-    public ProductSupplierUowMapper(SupplierUowMapper supplierUowMapper, ProductUowMapper productUowMapper)
-    {
-        _supplierUowMapper = supplierUowMapper;
-        _productUowMapper = productUowMapper;
-    }
 
     public ProductSupplierDalDto? Map(ProductSupplier? entity)
     {
@@ -25,8 +17,27 @@ public class ProductSupplierUowMapper : IUowMapper<ProductSupplierDalDto, Produc
             SupplierId = entity.SupplierId,
             ProductId = entity.ProductId,
             UnitCost = entity.UnitCost,
-            Supplier = _supplierUowMapper.Map(entity.Supplier),
-            Product = _productUowMapper.Map(entity.Product)
+            Supplier = entity.Supplier == null
+                ? null
+                : new SupplierDalDto()
+                {
+                    Id = entity.Supplier.Id,
+                    SupplierName = entity.Supplier.SupplierName,
+                    SupplierPhoneNumber = entity.Supplier.SupplierPhoneNumber,
+                    SupplierEmail = entity.Supplier.SupplierEmail,
+                    SupplierAddress = entity.Supplier.SupplierAddress
+                },
+            Product = entity.Product == null
+                ? null
+                : new ProductDalDto()
+                {
+                    Id = entity.Product.Id,
+                    CategoryId = entity.Product.CategoryId,
+                    ProductName = entity.Product.ProductName,
+                    ProductDescription = entity.Product.ProductDescription,
+                    ProductPrice = entity.Product.ProductPrice,
+                    ProductStatus = entity.Product.ProductStatus,
+                },
         };
 
         return dto;
@@ -42,8 +53,27 @@ public class ProductSupplierUowMapper : IUowMapper<ProductSupplierDalDto, Produc
             SupplierId = dto.SupplierId,
             ProductId = dto.ProductId,
             UnitCost = dto.UnitCost,
-            Supplier = _supplierUowMapper.Map(dto.Supplier),
-            Product = _productUowMapper.Map(dto.Product)
+            Supplier = dto.Supplier == null
+                ? null
+                : new Supplier()
+                {
+                    Id = dto.Supplier.Id,
+                    SupplierName = dto.Supplier.SupplierName,
+                    SupplierPhoneNumber = dto.Supplier.SupplierPhoneNumber,
+                    SupplierEmail = dto.Supplier.SupplierEmail,
+                    SupplierAddress = dto.Supplier.SupplierAddress
+                },
+            Product = dto.Product == null
+                ? null
+                : new Product()
+                {
+                    Id = dto.Product.Id,
+                    CategoryId = dto.Product.CategoryId,
+                    ProductName = dto.Product.ProductName,
+                    ProductDescription = dto.Product.ProductDescription,
+                    ProductPrice = dto.Product.ProductPrice,
+                    ProductStatus = dto.Product.ProductStatus,
+                },
         };
 
         return entity;

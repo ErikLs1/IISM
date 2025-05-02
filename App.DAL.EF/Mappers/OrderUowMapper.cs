@@ -6,17 +6,6 @@ namespace App.DAL.EF.Mappers;
 
 public class OrderUowMapper : IUowMapper<OrderDalDto, Order>
 {
-    private readonly PersonUowMapper _personUowMapper;
-    private readonly OrderProductUowMapper _orderProductUowMapper;
-    private readonly PaymentUowMapper _paymentUowMapper;
-
-    public OrderUowMapper(PersonUowMapper personUowMapper, OrderProductUowMapper orderProductUowMapper, PaymentUowMapper paymentUowMapper)
-    {
-        _personUowMapper = personUowMapper;
-        _orderProductUowMapper = orderProductUowMapper;
-        _paymentUowMapper = paymentUowMapper;
-    }
-
     public OrderDalDto? Map(Order? entity)
     {
         if (entity == null) return null;
@@ -28,13 +17,39 @@ public class OrderUowMapper : IUowMapper<OrderDalDto, Order>
             OrderShippingAddress = entity.OrderShippingAddress,
             OrderStatus = entity.OrderStatus,
             OrderTotalPrice = entity.OrderTotalPrice,
-            Person = _personUowMapper.Map(entity.Person),
-            OrderProducts = entity.OrderProducts?
-                .Select(o => _orderProductUowMapper.Map(o)!)
-                .ToList(),
-            Payments = entity.Payments?
-                .Select(o => _paymentUowMapper.Map(o)!)
-                .ToList(),
+            Person = entity.Person == null
+                ? null
+                : new PersonDalDto()
+                {
+                    Id = entity.Person.Id,
+                    PersonFirstName = entity.Person.PersonFirstName,
+                    PersonLastName = entity.Person.PersonLastName,
+                    PersonPhoneNumber = entity.Person.PersonPhoneNumber,
+                    PersonAddress = entity.Person.PersonAddress,
+                    PersonGender = entity.Person.PersonGender,
+                    PersonDateOfBirth = entity.Person.PersonDateOfBirth,
+                },
+            OrderProducts = entity.OrderProducts == null
+                ? []
+                : entity.OrderProducts
+                    .Select(o => new OrderProductDalDto()
+                    {
+                        ProductId = o.ProductId,
+                        OrderId = o.ProductId,
+                        Quantity = o.Quantity,
+                        TotalPrice = o.TotalPrice
+                    }).ToList(),
+            Payments = entity.Payments == null
+                ? []
+                : entity.Payments
+                    .Select(o => new PaymentDalDto()
+                    {
+                        OrderId = o.OrderId,
+                        PaymentMethod = o.PaymentMethod,
+                        PaymentStatus = o.PaymentStatus,
+                        PaymentAmount = o.PaymentAmount,
+                        PaymentDate = o.PaymentDate
+                    }).ToList()
         };
 
         return dto;
@@ -51,21 +66,34 @@ public class OrderUowMapper : IUowMapper<OrderDalDto, Order>
             OrderShippingAddress = dto.OrderShippingAddress,
             OrderStatus = dto.OrderStatus,
             OrderTotalPrice = dto.OrderTotalPrice,
-            Person = _personUowMapper.Map(dto.Person)
+            Person = dto.Person == null
+                ? null
+                : new Person()
+                {
+                    Id = dto.Person.Id
+                },
         };
 
         if (dto.OrderProducts != null)
         {
-            entity.OrderProducts = dto.OrderProducts?
-                .Select(o => _orderProductUowMapper.Map(o)!)
-                .ToList();
+            entity.OrderProducts = dto.OrderProducts == null
+                ? []
+                : dto.OrderProducts
+                    .Select(o => new OrderProduct()
+                    {
+                        Id = o.Id
+                    }).ToList();
         }
 
         if (dto.Payments != null)
         {
-            entity.Payments = dto.Payments?
-                .Select(o => _paymentUowMapper.Map(o)!)
-                .ToList();
+            entity.Payments = dto.Payments == null
+                ? []
+                : dto.Payments
+                    .Select(o => new Payment()
+                    {
+                        Id = o.Id
+                    }).ToList();
         }
 
         return entity;

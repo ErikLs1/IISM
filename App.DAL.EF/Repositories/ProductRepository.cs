@@ -9,7 +9,7 @@ namespace App.DAL.EF.Repositories;
 
 public class ProductRepository : BaseRepository<ProductDalDto, Product>, IProductRepository
 {
-    public ProductRepository(AppDbContext repositoryDbContext, IUowMapper<ProductDalDto, Product> uowMapper) : base(repositoryDbContext, uowMapper)
+    public ProductRepository(AppDbContext repositoryDbContext) : base(repositoryDbContext, new ProductUowMapper())
     {
     }
 }

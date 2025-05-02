@@ -9,7 +9,7 @@ namespace App.DAL.EF.Repositories;
 
 public class StockOrderItemRepository : BaseRepository<StockOrderItemDalDto, StockOrderItem>, IStockOrderItemRepository
 {
-    public StockOrderItemRepository(AppDbContext repositoryDbContext, IUowMapper<StockOrderItemDalDto, StockOrderItem> uowMapper) : base(repositoryDbContext, uowMapper)
+    public StockOrderItemRepository(AppDbContext repositoryDbContext) : base(repositoryDbContext, new StockOrderItemUowMapper())
     {
     }
 }

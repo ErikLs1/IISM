@@ -9,7 +9,7 @@ namespace App.DAL.EF.Repositories;
 
 public class RefundRepository : BaseRepository<RefundDalDto, Refund>, IRefundRepository
 {
-    public RefundRepository(AppDbContext repositoryDbContext, IUowMapper<RefundDalDto, Refund> uowMapper) : base(repositoryDbContext, uowMapper)
+    public RefundRepository(AppDbContext repositoryDbContext) : base(repositoryDbContext, new RefundUowMapper())
     {
     }
 }

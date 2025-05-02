@@ -6,21 +6,6 @@ namespace App.DAL.EF.Mappers;
 
 public class ProductUowMapper : IUowMapper<ProductDalDto, Product>
 {
-    private readonly CategoryUowMapper _categoryUowMapper;
-    private readonly ProductSupplierUowMapper _productSupplierUowMapper;
-    private readonly OrderProductUowMapper _orderProductUowMapper;
-    private readonly InventoryUowMapper _inventoryUowMapper;
-    private readonly StockOrderItemUowMapper _stockOrderItemUowMapper;
-
-    public ProductUowMapper(CategoryUowMapper categoryUowMapper, ProductSupplierUowMapper productSupplierUowMapper, OrderProductUowMapper orderProductUowMapper, InventoryUowMapper inventoryUowMapper, StockOrderItemUowMapper stockOrderItemUowMapper)
-    {
-        _categoryUowMapper = categoryUowMapper;
-        _productSupplierUowMapper = productSupplierUowMapper;
-        _orderProductUowMapper = orderProductUowMapper;
-        _inventoryUowMapper = inventoryUowMapper;
-        _stockOrderItemUowMapper = stockOrderItemUowMapper;
-    }
-
     public ProductDalDto? Map(Product? entity)
     {
         if (entity == null) return null;
@@ -33,19 +18,56 @@ public class ProductUowMapper : IUowMapper<ProductDalDto, Product>
             ProductDescription = entity.ProductDescription,
             ProductPrice = entity.ProductPrice,
             ProductStatus = entity.ProductStatus,
-            Category = _categoryUowMapper.Map(entity.Category),
-            ProductSuppliers = entity.ProductSuppliers?
-                .Select(o => _productSupplierUowMapper.Map(o)!)
-                .ToList(),
-            OrderProducts = entity.OrderProducts?
-                .Select(o => _orderProductUowMapper.Map(o)!)
-                .ToList(),
-            Inventories = entity.Inventories?
-                .Select(o => _inventoryUowMapper.Map(o)!)
-                .ToList(),
-            StockOrderItems = entity.StockOrderItems?
-                .Select(o => _stockOrderItemUowMapper.Map(o)!)
-                .ToList(),
+            Category = entity.Category == null
+                ? null
+                : new CategoryDalDto()
+                {
+                    Id = entity.Category.Id,
+                    CategoryName = entity.Category.CategoryName,
+                    CategoryDescription = entity.Category.CategoryDescription
+                },
+            ProductSuppliers = entity.ProductSuppliers == null
+                ? []
+                : entity.ProductSuppliers
+                    .Select(o => new ProductSupplierDalDto()
+                    {
+                        Id = o.Id,
+                        SupplierId = o.SupplierId,
+                        ProductId = o.ProductId,
+                        UnitCost = o.UnitCost
+                    }).ToList(),
+            OrderProducts = entity.OrderProducts == null
+                ? []
+                : entity.OrderProducts
+                    .Select(o => new OrderProductDalDto()
+                    {
+                        Id = o.Id,
+                        ProductId = o.ProductId,
+                        OrderId = o.OrderId,
+                        Quantity = o.Quantity,
+                        TotalPrice = o.TotalPrice
+                    }).ToList(),
+            Inventories = entity.Inventories == null
+                ? []
+                : entity.Inventories
+                    .Select(o => new InventoryDalDto()
+                    {
+                        Id = o.Id,
+                        ProductId = o.ProductId,
+                        WarehouseId = o.WarehouseId,
+                        Quantity = o.Quantity
+                    }).ToList(),
+            StockOrderItems = entity.StockOrderItems == null
+                ? []
+                : entity.StockOrderItems
+                    .Select(o => new StockOrderItemDalDto()
+                    {
+                        Id = o.Id,
+                        StockOrderId = o.StockOrderId,
+                        ProductId = o.ProductId,
+                        Quantity = o.Quantity,
+                        Cost = o.Cost
+                    }).ToList()
         };
 
         return dto;
@@ -63,35 +85,72 @@ public class ProductUowMapper : IUowMapper<ProductDalDto, Product>
             ProductDescription = dto.ProductDescription,
             ProductPrice = dto.ProductPrice,
             ProductStatus = dto.ProductStatus,
-            Category = _categoryUowMapper.Map(dto.Category),
+            Category = dto.Category == null
+                ? null
+                : new Category()
+                {
+                    Id = dto.Category.Id,
+                    CategoryName = dto.Category.CategoryName,
+                    CategoryDescription = dto.Category.CategoryDescription
+                },
         };
 
         if (dto.ProductSuppliers != null)
         {
-            entity.ProductSuppliers = dto.ProductSuppliers?
-                .Select(o => _productSupplierUowMapper.Map(o)!)
-                .ToList();
+            entity.ProductSuppliers = dto.ProductSuppliers == null
+                ? []
+                : dto.ProductSuppliers
+                    .Select(o => new ProductSupplier()
+                    {
+                        Id = o.Id,
+                        SupplierId = o.SupplierId,
+                        ProductId = o.ProductId,
+                        UnitCost = o.UnitCost
+                    }).ToList();
         }
         
         if (dto.OrderProducts != null)
         {
-            entity.OrderProducts = dto.OrderProducts?
-                .Select(o => _orderProductUowMapper.Map(o)!)
-                .ToList();
+            entity.OrderProducts = dto.OrderProducts == null
+                ? []
+                : dto.OrderProducts
+                    .Select(o => new OrderProduct()
+                    {
+                        Id = o.Id,
+                        ProductId = o.ProductId,
+                        OrderId = o.OrderId,
+                        Quantity = o.Quantity,
+                        TotalPrice = o.TotalPrice
+                    }).ToList();
         }
         
         if (dto.Inventories != null)
         {
-            entity.Inventories = dto.Inventories?
-                .Select(o => _inventoryUowMapper.Map(o)!)
-                .ToList();
+            entity.Inventories = dto.Inventories == null
+                ? []
+                : dto.Inventories
+                    .Select(o => new Inventory()
+                    {
+                        Id = o.Id,
+                        ProductId = o.ProductId,
+                        WarehouseId = o.WarehouseId,
+                        Quantity = o.Quantity
+                    }).ToList();
         }
         
         if (dto.StockOrderItems != null)
         {
-            entity.StockOrderItems = dto.StockOrderItems?
-                .Select(o => _stockOrderItemUowMapper.Map(o)!)
-                .ToList();
+            entity.StockOrderItems = dto.StockOrderItems == null
+                ? []
+                : dto.StockOrderItems
+                    .Select(o => new StockOrderItem()
+                    {
+                        Id = o.Id,
+                        StockOrderId = o.StockOrderId,
+                        ProductId = o.ProductId,
+                        Quantity = o.Quantity,
+                        Cost = o.Cost
+                    }).ToList();
         }
 
         return entity;

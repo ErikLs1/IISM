@@ -6,15 +6,6 @@ namespace App.DAL.EF.Mappers;
 
 public class WarehouseUowMapper : IUowMapper<WarehouseDalDto, Warehouse>
 {
-    private readonly StockOrderUowMapper _stockOrderUowMapper;
-    private readonly InventoryUowMapper _inventoryUowMapper;
-
-    public WarehouseUowMapper(StockOrderUowMapper stockOrderUowMapper, InventoryUowMapper inventoryUowMapper)
-    {
-        _stockOrderUowMapper = stockOrderUowMapper;
-        _inventoryUowMapper = inventoryUowMapper;
-    }
-
     public WarehouseDalDto? Map(Warehouse? entity)
     {
         if (entity == null) return null;
@@ -25,12 +16,27 @@ public class WarehouseUowMapper : IUowMapper<WarehouseDalDto, Warehouse>
             WarehouseAddress = entity.WarehouseAddress,
             WarehouseEmail = entity.WarehouseEmail,
             WarehouseCapacity = entity.WarehouseCapacity,
-            StockOrders = entity.StockOrders?
-                .Select(o => _stockOrderUowMapper.Map(o)!)
-                .ToList(),
-            Inventories = entity.Inventories?
-                .Select(o => _inventoryUowMapper.Map(o)!)
-                .ToList(),
+            StockOrders = entity.StockOrders == null
+                ? []
+                : entity.StockOrders
+                    .Select(o => new StockOrderDalDto()
+                    {
+                        Id = o.Id,
+                        SupplierId = o.SupplierId,
+                        WarehouseId = o.WarehouseId,
+                        TotalCost = o.TotalCost,
+                        Status = o.Status
+                    }).ToList(),
+            Inventories = entity.Inventories == null
+                ? []
+                : entity.Inventories
+                    .Select(o => new InventoryDalDto()
+                    {
+                        Id = o.Id,
+                        ProductId = o.ProductId,
+                        WarehouseId = o.WarehouseId,
+                        Quantity = o.Quantity
+                    }).ToList()
         };
 
         return dto;
@@ -50,16 +56,27 @@ public class WarehouseUowMapper : IUowMapper<WarehouseDalDto, Warehouse>
 
         if (dto.StockOrders != null)
         {
-            entity.StockOrders = dto.StockOrders?
-                .Select(o => _stockOrderUowMapper.Map(o)!)
-                .ToList();
+            entity.StockOrders = dto.StockOrders == null
+                ? []
+                : dto.StockOrders
+                    .Select(o => new StockOrder()
+                    {
+                        Id = o.Id
+                    }).ToList();
         }
 
         if (dto.Inventories != null)
         {
-            entity.Inventories = dto.Inventories?
-                .Select(o => _inventoryUowMapper.Map(o)!)
-                .ToList();
+            entity.Inventories = dto.Inventories == null
+                ? []
+                : dto.Inventories
+                    .Select(o => new Inventory()
+                    {
+                        Id = o.Id,
+                        ProductId = o.ProductId,
+                        WarehouseId = o.WarehouseId,
+                        Quantity = o.Quantity
+                    }).ToList();
         }
 
         return entity;

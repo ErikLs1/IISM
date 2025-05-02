@@ -6,13 +6,6 @@ namespace App.DAL.EF.Mappers;
 
 public class PersonUowMapper : IUowMapper<PersonDalDto, Person>
 {
-    private readonly OrderUowMapper _orderUowMapper;
-
-    public PersonUowMapper(OrderUowMapper orderUowMapper)
-    {
-        _orderUowMapper = orderUowMapper;
-    }
-
     public PersonDalDto? Map(Person? entity)
     {
         if (entity == null) return null;
@@ -26,9 +19,16 @@ public class PersonUowMapper : IUowMapper<PersonDalDto, Person>
             PersonAddress = entity.PersonAddress,
             PersonGender = entity.PersonGender,
             PersonDateOfBirth = entity.PersonDateOfBirth,
-            Orders = entity.Orders?
-                         .Select(o => _orderUowMapper.Map(o)!)
-                         .ToList(),
+            Orders = entity.Orders == null ? [] : 
+                    entity.Orders
+                    .Select(o => new OrderDalDto()
+                         {
+                             Id =o.Id,
+                             PersonId = o.PersonId,
+                             OrderShippingAddress = o.OrderShippingAddress,
+                             OrderStatus = o.OrderStatus,
+                             OrderTotalPrice = o.OrderTotalPrice,
+                         }).ToList(),
         };
 
         return dto;
@@ -52,7 +52,14 @@ public class PersonUowMapper : IUowMapper<PersonDalDto, Person>
         if (dto.Orders != null)
         {
             entity.Orders = dto.Orders
-                .Select(o => _orderUowMapper.Map(o)!)
+                .Select(o => new Order()
+                {
+                    Id =o.Id,
+                    PersonId = o.PersonId,
+                    OrderShippingAddress = o.OrderShippingAddress,
+                    OrderStatus = o.OrderStatus,
+                    OrderTotalPrice = o.OrderTotalPrice,
+                })
                 .ToList();
         }
 

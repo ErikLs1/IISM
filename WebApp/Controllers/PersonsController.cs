@@ -11,6 +11,7 @@ namespace WebApp.Controllers;
 public class PersonsController : Controller
 {
     private readonly IAppUow _uow;
+
     public PersonsController(IAppUow uow)
     {
         _uow = uow;

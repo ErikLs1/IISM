@@ -60,8 +60,11 @@ namespace App.DAL.EF.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     CategoryName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     CategoryDescription = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: false),
+                    CreatedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    ChangedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
+                    ChangedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    SysNotes = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -77,8 +80,11 @@ namespace App.DAL.EF.Migrations
                     SupplierPhoneNumber = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
                     SupplierEmail = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     SupplierAddress = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    CreatedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    ChangedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
+                    ChangedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    SysNotes = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -93,8 +99,11 @@ namespace App.DAL.EF.Migrations
                     WarehouseAddress = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     WarehouseEmail = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     WarehouseCapacity = table.Column<int>(type: "integer", nullable: false),
+                    CreatedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    ChangedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
+                    ChangedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    SysNotes = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -169,8 +178,7 @@ namespace App.DAL.EF.Migrations
                 {
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
                     RoleId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Discriminator = table.Column<string>(type: "character varying(34)", maxLength: 34, nullable: false),
-                    Id = table.Column<Guid>(type: "uuid", nullable: true),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
                     UserId1 = table.Column<Guid>(type: "uuid", nullable: true),
                     RoleId1 = table.Column<Guid>(type: "uuid", nullable: true)
                 },
@@ -232,6 +240,11 @@ namespace App.DAL.EF.Migrations
                     PersonAddress = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     PersonGender = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
                     PersonDateOfBirth = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    CreatedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ChangedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
+                    ChangedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    SysNotes = table.Column<string>(type: "text", nullable: true),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
@@ -251,6 +264,11 @@ namespace App.DAL.EF.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ChangedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
+                    ChangedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    SysNotes = table.Column<string>(type: "text", nullable: true),
                     RefreshToken = table.Column<string>(type: "text", nullable: false),
                     Expiration = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     PreviousRefreshToken = table.Column<string>(type: "text", nullable: true),
@@ -277,8 +295,11 @@ namespace App.DAL.EF.Migrations
                     ProductDescription = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: false),
                     ProductPrice = table.Column<decimal>(type: "numeric", nullable: false),
                     ProductStatus = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    CreatedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    ChangedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
+                    ChangedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    SysNotes = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -300,8 +321,11 @@ namespace App.DAL.EF.Migrations
                     WarehouseId = table.Column<Guid>(type: "uuid", nullable: false),
                     TotalCost = table.Column<decimal>(type: "numeric", nullable: false),
                     Status = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    CreatedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    ChangedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
+                    ChangedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    SysNotes = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -329,8 +353,11 @@ namespace App.DAL.EF.Migrations
                     OrderShippingAddress = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     OrderStatus = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     OrderTotalPrice = table.Column<decimal>(type: "numeric", nullable: false),
+                    CreatedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    ChangedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
+                    ChangedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    SysNotes = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -351,8 +378,11 @@ namespace App.DAL.EF.Migrations
                     ProductId = table.Column<Guid>(type: "uuid", nullable: false),
                     WarehouseId = table.Column<Guid>(type: "uuid", nullable: false),
                     Quantity = table.Column<int>(type: "integer", nullable: false),
+                    CreatedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    ChangedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
+                    ChangedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    SysNotes = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -379,8 +409,11 @@ namespace App.DAL.EF.Migrations
                     SupplierId = table.Column<Guid>(type: "uuid", nullable: false),
                     ProductId = table.Column<Guid>(type: "uuid", nullable: false),
                     UnitCost = table.Column<decimal>(type: "numeric", nullable: false),
+                    CreatedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    ChangedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
+                    ChangedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    SysNotes = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -408,8 +441,11 @@ namespace App.DAL.EF.Migrations
                     ProductId = table.Column<Guid>(type: "uuid", nullable: false),
                     Quantity = table.Column<int>(type: "integer", nullable: false),
                     Cost = table.Column<decimal>(type: "numeric", nullable: false),
+                    CreatedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    ChangedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
+                    ChangedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    SysNotes = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -437,8 +473,11 @@ namespace App.DAL.EF.Migrations
                     OrderId = table.Column<Guid>(type: "uuid", nullable: false),
                     Quantity = table.Column<int>(type: "integer", nullable: false),
                     TotalPrice = table.Column<decimal>(type: "numeric", nullable: false),
+                    CreatedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    ChangedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
+                    ChangedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    SysNotes = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -466,7 +505,12 @@ namespace App.DAL.EF.Migrations
                     PaymentMethod = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     PaymentStatus = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     PaymentAmount = table.Column<decimal>(type: "numeric", nullable: false),
-                    PaymentDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    PaymentDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ChangedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
+                    ChangedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    SysNotes = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -488,8 +532,11 @@ namespace App.DAL.EF.Migrations
                     RefundAmount = table.Column<decimal>(type: "numeric", nullable: false),
                     RefundReason = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     RefundStatus = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    CreatedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    ChangedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
+                    ChangedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    SysNotes = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {

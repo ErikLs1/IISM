@@ -9,11 +9,11 @@ namespace WebApp.Controllers;
 [Authorize]
 public class WarehousesController : Controller
 {
-    private readonly AppDbContext _context;
+    private readonly IAppUow _uow;
 
-    public WarehousesController(AppDbContext context)
+    public WarehousesController(IAppUow uow)
     {
-        _context = context;
+        _uow = uow;
     }
 
     // GET: Warehouses

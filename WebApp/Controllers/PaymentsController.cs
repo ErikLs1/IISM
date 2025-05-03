@@ -10,11 +10,11 @@ namespace WebApp.Controllers;
 [Authorize]
 public class PaymentsController : Controller
 {
-    private readonly AppDbContext _context;
+    private readonly IAppUow _uow;
 
-    public PaymentsController(AppDbContext context)
+    public PaymentsController(IAppUow uow)
     {
-        _context = context;
+        _uow = uow;
     }
 
     // GET: Payments

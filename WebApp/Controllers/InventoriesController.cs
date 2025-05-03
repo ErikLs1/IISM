@@ -10,11 +10,11 @@ namespace WebApp.Controllers;
 [Authorize]
 public class InventoriesController : Controller
 {
-    private readonly AppDbContext _context;
+    private readonly IAppUow _uow;
 
-    public InventoriesController(AppDbContext context)
+    public InventoriesController(IAppUow uow)
     {
-        _context = context;
+        _uow = uow;
     }
 
     // GET: Inventories

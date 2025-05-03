@@ -1,7 +1,9 @@
+using App.DAL.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
 using App.Domain;
+using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.Controllers;
@@ -9,17 +11,18 @@ namespace WebApp.Controllers;
 [Authorize]
 public class CategoriesController : Controller
 {
-    private readonly AppDbContext _context;
+    private readonly IAppUow _uow;
 
-    public CategoriesController(AppDbContext context)
+    public CategoriesController(IAppUow uow)
     {
-        _context = context;
+        _uow = uow;
     }
 
     // GET: Categories
     public async Task<IActionResult> Index()
     {
-        return View(await _context.Categories.ToListAsync());
+        var res = await _uow.CategoryRepository.AllAsync(User.GetUserId());
+        return View(res);
     }
 
     // GET: Categories/Details/5
@@ -30,14 +33,14 @@ public class CategoriesController : Controller
             return NotFound();
         }
 
-        var category = await _context.Categories
-            .FirstOrDefaultAsync(m => m.Id == id);
-        if (category == null)
+        var entity = await _uow.CategoryRepository.FindAsync(id.Value, User.GetUserId());
+        
+        if (entity == null)
         {
             return NotFound();
         }
 
-        return View(category);
+        return View(entity);
     }
 
     // GET: Categories/Create
@@ -51,7 +54,7 @@ public class CategoriesController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("CategoryName,CategoryDescription,CreatedAt,UpdatedAt,Id")] Category category)
+    public async Task<IActionResult> Create(Category category)
     {
         if (ModelState.IsValid)
         {

@@ -4,7 +4,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Base.DAL.EF;
 
-public class BaseRepository<TDalEntity, TDomainEntity> : BaseRepository<TDalEntity, TDomainEntity, Guid>, IBaseRepository<TDalEntity>
+public class BaseRepository<TDalEntity, TDomainEntity> : BaseRepository<TDalEntity, TDomainEntity, Guid>, 
+    IBaseRepository<TDalEntity>
     where TDalEntity : class, IDomainId
     where TDomainEntity : class, IDomainId
 {

@@ -10,11 +10,11 @@ namespace WebApp.Controllers;
 [Authorize]
 public class RefundsController : Controller
 {
-    private readonly AppDbContext _context;
+    private readonly IAppUow _uow;
 
-    public RefundsController(AppDbContext context)
+    public RefundsController(IAppUow uow)
     {
-        _context = context;
+        _uow = uow;
     }
 
     // GET: Refunds

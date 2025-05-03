@@ -9,11 +9,11 @@ namespace WebApp.Controllers;
 [Authorize]
 public class SuppliersController : Controller
 {
-    private readonly AppDbContext _context;
+    private readonly IAppUow _uow;
 
-    public SuppliersController(AppDbContext context)
+    public SuppliersController(IAppUow uow)
     {
-        _context = context;
+        _uow = uow;
     }
 
     // GET: Suppliers

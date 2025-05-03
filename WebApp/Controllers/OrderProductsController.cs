@@ -10,11 +10,11 @@ namespace WebApp.Controllers;
 [Authorize]
 public class OrderProductsController : Controller
 {
-    private readonly AppDbContext _context;
+    private readonly IAppUow _uow;
 
-    public OrderProductsController(AppDbContext context)
+    public OrderProductsController(IAppUow uow)
     {
-        _context = context;
+        _uow = uow;
     }
 
     // GET: OrderProducts

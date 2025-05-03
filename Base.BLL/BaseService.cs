@@ -5,26 +5,28 @@ using Base.DAL.Contracts;
 namespace Base.BLL;
 
 
-public class BaseService<TBllEntity, TDalEntity> : BaseService<TBllEntity, TDalEntity, Guid>, IBaseService<TBllEntity>
+public class BaseService<TBllEntity, TDalEntity, TDalRepository> : BaseService<TBllEntity, TDalEntity, TDalRepository, Guid>, IBaseService<TBllEntity>
     where TDalEntity : class, IDomainId
     where TBllEntity : class, IDomainId
+    where TDalRepository : class, IBaseRepository<TDalEntity>
 {
-    public BaseService(IBaseUow serviceUow, IBaseRepository<TDalEntity, Guid> serviceRepository, IBllMapper<TBllEntity, TDalEntity, Guid> bllMapper) : base(serviceUow, serviceRepository, bllMapper)
+    public BaseService(IBaseUow serviceUow, TDalRepository serviceRepository, IBllMapper<TBllEntity, TDalEntity, Guid> bllMapper) : base(serviceUow, serviceRepository, bllMapper)
     {
     }
 }
 
-public class BaseService<TBllEntity, TDalEntity, TKey> : IBaseService<TBllEntity, TKey>
+public class BaseService<TBllEntity, TDalEntity, TDalRepository, TKey> : IBaseService<TBllEntity, TKey>
     where TDalEntity : class, IDomainId<TKey>
     where TBllEntity : class, IDomainId<TKey>
+    where TDalRepository: class, IBaseRepository<TDalEntity, TKey>
     where TKey : IEquatable<TKey>
 {
     protected IBaseUow ServiceUow;
-    protected IBaseRepository<TDalEntity, TKey> ServiceRepository;
+    protected TDalRepository ServiceRepository;
     protected IBllMapper<TBllEntity, TDalEntity, TKey> BllMapper;
 
 
-    public BaseService(IBaseUow serviceUow, IBaseRepository<TDalEntity, TKey> serviceRepository, IBllMapper<TBllEntity, TDalEntity, TKey> bllMapper)
+    public BaseService(IBaseUow serviceUow, TDalRepository serviceRepository, IBllMapper<TBllEntity, TDalEntity, TKey> bllMapper)
     {
         ServiceUow = serviceUow;
         ServiceRepository = serviceRepository;

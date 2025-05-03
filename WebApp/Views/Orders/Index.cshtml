@@ -1,4 +1,5 @@
-@model IEnumerable<App.Domain.Order>
+@model WebApp.Models.Index.OrderIndexViewModel
+
 
 @{
     ViewData["Title"] = "Index";
@@ -13,22 +14,22 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.OrderShippingAddress)
+                @Html.DisplayNameFor(model => model.Orders.First().OrderShippingAddress))
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.OrderStatus)
+                @Html.DisplayNameFor(model => model.Orders.First().OrderStatus)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.OrderTotalPrice)
+                @Html.DisplayNameFor(model => model.Orders.First().OrderTotalPrice)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Person)
+                @Html.DisplayNameFor(model => model.Orders.First().Person)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.Orders) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.OrderShippingAddress)

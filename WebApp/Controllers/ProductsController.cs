@@ -1,9 +1,9 @@
+using App.DAL.Contracts;
+using App.DAL.DTO;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using App.DAL.EF;
-using App.Domain;
+using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
+using WebApp.Models.Index;
 
 namespace WebApp.Controllers;
 
@@ -20,8 +20,12 @@ public class ProductsController : Controller
     // GET: Products
     public async Task<IActionResult> Index()
     {
-        var appDbContext = _context.Products.Include(p => p.Category);
-        return View(await appDbContext.ToListAsync());
+        var res = new ProductIndexViewModel()
+        {
+            Products = (await _uow.ProductRepository.AllAsync(User.GetUserId())).ToList()
+        };
+        
+        return View(res);
     }
 
     // GET: Products/Details/5
@@ -32,21 +36,19 @@ public class ProductsController : Controller
             return NotFound();
         }
 
-        var product = await _context.Products
-            .Include(p => p.Category)
-            .FirstOrDefaultAsync(m => m.Id == id);
-        if (product == null)
+        var entity = await _uow.ProductRepository.FindAsync(id.Value, User.GetUserId());
+
+        if (entity == null)
         {
             return NotFound();
         }
 
-        return View(product);
+        return View(entity);
     }
 
     // GET: Products/Create
     public IActionResult Create()
     {
-        ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "CategoryDescription");
         return View();
     }
 
@@ -55,17 +57,15 @@ public class ProductsController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("CategoryId,ProductName,ProductDescription,ProductPrice,ProductStatus,CreatedAt,UpdatedAt,Id")] Product product)
+    public async Task<IActionResult> Create(ProductDalDto entity)
     {
         if (ModelState.IsValid)
         {
-            product.Id = Guid.NewGuid();
-            _context.Add(product);
-            await _context.SaveChangesAsync();
+            _uow.ProductRepository.Add(entity, User.GetUserId());
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "CategoryDescription", product.CategoryId);
-        return View(product);
+        return View(entity);
     }
 
     // GET: Products/Edit/5
@@ -76,13 +76,13 @@ public class ProductsController : Controller
             return NotFound();
         }
 
-        var product = await _context.Products.FindAsync(id);
-        if (product == null)
+        var entity = await _uow.ProductRepository.FindAsync(id.Value, User.GetUserId());
+
+        if (entity == null)
         {
             return NotFound();
         }
-        ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "CategoryDescription", product.CategoryId);
-        return View(product);
+        return View(entity);
     }
 
     // POST: Products/Edit/5
@@ -90,35 +90,20 @@ public class ProductsController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(Guid id, [Bind("CategoryId,ProductName,ProductDescription,ProductPrice,ProductStatus,CreatedAt,UpdatedAt,Id")] Product product)
+    public async Task<IActionResult> Edit(Guid id, ProductDalDto entity)
     {
-        if (id != product.Id)
+        if (id != entity.Id)
         {
             return NotFound();
         }
 
         if (ModelState.IsValid)
         {
-            try
-            {
-                _context.Update(product);
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ProductExists(product.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            _uow.ProductRepository.Update(entity);
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "CategoryDescription", product.CategoryId);
-        return View(product);
+        return View(entity);
     }
 
     // GET: Products/Delete/5
@@ -129,15 +114,14 @@ public class ProductsController : Controller
             return NotFound();
         }
 
-        var product = await _context.Products
-            .Include(p => p.Category)
-            .FirstOrDefaultAsync(m => m.Id == id);
-        if (product == null)
+        var entity = await _uow.ProductRepository.FindAsync(id.Value, User.GetUserId());
+
+        if (entity == null)
         {
             return NotFound();
         }
 
-        return View(product);
+        return View(entity);
     }
 
     // POST: Products/Delete/5
@@ -145,18 +129,8 @@ public class ProductsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        var product = await _context.Products.FindAsync(id);
-        if (product != null)
-        {
-            _context.Products.Remove(product);
-        }
-
-        await _context.SaveChangesAsync();
+        await _uow.ProductRepository.RemoveAsync(id, User.GetUserId());
+        await _uow.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
-    }
-
-    private bool ProductExists(Guid id)
-    {
-        return _context.Products.Any(e => e.Id == id);
     }
 }

@@ -1,10 +1,9 @@
 using App.DAL.Contracts;
+using App.DAL.DTO;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using App.DAL.EF;
-using App.Domain;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
+using WebApp.Models.Index;
 
 namespace WebApp.Controllers;
 
@@ -21,7 +20,10 @@ public class CategoriesController : Controller
     // GET: Categories
     public async Task<IActionResult> Index()
     {
-        var res = await _uow.CategoryRepository.AllAsync(User.GetUserId());
+        var res = new CategoryIndexViewModel()
+        {
+            Categories = (await _uow.CategoryRepository.AllAsync(User.GetUserId())).ToList(),
+        };
         return View(res);
     }
 
@@ -54,16 +56,15 @@ public class CategoriesController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(Category category)
+    public async Task<IActionResult> Create(CategoryDalDto entity)
     {
         if (ModelState.IsValid)
         {
-            category.Id = Guid.NewGuid();
-            _context.Add(category);
-            await _context.SaveChangesAsync();
+            _uow.CategoryRepository.Add(entity, User.GetUserId());
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        return View(category);
+        return View(entity);
     }
 
     // GET: Categories/Edit/5
@@ -74,12 +75,14 @@ public class CategoriesController : Controller
             return NotFound();
         }
 
-        var category = await _context.Categories.FindAsync(id);
-        if (category == null)
+        var entity = await _uow.CategoryRepository.FindAsync(id.Value, User.GetUserId());
+        
+        if (entity == null)
         {
             return NotFound();
         }
-        return View(category);
+        
+        return View(entity);
     }
 
     // POST: Categories/Edit/5
@@ -87,34 +90,20 @@ public class CategoriesController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(Guid id, [Bind("CategoryName,CategoryDescription,CreatedAt,UpdatedAt,Id")] Category category)
+    public async Task<IActionResult> Edit(Guid id, CategoryDalDto entity)
     {
-        if (id != category.Id)
+        if (id != entity.Id)
         {
             return NotFound();
         }
 
         if (ModelState.IsValid)
         {
-            try
-            {
-                _context.Update(category);
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CategoryExists(category.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            _uow.CategoryRepository.Update(entity);
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        return View(category);
+        return View(entity);
     }
 
     // GET: Categories/Delete/5
@@ -125,14 +114,13 @@ public class CategoriesController : Controller
             return NotFound();
         }
 
-        var category = await _context.Categories
-            .FirstOrDefaultAsync(m => m.Id == id);
-        if (category == null)
+        var entity = await _uow.CategoryRepository.FindAsync(id.Value, User.GetUserId());
+        if (entity == null)
         {
             return NotFound();
         }
 
-        return View(category);
+        return View(entity);
     }
 
     // POST: Categories/Delete/5
@@ -140,18 +128,8 @@ public class CategoriesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        var category = await _context.Categories.FindAsync(id);
-        if (category != null)
-        {
-            _context.Categories.Remove(category);
-        }
-
-        await _context.SaveChangesAsync();
+        await _uow.CategoryRepository.RemoveAsync(id, User.GetUserId());
+        await _uow.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
-    }
-
-    private bool CategoryExists(Guid id)
-    {
-        return _context.Categories.Any(e => e.Id == id);
     }
 }

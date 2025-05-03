@@ -1,9 +1,11 @@
+using App.DAL.Contracts;
+using App.DAL.DTO;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using App.DAL.EF;
 using App.Domain;
+using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
+using WebApp.Models.Index;
 
 namespace WebApp.Controllers;
 
@@ -20,8 +22,12 @@ public class PaymentsController : Controller
     // GET: Payments
     public async Task<IActionResult> Index()
     {
-        var appDbContext = _context.Payments.Include(p => p.Order);
-        return View(await appDbContext.ToListAsync());
+        var res = new PaymentIndexViewModel()
+        {
+            Payments = (await _uow.PaymentRepository.AllAsync(User.GetUserId())).ToList(),
+        };
+        
+        return View(res);
     }
 
     // GET: Payments/Details/5
@@ -32,21 +38,19 @@ public class PaymentsController : Controller
             return NotFound();
         }
 
-        var payment = await _context.Payments
-            .Include(p => p.Order)
-            .FirstOrDefaultAsync(m => m.Id == id);
-        if (payment == null)
+        var entity = await _uow.PaymentRepository.FindAsync(id.Value, User.GetUserId());
+        
+        if (entity == null)
         {
             return NotFound();
         }
 
-        return View(payment);
+        return View(entity);
     }
 
     // GET: Payments/Create
     public IActionResult Create()
     {
-        ViewData["OrderId"] = new SelectList(_context.Orders, "Id", "OrderShippingAddress");
         return View();
     }
 
@@ -55,17 +59,15 @@ public class PaymentsController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("OrderId,PaymentMethod,PaymentStatus,PaymentAmount,PaymentDate,Id")] Payment payment)
+    public async Task<IActionResult> Create(PaymentDalDto entity)
     {
         if (ModelState.IsValid)
         {
-            payment.Id = Guid.NewGuid();
-            _context.Add(payment);
-            await _context.SaveChangesAsync();
+            _uow.PaymentRepository.Add(entity, User.GetUserId());
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        ViewData["OrderId"] = new SelectList(_context.Orders, "Id", "OrderShippingAddress", payment.OrderId);
-        return View(payment);
+        return View(entity);
     }
 
     // GET: Payments/Edit/5
@@ -76,13 +78,13 @@ public class PaymentsController : Controller
             return NotFound();
         }
 
-        var payment = await _context.Payments.FindAsync(id);
-        if (payment == null)
+        var entity = await _uow.PaymentRepository.FindAsync(id.Value, User.GetUserId());
+        
+        if (entity == null)
         {
             return NotFound();
         }
-        ViewData["OrderId"] = new SelectList(_context.Orders, "Id", "OrderShippingAddress", payment.OrderId);
-        return View(payment);
+        return View(entity);
     }
 
     // POST: Payments/Edit/5
@@ -90,35 +92,20 @@ public class PaymentsController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(Guid id, [Bind("OrderId,PaymentMethod,PaymentStatus,PaymentAmount,PaymentDate,Id")] Payment payment)
+    public async Task<IActionResult> Edit(Guid id, PaymentDalDto entity)
     {
-        if (id != payment.Id)
+        if (id != entity.Id)
         {
             return NotFound();
         }
 
         if (ModelState.IsValid)
         {
-            try
-            {
-                _context.Update(payment);
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PaymentExists(payment.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            _uow.PaymentRepository.Update(entity);
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        ViewData["OrderId"] = new SelectList(_context.Orders, "Id", "OrderShippingAddress", payment.OrderId);
-        return View(payment);
+        return View(entity);
     }
 
     // GET: Payments/Delete/5
@@ -129,15 +116,14 @@ public class PaymentsController : Controller
             return NotFound();
         }
 
-        var payment = await _context.Payments
-            .Include(p => p.Order)
-            .FirstOrDefaultAsync(m => m.Id == id);
-        if (payment == null)
+        var entity = await _uow.PaymentRepository.FindAsync(id.Value, User.GetUserId());
+        
+        if (entity == null)
         {
             return NotFound();
         }
 
-        return View(payment);
+        return View(entity);
     }
 
     // POST: Payments/Delete/5
@@ -145,18 +131,8 @@ public class PaymentsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        var payment = await _context.Payments.FindAsync(id);
-        if (payment != null)
-        {
-            _context.Payments.Remove(payment);
-        }
-
-        await _context.SaveChangesAsync();
+        await _uow.PaymentRepository.RemoveAsync(id, User.GetUserId());
+        await _uow.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
-    }
-
-    private bool PaymentExists(Guid id)
-    {
-        return _context.Payments.Any(e => e.Id == id);
     }
 }

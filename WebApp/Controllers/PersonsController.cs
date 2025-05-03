@@ -4,6 +4,7 @@ using App.DAL.DTO;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using WebApp.Models;
+using WebApp.Models.Index;
 
 namespace WebApp.Controllers;
 
@@ -25,6 +26,7 @@ public class PersonsController : Controller
             Persons = (await _uow.PersonRepository.AllAsync(User.GetUserId())).ToList(),
             PersonCountByName = await _uow.PersonRepository.GetPersonCountByNameAsync("Bob", User.GetUserId())
         };
+        
         return View(res);
     }
 

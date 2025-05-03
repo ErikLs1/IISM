@@ -1,9 +1,9 @@
+using App.DAL.Contracts;
+using App.DAL.DTO;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using App.DAL.EF;
-using App.Domain;
+using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
+using WebApp.Models.Index;
 
 namespace WebApp.Controllers;
 
@@ -20,8 +20,11 @@ public class InventoriesController : Controller
     // GET: Inventories
     public async Task<IActionResult> Index()
     {
-        var appDbContext = _context.Inventories.Include(i => i.Product).Include(i => i.Warehouse);
-        return View(await appDbContext.ToListAsync());
+        var res = new InventoryIndexViewModel()
+        {
+            Inventories = (await _uow.InventoryRepository.AllAsync(User.GetUserId())).ToList()
+        };
+        return View(res);
     }
 
     // GET: Inventories/Details/5
@@ -32,23 +35,21 @@ public class InventoriesController : Controller
             return NotFound();
         }
 
-        var inventory = await _context.Inventories
-            .Include(i => i.Product)
-            .Include(i => i.Warehouse)
-            .FirstOrDefaultAsync(m => m.Id == id);
-        if (inventory == null)
+        
+        var entity = await _uow.InventoryRepository.FindAsync(id.Value, User.GetUserId());
+        
+        if (entity == null)
         {
             return NotFound();
         }
 
-        return View(inventory);
+        return View(entity);
     }
 
     // GET: Inventories/Create
     public IActionResult Create()
     {
-        ViewData["ProductId"] = new SelectList(_context.Products, "Id", "ProductDescription");
-        ViewData["WarehouseId"] = new SelectList(_context.Warehouses, "Id", "WarehouseAddress");
+        
         return View();
     }
 
@@ -57,18 +58,15 @@ public class InventoriesController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("ProductId,WarehouseId,Quantity,CreatedAt,UpdatedAt,Id")] Inventory inventory)
+    public async Task<IActionResult> Create(InventoryDalDto entity)
     {
         if (ModelState.IsValid)
         {
-            inventory.Id = Guid.NewGuid();
-            _context.Add(inventory);
-            await _context.SaveChangesAsync();
+            _uow.InventoryRepository.Add(entity, User.GetUserId());
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        ViewData["ProductId"] = new SelectList(_context.Products, "Id", "ProductDescription", inventory.ProductId);
-        ViewData["WarehouseId"] = new SelectList(_context.Warehouses, "Id", "WarehouseAddress", inventory.WarehouseId);
-        return View(inventory);
+        return View(entity);
     }
 
     // GET: Inventories/Edit/5
@@ -79,14 +77,13 @@ public class InventoriesController : Controller
             return NotFound();
         }
 
-        var inventory = await _context.Inventories.FindAsync(id);
-        if (inventory == null)
+        var entity = await _uow.InventoryRepository.FindAsync(id.Value, User.GetUserId());
+        if (entity == null)
         {
             return NotFound();
         }
-        ViewData["ProductId"] = new SelectList(_context.Products, "Id", "ProductDescription", inventory.ProductId);
-        ViewData["WarehouseId"] = new SelectList(_context.Warehouses, "Id", "WarehouseAddress", inventory.WarehouseId);
-        return View(inventory);
+        
+        return View(entity);
     }
 
     // POST: Inventories/Edit/5
@@ -94,36 +91,20 @@ public class InventoriesController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(Guid id, [Bind("ProductId,WarehouseId,Quantity,CreatedAt,UpdatedAt,Id")] Inventory inventory)
+    public async Task<IActionResult> Edit(Guid id, InventoryDalDto entity)
     {
-        if (id != inventory.Id)
+        if (id != entity.Id)
         {
             return NotFound();
         }
 
         if (ModelState.IsValid)
         {
-            try
-            {
-                _context.Update(inventory);
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!InventoryExists(inventory.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            _uow.InventoryRepository.Update(entity);
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        ViewData["ProductId"] = new SelectList(_context.Products, "Id", "ProductDescription", inventory.ProductId);
-        ViewData["WarehouseId"] = new SelectList(_context.Warehouses, "Id", "WarehouseAddress", inventory.WarehouseId);
-        return View(inventory);
+        return View(entity);
     }
 
     // GET: Inventories/Delete/5
@@ -134,16 +115,13 @@ public class InventoriesController : Controller
             return NotFound();
         }
 
-        var inventory = await _context.Inventories
-            .Include(i => i.Product)
-            .Include(i => i.Warehouse)
-            .FirstOrDefaultAsync(m => m.Id == id);
-        if (inventory == null)
+        var entity = await _uow.InventoryRepository.FindAsync(id.Value, User.GetUserId());
+        if (entity == null)
         {
             return NotFound();
         }
 
-        return View(inventory);
+        return View(entity);
     }
 
     // POST: Inventories/Delete/5
@@ -151,18 +129,8 @@ public class InventoriesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        var inventory = await _context.Inventories.FindAsync(id);
-        if (inventory != null)
-        {
-            _context.Inventories.Remove(inventory);
-        }
-
-        await _context.SaveChangesAsync();
+        await _uow.InventoryRepository.RemoveAsync(id, User.GetUserId());
+        await _uow.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
-    }
-
-    private bool InventoryExists(Guid id)
-    {
-        return _context.Inventories.Any(e => e.Id == id);
     }
 }

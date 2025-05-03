@@ -1,4 +1,5 @@
-@model IEnumerable<App.Domain.Refund>
+@model WebApp.Models.Index.RefundIndexViewModel
+
 
 @{
     ViewData["Title"] = "Index";
@@ -13,22 +14,22 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.RefundAmount)
+                @Html.DisplayNameFor(model => model.Refunds.First().RefundAmount))
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.RefundReason)
+                @Html.DisplayNameFor(model => model.Refunds.First().RefundReason)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.RefundStatus)
+                @Html.DisplayNameFor(model => model.Refunds.First().RefundStatus)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.OrderProduct)
+                @Html.DisplayNameFor(model => model.Refunds.First().OrderProduct)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.Refunds) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.RefundAmount)

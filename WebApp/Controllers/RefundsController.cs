@@ -1,9 +1,9 @@
+using App.DAL.Contracts;
+using App.DAL.DTO;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using App.DAL.EF;
-using App.Domain;
+using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
+using WebApp.Models.Index;
 
 namespace WebApp.Controllers;
 
@@ -20,8 +20,12 @@ public class RefundsController : Controller
     // GET: Refunds
     public async Task<IActionResult> Index()
     {
-        var appDbContext = _context.Refunds.Include(r => r.OrderProduct);
-        return View(await appDbContext.ToListAsync());
+        var res = new RefundIndexViewModel()
+        {
+            Refunds = (await _uow.RefundRepository.AllAsync(User.GetUserId())).ToList(),
+        };
+        
+        return View(res);
     }
 
     // GET: Refunds/Details/5
@@ -32,21 +36,19 @@ public class RefundsController : Controller
             return NotFound();
         }
 
-        var refund = await _context.Refunds
-            .Include(r => r.OrderProduct)
-            .FirstOrDefaultAsync(m => m.Id == id);
-        if (refund == null)
+        var entity = await _uow.RefundRepository.FindAsync(id.Value, User.GetUserId());
+
+        if (entity == null)
         {
             return NotFound();
         }
 
-        return View(refund);
+        return View(entity);
     }
 
     // GET: Refunds/Create
     public IActionResult Create()
     {
-        ViewData["OrderProductId"] = new SelectList(_context.OrderProducts, "Id", "Id");
         return View();
     }
 
@@ -55,17 +57,15 @@ public class RefundsController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("OrderProductId,RefundAmount,RefundReason,RefundStatus,CreatedAt,UpdatedAt,Id")] Refund refund)
+    public async Task<IActionResult> Create(RefundDalDto entity)
     {
         if (ModelState.IsValid)
         {
-            refund.Id = Guid.NewGuid();
-            _context.Add(refund);
-            await _context.SaveChangesAsync();
+            _uow.RefundRepository.Add(entity, User.GetUserId());
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        ViewData["OrderProductId"] = new SelectList(_context.OrderProducts, "Id", "Id", refund.OrderProductId);
-        return View(refund);
+        return View(entity);
     }
 
     // GET: Refunds/Edit/5
@@ -76,13 +76,13 @@ public class RefundsController : Controller
             return NotFound();
         }
 
-        var refund = await _context.Refunds.FindAsync(id);
-        if (refund == null)
+        var entity = await _uow.RefundRepository.FindAsync(id.Value, User.GetUserId());
+
+        if (entity == null)
         {
             return NotFound();
         }
-        ViewData["OrderProductId"] = new SelectList(_context.OrderProducts, "Id", "Id", refund.OrderProductId);
-        return View(refund);
+        return View(entity);
     }
 
     // POST: Refunds/Edit/5
@@ -90,35 +90,20 @@ public class RefundsController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(Guid id, [Bind("OrderProductId,RefundAmount,RefundReason,RefundStatus,CreatedAt,UpdatedAt,Id")] Refund refund)
+    public async Task<IActionResult> Edit(Guid id, RefundDalDto entity)
     {
-        if (id != refund.Id)
+        if (id != entity.Id)
         {
             return NotFound();
         }
 
         if (ModelState.IsValid)
         {
-            try
-            {
-                _context.Update(refund);
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!RefundExists(refund.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            _uow.RefundRepository.Update(entity);
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        ViewData["OrderProductId"] = new SelectList(_context.OrderProducts, "Id", "Id", refund.OrderProductId);
-        return View(refund);
+        return View(entity);
     }
 
     // GET: Refunds/Delete/5
@@ -129,15 +114,14 @@ public class RefundsController : Controller
             return NotFound();
         }
 
-        var refund = await _context.Refunds
-            .Include(r => r.OrderProduct)
-            .FirstOrDefaultAsync(m => m.Id == id);
-        if (refund == null)
+        var entity = await _uow.RefundRepository.FindAsync(id.Value, User.GetUserId());
+
+        if (entity == null)
         {
             return NotFound();
         }
 
-        return View(refund);
+        return View(entity);
     }
 
     // POST: Refunds/Delete/5
@@ -145,18 +129,8 @@ public class RefundsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        var refund = await _context.Refunds.FindAsync(id);
-        if (refund != null)
-        {
-            _context.Refunds.Remove(refund);
-        }
-
-        await _context.SaveChangesAsync();
+        await _uow.RefundRepository.RemoveAsync(id, User.GetUserId());
+        await _uow.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
-    }
-
-    private bool RefundExists(Guid id)
-    {
-        return _context.Refunds.Any(e => e.Id == id);
     }
 }

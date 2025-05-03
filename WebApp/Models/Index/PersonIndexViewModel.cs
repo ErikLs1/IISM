@@ -1,6 +1,6 @@
 using App.DAL.DTO;
 
-namespace WebApp.Models;
+namespace WebApp.Models.Index;
 
 public class PersonIndexViewModel
 {

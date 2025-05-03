@@ -1,4 +1,5 @@
-@model IEnumerable<App.Domain.Supplier>
+@model WebApp.Models.Index.SupplierIndexViewModel
+
 
 @{
     ViewData["Title"] = "Index";
@@ -13,22 +14,22 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.SupplierName)
+                @Html.DisplayNameFor(model => model.Suppliers.First().SupplierName))
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SupplierPhoneNumber)
+                @Html.DisplayNameFor(model => model.Suppliers.First().SupplierPhoneNumber)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SupplierEmail)
+                @Html.DisplayNameFor(model => model.Suppliers.First().SupplierEmail)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SupplierAddress)
+                @Html.DisplayNameFor(model => model.Suppliers.First().SupplierAddress)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.Suppliers) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.SupplierName)

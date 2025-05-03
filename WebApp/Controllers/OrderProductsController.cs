@@ -1,9 +1,9 @@
+using App.DAL.Contracts;
+using App.DAL.DTO;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using App.DAL.EF;
-using App.Domain;
+using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
+using WebApp.Models.Index;
 
 namespace WebApp.Controllers;
 
@@ -20,8 +20,12 @@ public class OrderProductsController : Controller
     // GET: OrderProducts
     public async Task<IActionResult> Index()
     {
-        var appDbContext = _context.OrderProducts.Include(o => o.Order).Include(o => o.Product);
-        return View(await appDbContext.ToListAsync());
+        var res = new OrderProductIndexViewModel()
+        {
+            OrderProducts = (await _uow.OrderProductRepository.AllAsync(User.GetUserId())).ToList()
+        };
+        
+        return View(res);
     }
 
     // GET: OrderProducts/Details/5
@@ -32,23 +36,18 @@ public class OrderProductsController : Controller
             return NotFound();
         }
 
-        var orderProduct = await _context.OrderProducts
-            .Include(o => o.Order)
-            .Include(o => o.Product)
-            .FirstOrDefaultAsync(m => m.Id == id);
-        if (orderProduct == null)
+        var entity = await _uow.OrderProductRepository.FindAsync(id.Value, User.GetUserId());
+        if (entity == null)
         {
             return NotFound();
         }
 
-        return View(orderProduct);
+        return View(entity);
     }
 
     // GET: OrderProducts/Create
     public IActionResult Create()
     {
-        ViewData["OrderId"] = new SelectList(_context.Orders, "Id", "OrderShippingAddress");
-        ViewData["ProductId"] = new SelectList(_context.Products, "Id", "ProductDescription");
         return View();
     }
 
@@ -57,18 +56,15 @@ public class OrderProductsController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("ProductId,OrderId,Quantity,TotalPrice,CreatedAt,UpdatedAt,Id")] OrderProduct orderProduct)
+    public async Task<IActionResult> Create(OrderProductDalDto entity)
     {
         if (ModelState.IsValid)
         {
-            orderProduct.Id = Guid.NewGuid();
-            _context.Add(orderProduct);
-            await _context.SaveChangesAsync();
+            _uow.OrderProductRepository.Add(entity, User.GetUserId());
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        ViewData["OrderId"] = new SelectList(_context.Orders, "Id", "OrderShippingAddress", orderProduct.OrderId);
-        ViewData["ProductId"] = new SelectList(_context.Products, "Id", "ProductDescription", orderProduct.ProductId);
-        return View(orderProduct);
+        return View(entity);
     }
 
     // GET: OrderProducts/Edit/5
@@ -79,14 +75,13 @@ public class OrderProductsController : Controller
             return NotFound();
         }
 
-        var orderProduct = await _context.OrderProducts.FindAsync(id);
-        if (orderProduct == null)
+        var entity = await _uow.OrderProductRepository.FindAsync(id.Value, User.GetUserId());
+        
+        if (entity == null)
         {
             return NotFound();
         }
-        ViewData["OrderId"] = new SelectList(_context.Orders, "Id", "OrderShippingAddress", orderProduct.OrderId);
-        ViewData["ProductId"] = new SelectList(_context.Products, "Id", "ProductDescription", orderProduct.ProductId);
-        return View(orderProduct);
+        return View(entity);
     }
 
     // POST: OrderProducts/Edit/5
@@ -94,36 +89,20 @@ public class OrderProductsController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(Guid id, [Bind("ProductId,OrderId,Quantity,TotalPrice,CreatedAt,UpdatedAt,Id")] OrderProduct orderProduct)
+    public async Task<IActionResult> Edit(Guid id, OrderProductDalDto entity)
     {
-        if (id != orderProduct.Id)
+        if (id != entity.Id)
         {
             return NotFound();
         }
 
         if (ModelState.IsValid)
         {
-            try
-            {
-                _context.Update(orderProduct);
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!OrderProductExists(orderProduct.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            _uow.OrderProductRepository.Update(entity);
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        ViewData["OrderId"] = new SelectList(_context.Orders, "Id", "OrderShippingAddress", orderProduct.OrderId);
-        ViewData["ProductId"] = new SelectList(_context.Products, "Id", "ProductDescription", orderProduct.ProductId);
-        return View(orderProduct);
+        return View(entity);
     }
 
     // GET: OrderProducts/Delete/5
@@ -134,16 +113,13 @@ public class OrderProductsController : Controller
             return NotFound();
         }
 
-        var orderProduct = await _context.OrderProducts
-            .Include(o => o.Order)
-            .Include(o => o.Product)
-            .FirstOrDefaultAsync(m => m.Id == id);
-        if (orderProduct == null)
+        var entity = await _uow.OrderProductRepository.FindAsync(id.Value, User.GetUserId());
+        if (entity == null)
         {
             return NotFound();
         }
 
-        return View(orderProduct);
+        return View(entity);
     }
 
     // POST: OrderProducts/Delete/5
@@ -151,18 +127,8 @@ public class OrderProductsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        var orderProduct = await _context.OrderProducts.FindAsync(id);
-        if (orderProduct != null)
-        {
-            _context.OrderProducts.Remove(orderProduct);
-        }
-
-        await _context.SaveChangesAsync();
+        await _uow.OrderProductRepository.RemoveAsync(id, User.GetUserId());
+        await _uow.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
-    }
-
-    private bool OrderProductExists(Guid id)
-    {
-        return _context.OrderProducts.Any(e => e.Id == id);
     }
 }

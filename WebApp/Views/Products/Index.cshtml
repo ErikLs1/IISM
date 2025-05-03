@@ -1,4 +1,5 @@
-@model IEnumerable<App.Domain.Product>
+@model WebApp.Models.Index.ProductIndexViewModel
+
 
 @{
     ViewData["Title"] = "Index";
@@ -13,25 +14,25 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.ProductName)
+                @Html.DisplayNameFor(model => model.Products.First().ProductName))
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ProductDescription)
+                @Html.DisplayNameFor(model => model.Products.First().ProductDescription)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ProductPrice)
+                @Html.DisplayNameFor(model => model.Products.First().ProductPrice)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ProductStatus)
+                @Html.DisplayNameFor(model => model.Products.First().ProductStatus)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Category)
+                @Html.DisplayNameFor(model => model.Products.First().Category)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.Products) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.ProductName)

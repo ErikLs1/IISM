@@ -1,4 +1,5 @@
-@model IEnumerable<App.Domain.Payment>
+@model WebApp.Models.Index.PaymentIndexViewModel
+
 
 @{
     ViewData["Title"] = "Index";
@@ -13,25 +14,25 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.PaymentMethod)
+                @Html.DisplayNameFor(model => model.Payments.First().PaymentMethod))
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PaymentStatus)
+                @Html.DisplayNameFor(model => model.Payments.First().PaymentStatus)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PaymentAmount)
+                @Html.DisplayNameFor(model => model.Payments.First().PaymentAmount)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PaymentDate)
+                @Html.DisplayNameFor(model => model.Payments.First().PaymentDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Order)
+                @Html.DisplayNameFor(model => model.Payments.First().Order)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.Payments) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.PaymentMethod)

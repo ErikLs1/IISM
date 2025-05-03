@@ -102,4 +102,8 @@
       <UpToDateCheckInput Remove="Views\Persons\Index.cshtml" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Models\Edit\" />
+    </ItemGroup>
+
 </Project>

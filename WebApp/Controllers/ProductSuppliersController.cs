@@ -1,9 +1,9 @@
+using App.DAL.Contracts;
+using App.DAL.DTO;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using App.DAL.EF;
-using App.Domain;
+using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
+using WebApp.Models.Index;
 
 namespace WebApp.Controllers;
 
@@ -20,8 +20,12 @@ public class ProductSuppliersController : Controller
     // GET: ProductSuppliers
     public async Task<IActionResult> Index()
     {
-        var appDbContext = _context.ProductSuppliers.Include(p => p.Product).Include(p => p.Supplier);
-        return View(await appDbContext.ToListAsync());
+        var res = new ProductSupplierIndexViewModel()
+        {
+            ProductSuppliers = (await _uow.ProductSupplierRepository.AllAsync(User.GetUserId())).ToList(),
+        };
+        
+        return View(res);
     }
 
     // GET: ProductSuppliers/Details/5
@@ -32,24 +36,20 @@ public class ProductSuppliersController : Controller
             return NotFound();
         }
 
-        var productSupplier = await _context.ProductSuppliers
-            .Include(p => p.Product)
-            .Include(p => p.Supplier)
-            .FirstOrDefaultAsync(m => m.Id == id);
-        if (productSupplier == null)
+        var entity = await _uow.ProductSupplierRepository.FindAsync(id.Value, User.GetUserId());
+
+        if (entity == null)
         {
             return NotFound();
         }
 
-        return View(productSupplier);
+        return View(entity);
     }
 
     // GET: ProductSuppliers/Create
     public IActionResult Create()
     {
-        ViewData["ProductId"] = new SelectList(_context.Products, "Id", "ProductDescription");
-        ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "SupplierAddress");
-        return View();
+       return View();
     }
 
     // POST: ProductSuppliers/Create
@@ -57,18 +57,15 @@ public class ProductSuppliersController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("SupplierId,ProductId,UnitCost,CreatedAt,UpdatedAt,Id")] ProductSupplier productSupplier)
+    public async Task<IActionResult> Create(ProductSupplierDalDto entity)
     {
         if (ModelState.IsValid)
         {
-            productSupplier.Id = Guid.NewGuid();
-            _context.Add(productSupplier);
-            await _context.SaveChangesAsync();
+            _uow.ProductSupplierRepository.Add(entity, User.GetUserId());
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-        }
-        ViewData["ProductId"] = new SelectList(_context.Products, "Id", "ProductDescription", productSupplier.ProductId);
-        ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "SupplierAddress", productSupplier.SupplierId);
-        return View(productSupplier);
+        } 
+        return View(entity);
     }
 
     // GET: ProductSuppliers/Edit/5
@@ -79,14 +76,13 @@ public class ProductSuppliersController : Controller
             return NotFound();
         }
 
-        var productSupplier = await _context.ProductSuppliers.FindAsync(id);
-        if (productSupplier == null)
+        var entity = await _uow.ProductSupplierRepository.FindAsync(id.Value, User.GetUserId());
+
+        if (entity == null)
         {
             return NotFound();
         }
-        ViewData["ProductId"] = new SelectList(_context.Products, "Id", "ProductDescription", productSupplier.ProductId);
-        ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "SupplierAddress", productSupplier.SupplierId);
-        return View(productSupplier);
+        return View(entity);
     }
 
     // POST: ProductSuppliers/Edit/5
@@ -94,36 +90,20 @@ public class ProductSuppliersController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(Guid id, [Bind("SupplierId,ProductId,UnitCost,CreatedAt,UpdatedAt,Id")] ProductSupplier productSupplier)
+    public async Task<IActionResult> Edit(Guid id, ProductSupplierDalDto entity)
     {
-        if (id != productSupplier.Id)
+        if (id != entity.Id)
         {
             return NotFound();
         }
 
         if (ModelState.IsValid)
         {
-            try
-            {
-                _context.Update(productSupplier);
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ProductSupplierExists(productSupplier.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            _uow.ProductSupplierRepository.Update(entity);
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        ViewData["ProductId"] = new SelectList(_context.Products, "Id", "ProductDescription", productSupplier.ProductId);
-        ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "SupplierAddress", productSupplier.SupplierId);
-        return View(productSupplier);
+        return View(entity);
     }
 
     // GET: ProductSuppliers/Delete/5
@@ -134,16 +114,14 @@ public class ProductSuppliersController : Controller
             return NotFound();
         }
 
-        var productSupplier = await _context.ProductSuppliers
-            .Include(p => p.Product)
-            .Include(p => p.Supplier)
-            .FirstOrDefaultAsync(m => m.Id == id);
-        if (productSupplier == null)
+        var entity = await _uow.ProductSupplierRepository.FindAsync(id.Value, User.GetUserId());
+
+        if (entity == null)
         {
             return NotFound();
         }
 
-        return View(productSupplier);
+        return View(entity);
     }
 
     // POST: ProductSuppliers/Delete/5
@@ -151,18 +129,8 @@ public class ProductSuppliersController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        var productSupplier = await _context.ProductSuppliers.FindAsync(id);
-        if (productSupplier != null)
-        {
-            _context.ProductSuppliers.Remove(productSupplier);
-        }
-
-        await _context.SaveChangesAsync();
+        await _uow.PersonRepository.RemoveAsync(id, User.GetUserId());
+        await _uow.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
-    }
-
-    private bool ProductSupplierExists(Guid id)
-    {
-        return _context.ProductSuppliers.Any(e => e.Id == id);
     }
 }

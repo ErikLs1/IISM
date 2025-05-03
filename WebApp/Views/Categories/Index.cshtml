@@ -1,4 +1,4 @@
-@model IEnumerable<App.Domain.Category>
+@model WebApp.Models.Index.CategoryIndexViewModel
 
 @{
     ViewData["Title"] = "Index";
@@ -13,16 +13,16 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.CategoryName)
+                @Html.DisplayNameFor(model => model.Categories.First().CategoryName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CategoryDescription)
+                @Html.DisplayNameFor(model => model.Categories.First().CategoryDescription)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.Categories) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.CategoryName)

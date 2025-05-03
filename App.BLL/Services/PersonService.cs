@@ -15,4 +15,9 @@ public class PersonService : BaseService<PersonBllDto, PersonDalDto, IPersonRepo
         IBllMapper<PersonBllDto, PersonDalDto> bllMapper) : base(serviceUow, serviceUow.PersonRepository, bllMapper)
     {
     }
+
+    public virtual Task<int> GetPersonCountByNameAsync(string name, Guid userId)
+    {
+        throw new NotImplementedException();
+    }
 }

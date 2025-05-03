@@ -1,9 +1,9 @@
-using App.DAL.DTO;
+using App.BLL.DTO;
 
 namespace WebApp.Models.Index;
 
 public class StockOrderIndexViewModel
 {
-    public ICollection<StockOrderDalDto> StockOrders { get; set; } = default!;
+    public ICollection<StockOrderBllDto> StockOrders { get; set; } = default!;
 
 }

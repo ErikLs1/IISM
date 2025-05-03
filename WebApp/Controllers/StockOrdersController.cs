@@ -1,5 +1,5 @@
-using App.DAL.Contracts;
-using App.DAL.DTO;
+using App.BLL.Contracts;
+using App.BLL.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
@@ -10,11 +10,11 @@ namespace WebApp.Controllers;
 [Authorize]
 public class StockOrdersController : Controller
 {
-    private readonly IAppUow _uow;
+    private readonly IAppBll _bll;
 
-    public StockOrdersController(IAppUow uow)
+    public StockOrdersController(IAppBll uow)
     {
-        _uow = uow;
+        _bll = uow;
     }
 
     // GET: StockOrders
@@ -22,7 +22,7 @@ public class StockOrdersController : Controller
     {
         var res = new StockOrderIndexViewModel()
         {
-            StockOrders = (await _uow.StockOrderRepository.AllAsync(User.GetUserId())).ToList()
+            StockOrders = (await _bll.StockOrderService.AllAsync(User.GetUserId())).ToList()
         };
         
         return View(res);
@@ -36,7 +36,7 @@ public class StockOrdersController : Controller
             return NotFound();
         }
 
-        var entity = await _uow.StockOrderRepository.FindAsync(id.Value, User.GetUserId());
+        var entity = await _bll.StockOrderService.FindAsync(id.Value, User.GetUserId());
 
         if (entity == null)
         {
@@ -57,12 +57,12 @@ public class StockOrdersController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(StockOrderDalDto entity)
+    public async Task<IActionResult> Create(StockOrderBllDto entity)
     {
         if (ModelState.IsValid)
         {
-            _uow.StockOrderRepository.Add(entity, User.GetUserId());
-            await _uow.SaveChangesAsync();
+            _bll.StockOrderService.Add(entity, User.GetUserId());
+            await _bll.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
         return View(entity);
@@ -76,7 +76,7 @@ public class StockOrdersController : Controller
             return NotFound();
         }
 
-        var entity = await _uow.StockOrderRepository.FindAsync(id.Value, User.GetUserId());
+        var entity = await _bll.StockOrderService.FindAsync(id.Value, User.GetUserId());
 
         
         if (entity == null)
@@ -91,7 +91,7 @@ public class StockOrdersController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(Guid id, StockOrderDalDto entity)
+    public async Task<IActionResult> Edit(Guid id, StockOrderBllDto entity)
     {
         if (id != entity.Id)
         {
@@ -100,8 +100,8 @@ public class StockOrdersController : Controller
 
         if (ModelState.IsValid)
         {
-            _uow.StockOrderRepository.Update(entity);
-            await _uow.SaveChangesAsync();
+            _bll.StockOrderService.Update(entity);
+            await _bll.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
         return View(entity);
@@ -115,7 +115,7 @@ public class StockOrdersController : Controller
             return NotFound();
         }
 
-        var entity = await _uow.StockOrderRepository.FindAsync(id.Value, User.GetUserId());
+        var entity = await _bll.StockOrderService.FindAsync(id.Value, User.GetUserId());
 
         if (entity == null)
         {
@@ -130,8 +130,8 @@ public class StockOrdersController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        await _uow.StockOrderRepository.RemoveAsync(id, User.GetUserId());
-        await _uow.SaveChangesAsync();
+        await _bll.StockOrderService.RemoveAsync(id, User.GetUserId());
+        await _bll.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
 }

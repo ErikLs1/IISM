@@ -1,5 +1,5 @@
-using App.DAL.Contracts;
-using App.DAL.DTO;
+using App.BLL.Contracts;
+using App.BLL.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
@@ -10,11 +10,11 @@ namespace WebApp.Controllers;
 [Authorize]
 public class CategoriesController : Controller
 {
-    private readonly IAppUow _uow;
+    private readonly IAppBll _bll;
 
-    public CategoriesController(IAppUow uow)
+    public CategoriesController(IAppBll uow)
     {
-        _uow = uow;
+        _bll = uow;
     }
 
     // GET: Categories
@@ -22,7 +22,7 @@ public class CategoriesController : Controller
     {
         var res = new CategoryIndexViewModel()
         {
-            Categories = (await _uow.CategoryRepository.AllAsync(User.GetUserId())).ToList(),
+            Categories = (await _bll.CategoryService.AllAsync(User.GetUserId())).ToList(),
         };
         return View(res);
     }
@@ -35,7 +35,7 @@ public class CategoriesController : Controller
             return NotFound();
         }
 
-        var entity = await _uow.CategoryRepository.FindAsync(id.Value, User.GetUserId());
+        var entity = await _bll.CategoryService.FindAsync(id.Value, User.GetUserId());
         
         if (entity == null)
         {
@@ -56,12 +56,12 @@ public class CategoriesController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(CategoryDalDto entity)
+    public async Task<IActionResult> Create(CategoryBllDto entity)
     {
         if (ModelState.IsValid)
         {
-            _uow.CategoryRepository.Add(entity, User.GetUserId());
-            await _uow.SaveChangesAsync();
+            _bll.CategoryService.Add(entity, User.GetUserId());
+            await _bll.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
         return View(entity);
@@ -75,7 +75,7 @@ public class CategoriesController : Controller
             return NotFound();
         }
 
-        var entity = await _uow.CategoryRepository.FindAsync(id.Value, User.GetUserId());
+        var entity = await _bll.CategoryService.FindAsync(id.Value, User.GetUserId());
         
         if (entity == null)
         {
@@ -90,7 +90,7 @@ public class CategoriesController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(Guid id, CategoryDalDto entity)
+    public async Task<IActionResult> Edit(Guid id, CategoryBllDto entity)
     {
         if (id != entity.Id)
         {
@@ -99,8 +99,8 @@ public class CategoriesController : Controller
 
         if (ModelState.IsValid)
         {
-            _uow.CategoryRepository.Update(entity);
-            await _uow.SaveChangesAsync();
+            _bll.CategoryService.Update(entity);
+            await _bll.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
         return View(entity);
@@ -114,7 +114,7 @@ public class CategoriesController : Controller
             return NotFound();
         }
 
-        var entity = await _uow.CategoryRepository.FindAsync(id.Value, User.GetUserId());
+        var entity = await _bll.CategoryService.FindAsync(id.Value, User.GetUserId());
         if (entity == null)
         {
             return NotFound();
@@ -128,8 +128,8 @@ public class CategoriesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        await _uow.CategoryRepository.RemoveAsync(id, User.GetUserId());
-        await _uow.SaveChangesAsync();
+        await _bll.PersonService.RemoveAsync(id, User.GetUserId());
+        await _bll.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
 }

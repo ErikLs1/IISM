@@ -1,10 +1,6 @@
-using App.DAL.Contracts;
-using App.DAL.DTO;
+using App.BLL.Contracts;
+using App.BLL.DTO;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using App.DAL.EF;
-using App.Domain;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using WebApp.Models.Index;
@@ -14,11 +10,11 @@ namespace WebApp.Controllers;
 [Authorize]
 public class OrdersController : Controller
 {
-    private readonly IAppUow _uow;
+    private readonly IAppBll _bll;
 
-    public OrdersController(IAppUow uow)
+    public OrdersController(IAppBll uow)
     {
-        _uow = uow;
+        _bll = uow;
     }
 
     // GET: Orders
@@ -26,7 +22,7 @@ public class OrdersController : Controller
     {
         var res = new OrderIndexViewModel()
         {
-            Orders = (await _uow.OrderRepository.AllAsync(User.GetUserId())).ToList()
+            Orders = (await _bll.OrderService.AllAsync(User.GetUserId())).ToList()
         };
         return View(res);
     }
@@ -39,7 +35,7 @@ public class OrdersController : Controller
             return NotFound();
         }
 
-        var entity = await _uow.OrderRepository.FindAsync(id.Value, User.GetUserId());
+        var entity = await _bll.OrderService.FindAsync(id.Value, User.GetUserId());
         
         if (entity == null)
         {
@@ -60,12 +56,12 @@ public class OrdersController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(OrderDalDto entity)
+    public async Task<IActionResult> Create(OrderBllDto entity)
     {
         if (ModelState.IsValid)
         {
-            _uow.OrderRepository.Add(entity, User.GetUserId());
-            await _uow.SaveChangesAsync();
+            _bll.OrderService.Add(entity, User.GetUserId());
+            await _bll.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
         return View(entity);
@@ -79,7 +75,7 @@ public class OrdersController : Controller
             return NotFound();
         }
 
-        var entity = await _uow.OrderRepository.FindAsync(id.Value, User.GetUserId());
+        var entity = await _bll.OrderService.FindAsync(id.Value, User.GetUserId());
         
         if (entity == null)
         {
@@ -93,7 +89,7 @@ public class OrdersController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(Guid id, OrderDalDto entity)
+    public async Task<IActionResult> Edit(Guid id, OrderBllDto entity)
     {
         if (id != entity.Id)
         {
@@ -102,8 +98,8 @@ public class OrdersController : Controller
 
         if (ModelState.IsValid)
         {
-            _uow.OrderRepository.Update(entity);
-            await _uow.SaveChangesAsync();
+            _bll.OrderService.Update(entity);
+            await _bll.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
         return View(entity);
@@ -117,7 +113,7 @@ public class OrdersController : Controller
             return NotFound();
         }
 
-        var entity = await _uow.OrderRepository.FindAsync(id.Value, User.GetUserId());
+        var entity = await _bll.OrderService.FindAsync(id.Value, User.GetUserId());
         
         if (entity == null)
         {
@@ -132,8 +128,8 @@ public class OrdersController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        await _uow.OrderRepository.RemoveAsync(id, User.GetUserId());
-        await _uow.SaveChangesAsync();
+        await _bll.OrderService.RemoveAsync(id, User.GetUserId());
+        await _bll.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
 }

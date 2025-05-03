@@ -1,9 +1,9 @@
-using App.DAL.DTO;
+using App.BLL.DTO;
 
 namespace WebApp.Models.Index;
 
 public class ProductSupplierIndexViewModel
 {
-    public ICollection<ProductSupplierDalDto> ProductSuppliers { get; set; } = default!;
+    public ICollection<ProductSupplierBllDto> ProductSuppliers { get; set; } = default!;
 
 }

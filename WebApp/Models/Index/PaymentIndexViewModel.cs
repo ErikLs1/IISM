@@ -1,9 +1,9 @@
-using App.DAL.DTO;
+using App.BLL.DTO;
 
 namespace WebApp.Models.Index;
 
 public class PaymentIndexViewModel
 {
-    public ICollection<PaymentDalDto> Payments { get; set; } = default!;
+    public ICollection<PaymentBllDto> Payments { get; set; } = default!;
 
 }

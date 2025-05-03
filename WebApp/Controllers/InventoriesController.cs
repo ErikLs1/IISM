@@ -1,5 +1,5 @@
-using App.DAL.Contracts;
-using App.DAL.DTO;
+using App.BLL.Contracts;
+using App.BLL.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
@@ -10,11 +10,11 @@ namespace WebApp.Controllers;
 [Authorize]
 public class InventoriesController : Controller
 {
-    private readonly IAppUow _uow;
+    private readonly IAppBll _bll;
 
-    public InventoriesController(IAppUow uow)
+    public InventoriesController(IAppBll uow)
     {
-        _uow = uow;
+        _bll = uow;
     }
 
     // GET: Inventories
@@ -22,7 +22,7 @@ public class InventoriesController : Controller
     {
         var res = new InventoryIndexViewModel()
         {
-            Inventories = (await _uow.InventoryRepository.AllAsync(User.GetUserId())).ToList()
+            Inventories = (await _bll.InventoryService.AllAsync(User.GetUserId())).ToList()
         };
         return View(res);
     }
@@ -36,7 +36,7 @@ public class InventoriesController : Controller
         }
 
         
-        var entity = await _uow.InventoryRepository.FindAsync(id.Value, User.GetUserId());
+        var entity = await _bll.InventoryService.FindAsync(id.Value, User.GetUserId());
         
         if (entity == null)
         {
@@ -58,12 +58,12 @@ public class InventoriesController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(InventoryDalDto entity)
+    public async Task<IActionResult> Create(InventoryBllDto entity)
     {
         if (ModelState.IsValid)
         {
-            _uow.InventoryRepository.Add(entity, User.GetUserId());
-            await _uow.SaveChangesAsync();
+            _bll.InventoryService.Add(entity, User.GetUserId());
+            await _bll.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
         return View(entity);
@@ -77,7 +77,7 @@ public class InventoriesController : Controller
             return NotFound();
         }
 
-        var entity = await _uow.InventoryRepository.FindAsync(id.Value, User.GetUserId());
+        var entity = await _bll.InventoryService.FindAsync(id.Value, User.GetUserId());
         if (entity == null)
         {
             return NotFound();
@@ -91,7 +91,7 @@ public class InventoriesController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(Guid id, InventoryDalDto entity)
+    public async Task<IActionResult> Edit(Guid id, InventoryBllDto entity)
     {
         if (id != entity.Id)
         {
@@ -100,8 +100,8 @@ public class InventoriesController : Controller
 
         if (ModelState.IsValid)
         {
-            _uow.InventoryRepository.Update(entity);
-            await _uow.SaveChangesAsync();
+            _bll.InventoryService.Update(entity);
+            await _bll.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
         return View(entity);
@@ -115,7 +115,7 @@ public class InventoriesController : Controller
             return NotFound();
         }
 
-        var entity = await _uow.InventoryRepository.FindAsync(id.Value, User.GetUserId());
+        var entity = await _bll.InventoryService.FindAsync(id.Value, User.GetUserId());
         if (entity == null)
         {
             return NotFound();
@@ -129,8 +129,8 @@ public class InventoriesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        await _uow.InventoryRepository.RemoveAsync(id, User.GetUserId());
-        await _uow.SaveChangesAsync();
+        await _bll.InventoryService.RemoveAsync(id, User.GetUserId());
+        await _bll.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
 }

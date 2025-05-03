@@ -1,8 +1,6 @@
-using App.DAL.Contracts;
-using App.DAL.DTO;
+using App.BLL.Contracts;
+using App.BLL.DTO;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using App.Domain;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using WebApp.Models.Index;
@@ -12,11 +10,11 @@ namespace WebApp.Controllers;
 [Authorize]
 public class PaymentsController : Controller
 {
-    private readonly IAppUow _uow;
+    private readonly IAppBll _bll;
 
-    public PaymentsController(IAppUow uow)
+    public PaymentsController(IAppBll uow)
     {
-        _uow = uow;
+        _bll = uow;
     }
 
     // GET: Payments
@@ -24,7 +22,7 @@ public class PaymentsController : Controller
     {
         var res = new PaymentIndexViewModel()
         {
-            Payments = (await _uow.PaymentRepository.AllAsync(User.GetUserId())).ToList(),
+            Payments = (await _bll.PaymentService.AllAsync(User.GetUserId())).ToList(),
         };
         
         return View(res);
@@ -38,7 +36,7 @@ public class PaymentsController : Controller
             return NotFound();
         }
 
-        var entity = await _uow.PaymentRepository.FindAsync(id.Value, User.GetUserId());
+        var entity = await _bll.PaymentService.FindAsync(id.Value, User.GetUserId());
         
         if (entity == null)
         {
@@ -59,12 +57,12 @@ public class PaymentsController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(PaymentDalDto entity)
+    public async Task<IActionResult> Create(PaymentBllDto entity)
     {
         if (ModelState.IsValid)
         {
-            _uow.PaymentRepository.Add(entity, User.GetUserId());
-            await _uow.SaveChangesAsync();
+            _bll.PaymentService.Add(entity, User.GetUserId());
+            await _bll.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
         return View(entity);
@@ -78,7 +76,7 @@ public class PaymentsController : Controller
             return NotFound();
         }
 
-        var entity = await _uow.PaymentRepository.FindAsync(id.Value, User.GetUserId());
+        var entity = await _bll.PaymentService.FindAsync(id.Value, User.GetUserId());
         
         if (entity == null)
         {
@@ -92,7 +90,7 @@ public class PaymentsController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(Guid id, PaymentDalDto entity)
+    public async Task<IActionResult> Edit(Guid id, PaymentBllDto entity)
     {
         if (id != entity.Id)
         {
@@ -101,8 +99,8 @@ public class PaymentsController : Controller
 
         if (ModelState.IsValid)
         {
-            _uow.PaymentRepository.Update(entity);
-            await _uow.SaveChangesAsync();
+            _bll.PaymentService.Update(entity);
+            await _bll.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
         return View(entity);
@@ -116,7 +114,7 @@ public class PaymentsController : Controller
             return NotFound();
         }
 
-        var entity = await _uow.PaymentRepository.FindAsync(id.Value, User.GetUserId());
+        var entity = await _bll.PaymentService.FindAsync(id.Value, User.GetUserId());
         
         if (entity == null)
         {
@@ -131,8 +129,8 @@ public class PaymentsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        await _uow.PaymentRepository.RemoveAsync(id, User.GetUserId());
-        await _uow.SaveChangesAsync();
+        await _bll.PaymentService.RemoveAsync(id, User.GetUserId());
+        await _bll.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
 }

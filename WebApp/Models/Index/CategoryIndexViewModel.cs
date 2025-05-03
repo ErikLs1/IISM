@@ -1,8 +1,8 @@
-using App.DAL.DTO;
+using App.BLL.DTO;
 
 namespace WebApp.Models.Index;
 
 public class CategoryIndexViewModel
 {
-    public ICollection<CategoryDalDto> Categories { get; set; } = default!;
+    public ICollection<CategoryBllDto> Categories { get; set; } = default!;
 }

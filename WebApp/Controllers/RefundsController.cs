@@ -1,5 +1,5 @@
-using App.DAL.Contracts;
-using App.DAL.DTO;
+using App.BLL.Contracts;
+using App.BLL.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
@@ -10,11 +10,11 @@ namespace WebApp.Controllers;
 [Authorize]
 public class RefundsController : Controller
 {
-    private readonly IAppUow _uow;
+    private readonly IAppBll _bll;
 
-    public RefundsController(IAppUow uow)
+    public RefundsController(IAppBll uow)
     {
-        _uow = uow;
+        _bll = uow;
     }
 
     // GET: Refunds
@@ -22,7 +22,7 @@ public class RefundsController : Controller
     {
         var res = new RefundIndexViewModel()
         {
-            Refunds = (await _uow.RefundRepository.AllAsync(User.GetUserId())).ToList(),
+            Refunds = (await _bll.RefundService.AllAsync(User.GetUserId())).ToList(),
         };
         
         return View(res);
@@ -36,7 +36,7 @@ public class RefundsController : Controller
             return NotFound();
         }
 
-        var entity = await _uow.RefundRepository.FindAsync(id.Value, User.GetUserId());
+        var entity = await _bll.RefundService.FindAsync(id.Value, User.GetUserId());
 
         if (entity == null)
         {
@@ -57,12 +57,12 @@ public class RefundsController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(RefundDalDto entity)
+    public async Task<IActionResult> Create(RefundBllDto entity)
     {
         if (ModelState.IsValid)
         {
-            _uow.RefundRepository.Add(entity, User.GetUserId());
-            await _uow.SaveChangesAsync();
+            _bll.RefundService.Add(entity, User.GetUserId());
+            await _bll.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
         return View(entity);
@@ -76,7 +76,7 @@ public class RefundsController : Controller
             return NotFound();
         }
 
-        var entity = await _uow.RefundRepository.FindAsync(id.Value, User.GetUserId());
+        var entity = await _bll.RefundService.FindAsync(id.Value, User.GetUserId());
 
         if (entity == null)
         {
@@ -90,7 +90,7 @@ public class RefundsController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(Guid id, RefundDalDto entity)
+    public async Task<IActionResult> Edit(Guid id, RefundBllDto entity)
     {
         if (id != entity.Id)
         {
@@ -99,8 +99,8 @@ public class RefundsController : Controller
 
         if (ModelState.IsValid)
         {
-            _uow.RefundRepository.Update(entity);
-            await _uow.SaveChangesAsync();
+            _bll.RefundService.Update(entity);
+            await _bll.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
         return View(entity);
@@ -114,7 +114,7 @@ public class RefundsController : Controller
             return NotFound();
         }
 
-        var entity = await _uow.RefundRepository.FindAsync(id.Value, User.GetUserId());
+        var entity = await _bll.RefundService.FindAsync(id.Value, User.GetUserId());
 
         if (entity == null)
         {
@@ -129,8 +129,8 @@ public class RefundsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        await _uow.RefundRepository.RemoveAsync(id, User.GetUserId());
-        await _uow.SaveChangesAsync();
+        await _bll.RefundService.RemoveAsync(id, User.GetUserId());
+        await _bll.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
 }

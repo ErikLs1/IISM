@@ -1,5 +1,5 @@
-using App.DAL.Contracts;
-using App.DAL.DTO;
+using App.BLL.Contracts;
+using App.BLL.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
@@ -10,11 +10,11 @@ namespace WebApp.Controllers;
 [Authorize]
 public class ProductsController : Controller
 {
-    private readonly IAppUow _uow;
+    private readonly IAppBll _bll;
 
-    public ProductsController(IAppUow uow)
+    public ProductsController(IAppBll uow)
     {
-        _uow = uow;
+        _bll = uow;
     }
 
     // GET: Products
@@ -22,7 +22,7 @@ public class ProductsController : Controller
     {
         var res = new ProductIndexViewModel()
         {
-            Products = (await _uow.ProductRepository.AllAsync(User.GetUserId())).ToList()
+            Products = (await _bll.ProductService.AllAsync(User.GetUserId())).ToList()
         };
         
         return View(res);
@@ -36,7 +36,7 @@ public class ProductsController : Controller
             return NotFound();
         }
 
-        var entity = await _uow.ProductRepository.FindAsync(id.Value, User.GetUserId());
+        var entity = await _bll.ProductService.FindAsync(id.Value, User.GetUserId());
 
         if (entity == null)
         {
@@ -57,12 +57,12 @@ public class ProductsController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(ProductDalDto entity)
+    public async Task<IActionResult> Create(ProductBllDto entity)
     {
         if (ModelState.IsValid)
         {
-            _uow.ProductRepository.Add(entity, User.GetUserId());
-            await _uow.SaveChangesAsync();
+            _bll.ProductService.Add(entity, User.GetUserId());
+            await _bll.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
         return View(entity);
@@ -76,7 +76,7 @@ public class ProductsController : Controller
             return NotFound();
         }
 
-        var entity = await _uow.ProductRepository.FindAsync(id.Value, User.GetUserId());
+        var entity = await _bll.ProductService.FindAsync(id.Value, User.GetUserId());
 
         if (entity == null)
         {
@@ -90,7 +90,7 @@ public class ProductsController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(Guid id, ProductDalDto entity)
+    public async Task<IActionResult> Edit(Guid id, ProductBllDto entity)
     {
         if (id != entity.Id)
         {
@@ -99,8 +99,8 @@ public class ProductsController : Controller
 
         if (ModelState.IsValid)
         {
-            _uow.ProductRepository.Update(entity);
-            await _uow.SaveChangesAsync();
+            _bll.ProductService.Update(entity);
+            await _bll.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
         return View(entity);
@@ -114,7 +114,7 @@ public class ProductsController : Controller
             return NotFound();
         }
 
-        var entity = await _uow.ProductRepository.FindAsync(id.Value, User.GetUserId());
+        var entity = await _bll.ProductService.FindAsync(id.Value, User.GetUserId());
 
         if (entity == null)
         {
@@ -129,8 +129,8 @@ public class ProductsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        await _uow.ProductRepository.RemoveAsync(id, User.GetUserId());
-        await _uow.SaveChangesAsync();
+        await _bll.ProductService.RemoveAsync(id, User.GetUserId());
+        await _bll.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
 }

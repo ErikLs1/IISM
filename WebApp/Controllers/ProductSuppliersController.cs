@@ -1,5 +1,5 @@
-using App.DAL.Contracts;
-using App.DAL.DTO;
+using App.BLL.Contracts;
+using App.BLL.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
@@ -10,11 +10,11 @@ namespace WebApp.Controllers;
 [Authorize]
 public class ProductSuppliersController : Controller
 {
-    private readonly IAppUow _uow;
+    private readonly IAppBll _bll;
 
-    public ProductSuppliersController(IAppUow uow)
+    public ProductSuppliersController(IAppBll uow)
     {
-        _uow = uow;
+        _bll = uow;
     }
 
     // GET: ProductSuppliers
@@ -22,7 +22,7 @@ public class ProductSuppliersController : Controller
     {
         var res = new ProductSupplierIndexViewModel()
         {
-            ProductSuppliers = (await _uow.ProductSupplierRepository.AllAsync(User.GetUserId())).ToList(),
+            ProductSuppliers = (await _bll.ProductSupplierService.AllAsync(User.GetUserId())).ToList(),
         };
         
         return View(res);
@@ -36,7 +36,7 @@ public class ProductSuppliersController : Controller
             return NotFound();
         }
 
-        var entity = await _uow.ProductSupplierRepository.FindAsync(id.Value, User.GetUserId());
+        var entity = await _bll.ProductSupplierService.FindAsync(id.Value, User.GetUserId());
 
         if (entity == null)
         {
@@ -57,12 +57,12 @@ public class ProductSuppliersController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(ProductSupplierDalDto entity)
+    public async Task<IActionResult> Create(ProductSupplierBllDto entity)
     {
         if (ModelState.IsValid)
         {
-            _uow.ProductSupplierRepository.Add(entity, User.GetUserId());
-            await _uow.SaveChangesAsync();
+            _bll.ProductSupplierService.Add(entity, User.GetUserId());
+            await _bll.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         } 
         return View(entity);
@@ -76,7 +76,7 @@ public class ProductSuppliersController : Controller
             return NotFound();
         }
 
-        var entity = await _uow.ProductSupplierRepository.FindAsync(id.Value, User.GetUserId());
+        var entity = await _bll.ProductSupplierService.FindAsync(id.Value, User.GetUserId());
 
         if (entity == null)
         {
@@ -90,7 +90,7 @@ public class ProductSuppliersController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(Guid id, ProductSupplierDalDto entity)
+    public async Task<IActionResult> Edit(Guid id, ProductSupplierBllDto entity)
     {
         if (id != entity.Id)
         {
@@ -99,8 +99,8 @@ public class ProductSuppliersController : Controller
 
         if (ModelState.IsValid)
         {
-            _uow.ProductSupplierRepository.Update(entity);
-            await _uow.SaveChangesAsync();
+            _bll.ProductSupplierService.Update(entity);
+            await _bll.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
         return View(entity);
@@ -114,7 +114,7 @@ public class ProductSuppliersController : Controller
             return NotFound();
         }
 
-        var entity = await _uow.ProductSupplierRepository.FindAsync(id.Value, User.GetUserId());
+        var entity = await _bll.ProductSupplierService.FindAsync(id.Value, User.GetUserId());
 
         if (entity == null)
         {
@@ -129,8 +129,8 @@ public class ProductSuppliersController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        await _uow.PersonRepository.RemoveAsync(id, User.GetUserId());
-        await _uow.SaveChangesAsync();
+        await _bll.ProductSupplierService.RemoveAsync(id, User.GetUserId());
+        await _bll.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
 }

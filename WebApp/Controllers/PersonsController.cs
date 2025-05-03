@@ -1,9 +1,8 @@
-using App.DAL.Contracts;
+using App.BLL.Contracts;
+using App.BLL.DTO;
 using Microsoft.AspNetCore.Mvc;
-using App.DAL.DTO;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
-using WebApp.Models;
 using WebApp.Models.Index;
 
 namespace WebApp.Controllers;
@@ -11,11 +10,11 @@ namespace WebApp.Controllers;
 [Authorize]
 public class PersonsController : Controller
 {
-    private readonly IAppUow _uow;
+    private readonly IAppBll _bll;
 
-    public PersonsController(IAppUow uow)
+    public PersonsController(IAppBll uow)
     {
-        _uow = uow;
+        _bll = uow;
     }
 
     // GET: Persons
@@ -23,8 +22,8 @@ public class PersonsController : Controller
     {
         var res = new PersonIndexViewModel()
         {
-            Persons = (await _uow.PersonRepository.AllAsync(User.GetUserId())).ToList(),
-            PersonCountByName = await _uow.PersonRepository.GetPersonCountByNameAsync("Bob", User.GetUserId())
+            Persons = (await _bll.PersonService.AllAsync(User.GetUserId())).ToList(),
+            PersonCountByName = await _bll.PersonService.GetPersonCountByNameAsync("Bob", User.GetUserId())
         };
         
         return View(res);
@@ -38,7 +37,7 @@ public class PersonsController : Controller
             return NotFound();
         }
 
-        var entity = await _uow.PersonRepository.FindAsync(id.Value, User.GetUserId());
+        var entity = await _bll.PersonService.FindAsync(id.Value, User.GetUserId());
             
         if (entity == null)
         {
@@ -59,12 +58,12 @@ public class PersonsController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(PersonDalDto entity)
+    public async Task<IActionResult> Create(PersonBllDto entity)
     {
         if (ModelState.IsValid)
         {
-            _uow.PersonRepository.Add(entity, User.GetUserId());
-            await _uow.SaveChangesAsync();
+            _bll.PersonService.Add(entity, User.GetUserId());
+            await _bll.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
         return View(entity);
@@ -78,7 +77,7 @@ public class PersonsController : Controller
             return NotFound();
         }
 
-        var entity = await _uow.PersonRepository.FindAsync(id.Value, User.GetUserId());
+        var entity = await _bll.PersonService.FindAsync(id.Value, User.GetUserId());
         if (entity == null)
         {
             return NotFound();
@@ -91,7 +90,7 @@ public class PersonsController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(Guid id, PersonDalDto entity)
+    public async Task<IActionResult> Edit(Guid id, PersonBllDto entity)
     {
         if (id != entity.Id)
         {
@@ -100,8 +99,8 @@ public class PersonsController : Controller
 
         if (ModelState.IsValid)
         {
-            _uow.PersonRepository.Update(entity);
-            await _uow.SaveChangesAsync();
+            _bll.PersonService.Update(entity);
+            await _bll.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
         return View(entity);
@@ -115,7 +114,7 @@ public class PersonsController : Controller
             return NotFound();
         }
 
-        var entity = await _uow.PersonRepository.FindAsync(id.Value, User.GetUserId());
+        var entity = await _bll.PersonService.FindAsync(id.Value, User.GetUserId());
         if (entity == null)
         {
             return NotFound();
@@ -129,8 +128,8 @@ public class PersonsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        await _uow.PersonRepository.RemoveAsync(id, User.GetUserId());
-        await _uow.SaveChangesAsync();
+        await _bll.PersonService.RemoveAsync(id, User.GetUserId());
+        await _bll.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
 }

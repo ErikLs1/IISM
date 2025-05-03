@@ -1,8 +1,8 @@
-using App.DAL.DTO;
+using App.BLL.DTO;
 
 namespace WebApp.Models.Index;
 
 public class InventoryIndexViewModel
 {
-    public ICollection<InventoryDalDto> Inventories { get; set; } = default!;
+    public ICollection<InventoryBllDto> Inventories { get; set; } = default!;
 }

@@ -1,9 +1,9 @@
-using App.DAL.DTO;
+using App.BLL.DTO;
 
 namespace WebApp.Models.Index;
 
 public class OrderProductIndexViewModel
 {
-    public ICollection<OrderProductDalDto> OrderProducts { get; set; } = default!;
+    public ICollection<OrderProductBllDto> OrderProducts { get; set; } = default!;
  
 }

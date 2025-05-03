@@ -6,13 +6,56 @@ namespace App.BLL.Mappers;
 
 public class CategoryBllMapper : IBllMapper<CategoryBllDto, CategoryDalDto>
 {
-    public CategoryDalDto? Map(CategoryBllDto? entity)
+    public CategoryDalDto? Map(CategoryBllDto? dto)
     {
-        throw new NotImplementedException();
+        if (dto == null) return null;
+
+        var entity = new CategoryDalDto()
+        {
+            Id = dto.Id,
+            CategoryName = dto.CategoryName,
+            CategoryDescription = dto.CategoryDescription,
+        };
+
+        if (dto.Products != null)
+        {
+            entity.Products = dto.Products == null
+                ? []
+                : dto.Products
+                    .Select(o => new ProductDalDto()
+                    {
+                        Id =o.CategoryId,
+                        ProductName = o.ProductName,
+                        ProductDescription = o.ProductDescription,
+                        ProductPrice = o.ProductPrice,
+                        ProductStatus = o.ProductStatus
+                    }).ToList();
+        }
+
+        return entity;
     }
 
     public CategoryBllDto? Map(CategoryDalDto? entity)
     {
-        throw new NotImplementedException();
+        if (entity == null) return null;
+
+        var dto = new CategoryBllDto()
+        {
+            Id = entity.Id,
+            CategoryName = entity.CategoryName,
+            CategoryDescription = entity.CategoryDescription,
+            Products = entity.Products == null ? [] : 
+                entity.Products
+                    .Select(o => new ProductBllDto()
+                    {
+                        Id =o.CategoryId,
+                        ProductName = o.ProductName,
+                        ProductDescription = o.ProductDescription,
+                        ProductPrice = o.ProductPrice,
+                        ProductStatus = o.ProductStatus
+                    }).ToList(),
+        };
+
+        return dto;
     }
 }

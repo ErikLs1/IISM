@@ -1,6 +1,7 @@
 using App.DAL.EF;
 using App.Domain.Identity;
 using App.DTO.Identity;
+using Asp.Versioning;
 using Base.Helpers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -8,8 +9,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace WebApp.ApiControllers.Identity;
 
-[Route("api/[controller]/[action]")]
+[ApiVersion( "1.0" )]
 [ApiController]
+[Route("api/v{version:apiVersion}/[controller]")]
 public class AccountController : ControllerBase
 {
     private readonly UserManager<AppUser> _userManager;

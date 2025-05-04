@@ -16,8 +16,9 @@ public class PersonService : BaseService<PersonBllDto, PersonDalDto, IPersonRepo
     {
     }
 
-    public virtual Task<int> GetPersonCountByNameAsync(string name, Guid userId)
+    public virtual async Task<int> GetPersonCountByNameAsync(string name, Guid userId)
     {
-        throw new NotImplementedException();
+        var count = await ServiceRepository.GetPersonCountByNameAsync(name, userId);
+        return count;
     }
 }

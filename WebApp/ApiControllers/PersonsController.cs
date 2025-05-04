@@ -1,5 +1,6 @@
-using App.DAL.Contracts;
-using App.DAL.DTO;
+using App.BLL.Contracts;
+using App.DTO.V1;
+using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -7,81 +8,104 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.ApiControllers;
 
-[Route("api/[controller]")]
+/// <summary>
+/// 
+/// </summary>
+[ApiVersion( "1.0" )]
 [ApiController]
-[Authorize]
+[Route("api/v{version:apiVersion}/[controller]")]
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class PersonsController : ControllerBase
 {
 
-    private readonly IAppUow _uow;
+    private readonly IAppBll _bll;
 
-    public PersonsController(IAppUow uow)
+    public PersonsController(IAppBll bll)
     {
-        _uow = uow;
+        _bll = bll;
     }
 
 
-    // GET: api/Persons
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    /// <summary>
+    /// Get all persons for currently logged in user
+    /// </summary>
+    /// <returns>List of persons</returns>
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<PersonDalDto>>> GetPersons()
+    [Produces( "application/json" )]
+    [ProducesResponseType( typeof( PersonDto ), 200 )]
+    [ProducesResponseType( 404 )]
+    public async Task<ActionResult<IEnumerable<PersonDto>>> GetPersons()
     {
-        return (await _uow.PersonRepository.AllAsync(User.GetUserId())).ToList();
+        var data = (await _bll.PersonService.AllAsync(User.GetUserId())).ToList();
+        var res = data.Select(p => new PersonDto()
+        {
+            Id = p.Id,
+            PersonFirstName = p.PersonFirstName,
+            PersonLastName = p.PersonLastName
+        }).ToList();
+        return res;
     }
 
-    // GET: api/Persons/5
+    
     [HttpGet("{id}")]
-    public async Task<ActionResult<PersonDalDto>> GetPerson(Guid id)
+    public async Task<ActionResult<PersonDto>> GetPerson(Guid id)
     {
-        var person = await _uow.PersonRepository.FindAsync(id);
+        var person = await _bll.PersonService.FindAsync(id);
 
         if (person == null)
         {
             return NotFound();
         }
-
-        return person;
-    }
-
-    // PUT: api/Persons/5
-    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-    [HttpPut("{id}")]
-    public async Task<IActionResult> PutPerson(Guid id, PersonDalDto personDal)
-    {
-        if (id != personDal.Id)
+        var res = new PersonDto()
         {
-            return BadRequest();
-        }
-
-        _uow.PersonRepository.Update(personDal);
-        await _uow.SaveChangesAsync();
-        return NoContent();
+            Id = person.Id,
+            PersonFirstName = person.PersonFirstName,
+            PersonLastName = person.PersonLastName
+        };
+        return res;
     }
 
-    // POST: api/Persons
-    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-    [HttpPost]
-    public async Task<ActionResult<PersonDalDto>> PostPerson(PersonDalDto personDal)
-    {
-        _uow.PersonRepository.Add(personDal);
-        await _uow.SaveChangesAsync();
-
-        return CreatedAtAction("GetPerson", new { id = personDal.Id }, personDal);
-    }
-
-    // DELETE: api/Persons/5
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeletePerson(Guid id)
-    {
-        var person = await _uow.PersonRepository.FindAsync(id);
-        if (person == null)
-        {
-            return NotFound();
-        }
-
-        _uow.PersonRepository.Remove(person);
-        await _uow.SaveChangesAsync();
-
-        return NoContent();
-    }
+    
+    // [HttpPut("{id}")]
+    // public async Task<IActionResult> PutPerson(Guid id, PersonDto person)
+    // {
+    //     if (id != person.Id)
+    //     {
+    //         return BadRequest();
+    //     }
+    //     // TODO Add create person dto
+    //     _bll.PersonService.Update(person);
+    //     await _bll.SaveChangesAsync();
+    //     return NoContent();
+    // }
+    //
+    //
+    // [HttpPost]
+    // public async Task<ActionResult<PersonDalDto>> PostPerson(PersonDalDto personDal)
+    // {
+    //     _bll.PersonService.Add(personDal);
+    //     await _bll.SaveChangesAsync();
+    //
+    //     return CreatedAtAction("GetPerson", new
+    //     {
+    //         id = personDal.Id,
+    //         version = HttpContext.GetRequestedApiVersion()!.ToString()
+    //     }, personDal);
+    // }
+    //
+    //
+    // [HttpDelete("{id}")]
+    // public async Task<IActionResult> DeletePerson(Guid id)
+    // {
+    //     var person = await _bll.PersonService.FindAsync(id);
+    //     if (person == null)
+    //     {
+    //         return NotFound();
+    //     }
+    //
+    //     _bll.PersonService.Remove(person);
+    //     await _bll.SaveChangesAsync();
+    //
+    //     return NoContent();
+    // }
 }

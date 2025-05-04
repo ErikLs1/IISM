@@ -7,11 +7,16 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
 using App.Domain;
+using Asp.Versioning;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.ApiControllers;
 
-[Route("api/[controller]")]
+[ApiVersion( "1.0" )]
 [ApiController]
+[Route("api/v{version:apiVersion}/[controller]")]
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class StockOrderItemsController : ControllerBase
 {
     private readonly AppDbContext _context;

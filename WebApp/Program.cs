@@ -78,7 +78,7 @@ builder.Services
             ValidIssuer = builder.Configuration["JWTSecurity:Issuer"],
             ValidAudience = builder.Configuration["JWTSecurity:Audience"],
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWTSecurity:Key"]!)),
-            ClockSkew = TimeSpan.FromSeconds(30)
+            ClockSkew = TimeSpan.Zero
         }; 
     });
 

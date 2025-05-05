@@ -1,4 +1,4 @@
-namespace App.DTO.V1;
+namespace App.DTO.V1.DTO;
 
 public class PersonDto
 {

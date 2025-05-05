@@ -1,5 +1,6 @@
 using App.BLL.Contracts;
 using App.DTO.V1;
+using App.DTO.V1.DTO;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using Base.Helpers;

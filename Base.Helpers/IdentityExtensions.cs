@@ -7,9 +7,7 @@ namespace Base.Helpers;
 
 public static class IdentityExtensions
 {
-    
-    private static JwtSecurityTokenHandler _jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
-
+    private static readonly JwtSecurityTokenHandler _jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
     
     public static Guid GetUserId(this ClaimsPrincipal claimsPrincipal)
     {
@@ -23,12 +21,11 @@ public static class IdentityExtensions
         string key, 
         string issuer, 
         string audience, 
-        int expiresInSecond
+        DateTime expires
         )
     {
         var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
         var signingCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha512);
-        var expires = DateTime.Now.AddSeconds(expiresInSecond);
         var token = new JwtSecurityToken(
             issuer: issuer,
             audience: audience,
@@ -37,5 +34,33 @@ public static class IdentityExtensions
             signingCredentials: signingCredentials
         );
         return _jwtSecurityTokenHandler.WriteToken(token);
+    }
+
+    public static bool ValidateJwt(string jwt, string key, string issuer, string audience)
+    {
+        var validationParams = new TokenValidationParameters()
+        {
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key)),
+            ValidateIssuerSigningKey = true,
+            
+            ValidIssuer = issuer,
+            ValidateIssuer = true,
+            
+            ValidAudience = audience,
+            ValidateAudience = true,
+            
+            ValidateLifetime = false
+        };
+
+        try
+        {
+            new JwtSecurityTokenHandler().ValidateToken(jwt, validationParams, out _);
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+
+        return true;
     }
 }

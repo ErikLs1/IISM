@@ -223,12 +223,7 @@ namespace App.DAL.EF.Migrations
 
                     b.HasKey("UserId", "RoleId");
 
-                    b.HasAlternateKey("Id");
-
                     b.HasIndex("RoleId");
-
-                    b.HasIndex("UserId", "RoleId")
-                        .IsUnique();
 
                     b.ToTable("AspNetUserRoles", (string)null);
                 });

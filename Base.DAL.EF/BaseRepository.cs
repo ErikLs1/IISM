@@ -22,9 +22,9 @@ public class BaseRepository<TDalEntity, TDomainEntity, TKey> : IBaseRepository<T
     where TKey : IEquatable<TKey>
 {
 
-    protected DbContext RepositoryDbContext;
-    protected DbSet<TDomainEntity> RepositoryDbSet;
-    protected IMapper<TDalEntity, TDomainEntity, TKey> Mapper;
+    protected readonly DbContext RepositoryDbContext;
+    protected readonly DbSet<TDomainEntity> RepositoryDbSet;
+    protected readonly IMapper<TDalEntity, TDomainEntity, TKey> Mapper;
     
     public BaseRepository(DbContext repositoryDbContext, IMapper<TDalEntity, TDomainEntity, TKey> mapper)
     {

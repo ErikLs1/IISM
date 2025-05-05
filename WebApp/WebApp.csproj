@@ -112,6 +112,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Areas\Admin\Controllers\Identity\" />
       <Folder Include="Models\Edit\" />
     </ItemGroup>
 

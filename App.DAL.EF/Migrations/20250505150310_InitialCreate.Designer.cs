@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace App.DAL.EF.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250505113526_InitialCreate")]
+    [Migration("20250505150310_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -226,12 +226,7 @@ namespace App.DAL.EF.Migrations
 
                     b.HasKey("UserId", "RoleId");
 
-                    b.HasAlternateKey("Id");
-
                     b.HasIndex("RoleId");
-
-                    b.HasIndex("UserId", "RoleId")
-                        .IsUnique();
 
                     b.ToTable("AspNetUserRoles", (string)null);
                 });

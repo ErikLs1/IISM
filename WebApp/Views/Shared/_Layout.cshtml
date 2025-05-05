@@ -74,7 +74,14 @@
                                 <li><a class="dropdown-item" asp-area="admin" asp-controller="StockOrders" asp-action="Index">@Base.Resources.Common.StockOrder</a></li>
                                 <li><a class="dropdown-item" asp-area="admin" asp-controller="Suppliers" asp-action="Index">@Base.Resources.Common.Supplier</a></li>
                                 <li><a class="dropdown-item" asp-area="admin" asp-controller="Warehouses" asp-action="Index">@Base.Resources.Common.Warehouse</a></li>
-                            </ul>
+                                <hr class="dropdown-divider">
+                                <li><a class="dropdown-item text-dark" asp-area="admin" asp-controller="Users" asp-action="Index">Users</a></li>
+                                <li><a class="dropdown-item text-dark" asp-area="admin" asp-controller="Roles" asp-action="Index">Roles</a></li>
+                                <li><a class="dropdown-item text-dark" asp-area="admin" asp-controller="UserRoles" asp-action="Index">User Roles</a></li>
+                                <li><a class="dropdown-item text-dark" asp-area="admin" asp-controller="RefreshTokens" asp-action="Index">Refresh Tokens</a></li>
+                                <hr class="dropdown-divider">
+                                <li><a class="dropdown-item text-dark" asp-area="admin" asp-controller="UserManagement" asp-action="Index">User Management</a></li>
+                                </ul>
                         </li>
                     }
                     

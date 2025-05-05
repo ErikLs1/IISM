@@ -21,9 +21,9 @@ public class BaseService<TBllEntity, TDalEntity, TDalRepository, TKey> : IBaseSe
     where TDalRepository: class, IBaseRepository<TDalEntity, TKey>
     where TKey : IEquatable<TKey>
 {
-    protected IBaseUow ServiceUow;
-    protected TDalRepository ServiceRepository;
-    protected IMapper<TBllEntity, TDalEntity, TKey> Mapper;
+    protected readonly IBaseUow ServiceUow;
+    protected readonly TDalRepository ServiceRepository;
+    protected readonly IMapper<TBllEntity, TDalEntity, TKey> Mapper;
 
 
     public BaseService(IBaseUow serviceUow, TDalRepository serviceRepository, IMapper<TBllEntity, TDalEntity, TKey> mapper)

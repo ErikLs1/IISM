@@ -1,10 +1,11 @@
 using App.DAL.DTO;
 using App.Domain;
+using Base.Contracts;
 using Base.DAL.Contracts;
 
 namespace App.DAL.EF.Mappers;
 
-public class CategoryUowMapper : IUowMapper<CategoryDalDto, Category>
+public class CategoryUowMapper : IMapper<CategoryDalDto, Category>
 {
 
     public CategoryDalDto? Map(Category? entity)

@@ -18,7 +18,7 @@ public class PersonRepository : BaseRepository<PersonDalDto, Person>, IPersonRep
     {
         var query = GetQuery(userId);
         query = query.Include(p => p.User);
-        return (await query.ToListAsync()).Select(e => UowMapper.Map(e)!);
+        return (await query.ToListAsync()).Select(e => Mapper.Map(e)!);
     }
 
     public async Task<int> GetPersonCountByNameAsync(string name, Guid userId)

@@ -4,6 +4,7 @@ using App.DAL.Contracts;
 using App.DAL.DTO;
 using Base.BLL;
 using Base.BLL.Contracts;
+using Base.Contracts;
 using Base.DAL.Contracts;
 
 namespace App.BLL.Services;
@@ -12,7 +13,7 @@ public class StockOrderService : BaseService<StockOrderBllDto, StockOrderDalDto,
 {
     public StockOrderService(
         IAppUow serviceUow, 
-        IBllMapper<StockOrderBllDto, StockOrderDalDto> bllMapper) : base(serviceUow, serviceUow.StockOrderRepository, bllMapper)
+        IMapper<StockOrderBllDto, StockOrderDalDto> mapper) : base(serviceUow, serviceUow.StockOrderRepository, mapper)
     {
     }
 }

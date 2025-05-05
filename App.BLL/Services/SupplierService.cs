@@ -4,6 +4,7 @@ using App.DAL.Contracts;
 using App.DAL.DTO;
 using Base.BLL;
 using Base.BLL.Contracts;
+using Base.Contracts;
 using Base.DAL.Contracts;
 
 namespace App.BLL.Services;
@@ -12,7 +13,7 @@ public class SupplierService : BaseService<SupplierBllDto, SupplierDalDto, ISupp
 {
     public SupplierService(
         IAppUow serviceUow, 
-        IBllMapper<SupplierBllDto, SupplierDalDto> bllMapper) : base(serviceUow, serviceUow.SupplierRepository, bllMapper)
+        IMapper<SupplierBllDto, SupplierDalDto> mapper) : base(serviceUow, serviceUow.SupplierRepository, mapper)
     {
     }
 }

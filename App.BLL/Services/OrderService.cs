@@ -4,6 +4,7 @@ using App.DAL.Contracts;
 using App.DAL.DTO;
 using Base.BLL;
 using Base.BLL.Contracts;
+using Base.Contracts;
 using Base.DAL.Contracts;
 
 namespace App.BLL.Services;
@@ -12,7 +13,7 @@ public class OrderService : BaseService<OrderBllDto, OrderDalDto, IOrderReposito
 {
     public OrderService(
         IAppUow serviceUow, 
-        IBllMapper<OrderBllDto, OrderDalDto> bllMapper) : base(serviceUow, serviceUow.OrderRepository, bllMapper)
+        IMapper<OrderBllDto, OrderDalDto> mapper) : base(serviceUow, serviceUow.OrderRepository, mapper)
     {
     }
 }

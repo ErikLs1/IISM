@@ -1,10 +1,11 @@
 using App.DAL.DTO;
 using App.Domain;
+using Base.Contracts;
 using Base.DAL.Contracts;
 
 namespace App.DAL.EF.Mappers;
 
-public class PaymentUowMapper : IUowMapper<PaymentDalDto, Payment>
+public class PaymentUowMapper : IMapper<PaymentDalDto, Payment>
 {
     public PaymentDalDto? Map(Payment? entity)
     {

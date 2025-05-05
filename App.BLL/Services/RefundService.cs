@@ -4,6 +4,7 @@ using App.DAL.Contracts;
 using App.DAL.DTO;
 using Base.BLL;
 using Base.BLL.Contracts;
+using Base.Contracts;
 using Base.DAL.Contracts;
 
 namespace App.BLL.Services;
@@ -12,7 +13,7 @@ public class RefundService : BaseService<RefundBllDto, RefundDalDto, IRefundRepo
 {
     public RefundService(
         IAppUow serviceUow, 
-        IBllMapper<RefundBllDto, RefundDalDto> bllMapper) : base(serviceUow, serviceUow.RefundRepository, bllMapper)
+        IMapper<RefundBllDto, RefundDalDto> mapper) : base(serviceUow, serviceUow.RefundRepository, mapper)
     {
     }
 }

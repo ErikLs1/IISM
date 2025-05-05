@@ -1,10 +1,11 @@
 using App.DAL.DTO;
 using App.Domain;
+using Base.Contracts;
 using Base.DAL.Contracts;
 
 namespace App.DAL.EF.Mappers;
 
-public class SupplierUowMapper : IUowMapper<SupplierDalDto, Supplier>
+public class SupplierUowMapper : IMapper<SupplierDalDto, Supplier>
 {
     public SupplierDalDto? Map(Supplier? entity)
     {

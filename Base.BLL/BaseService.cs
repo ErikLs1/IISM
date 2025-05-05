@@ -10,7 +10,7 @@ public class BaseService<TBllEntity, TDalEntity, TDalRepository> : BaseService<T
     where TBllEntity : class, IDomainId
     where TDalRepository : class, IBaseRepository<TDalEntity>
 {
-    public BaseService(IBaseUow serviceUow, TDalRepository serviceRepository, IBllMapper<TBllEntity, TDalEntity, Guid> bllMapper) : base(serviceUow, serviceRepository, bllMapper)
+    public BaseService(IBaseUow serviceUow, TDalRepository serviceRepository, IMapper<TBllEntity, TDalEntity, Guid> mapper) : base(serviceUow, serviceRepository, mapper)
     {
     }
 }
@@ -23,51 +23,58 @@ public class BaseService<TBllEntity, TDalEntity, TDalRepository, TKey> : IBaseSe
 {
     protected IBaseUow ServiceUow;
     protected TDalRepository ServiceRepository;
-    protected IBllMapper<TBllEntity, TDalEntity, TKey> BllMapper;
+    protected IMapper<TBllEntity, TDalEntity, TKey> Mapper;
 
 
-    public BaseService(IBaseUow serviceUow, TDalRepository serviceRepository, IBllMapper<TBllEntity, TDalEntity, TKey> bllMapper)
+    public BaseService(IBaseUow serviceUow, TDalRepository serviceRepository, IMapper<TBllEntity, TDalEntity, TKey> mapper)
     {
         ServiceUow = serviceUow;
         ServiceRepository = serviceRepository;
-        BllMapper = bllMapper;
+        Mapper = mapper;
     }
 
     public virtual IEnumerable<TBllEntity> All(TKey? userId = default)
     {
         var entities = ServiceRepository.All(userId);
-        return entities.Select(e => BllMapper.Map(e)!).ToList();
+        return entities.Select(e => Mapper.Map(e)!).ToList();
     }
 
     public virtual async Task<IEnumerable<TBllEntity>> AllAsync(TKey? userId = default)
     {
         var entities = await ServiceRepository.AllAsync(userId);
-        return entities.Select(e => BllMapper.Map(e)!).ToList();
+        return entities.Select(e => Mapper.Map(e)!).ToList();
     }
 
     public virtual TBllEntity? Find(TKey id, TKey? userId = default)
     {
         var entities = ServiceRepository.Find(id, userId);
-        return BllMapper.Map(entities);
+        return Mapper.Map(entities);
     }
 
     public virtual async Task<TBllEntity?> FindAsync(TKey id, TKey? userId = default)
     {
         var entities = await ServiceRepository.FindAsync(id, userId);
-        return BllMapper.Map(entities);
+        return Mapper.Map(entities);
     }
 
     public virtual void Add(TBllEntity entity, TKey? userId = default)
     {
-        var dalEntity = BllMapper.Map(entity);
+        var dalEntity = Mapper.Map(entity);
         ServiceRepository.Add(dalEntity!, userId);
     }
 
-    public virtual TBllEntity Update(TBllEntity entity)
+    public virtual TBllEntity? Update(TBllEntity entity, TKey? userId = default)
     {
-        var dalEntity = BllMapper.Map(entity);
-        var updateEntity = ServiceRepository.Update(dalEntity!);
-        return BllMapper.Map(updateEntity)!;
+        var dalEntity = Mapper.Map(entity);
+        var updateEntity = ServiceRepository.Update(dalEntity!, userId);
+        return Mapper.Map(updateEntity)!;
+    }
+
+    public virtual async Task<TBllEntity?> UpdateAsync(TBllEntity entity, TKey? userId = default)
+    {
+        var dalEntity = Mapper.Map(entity);
+        var updatedEntity = await ServiceRepository.UpdateAsync(dalEntity!, userId);
+        return Mapper.Map(updatedEntity);
     }
 
     public virtual void Remove(TBllEntity entity, TKey? userId = default)

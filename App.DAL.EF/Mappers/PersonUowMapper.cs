@@ -1,10 +1,11 @@
 using App.DAL.DTO;
 using App.Domain;
+using Base.Contracts;
 using Base.DAL.Contracts;
 
 namespace App.DAL.EF.Mappers;
 
-public class PersonUowMapper : IUowMapper<PersonDalDto, Person>
+public class PersonUowMapper : IMapper<PersonDalDto, Person>
 {
     public PersonDalDto? Map(Person? entity)
     {

@@ -1,10 +1,11 @@
 using App.DAL.DTO;
 using App.Domain;
+using Base.Contracts;
 using Base.DAL.Contracts;
 
 namespace App.DAL.EF.Mappers;
 
-public class OrderUowMapper : IUowMapper<OrderDalDto, Order>
+public class OrderUowMapper : IMapper<OrderDalDto, Order>
 {
     public OrderDalDto? Map(Order? entity)
     {

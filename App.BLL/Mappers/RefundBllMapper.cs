@@ -1,37 +1,11 @@
 using App.BLL.DTO;
 using App.DAL.DTO;
-using Base.BLL.Contracts;
+using Base.Contracts;
 
 namespace App.BLL.Mappers;
 
-public class RefundBllMapper : IBllMapper<RefundBllDto, RefundDalDto>
+public class RefundBllMapper : IMapper<RefundBllDto, RefundDalDto>
 {
-    public RefundDalDto? Map(RefundBllDto? dto)
-    {
-        if (dto == null) return null;
-
-        var entity = new RefundDalDto()
-        {
-            Id = dto.Id,
-            OrderProductId = dto.OrderProductId,
-            RefundAmount = dto.RefundAmount,
-            RefundReason = dto.RefundReason,
-            RefundStatus = dto.RefundStatus,
-            OrderProduct = dto.OrderProduct == null
-                ? null
-                : new OrderProductDalDto()
-                {
-                    Id = dto.OrderProduct.Id,
-                    ProductId = dto.OrderProduct.ProductId,
-                    OrderId = dto.OrderProduct.OrderId,
-                    Quantity = dto.OrderProduct.Quantity,
-                    TotalPrice = dto.OrderProduct.TotalPrice
-                },
-        };
-
-        return entity;
-    }
-
     public RefundBllDto? Map(RefundDalDto? entity)
     {
         if (entity == null) return null;
@@ -56,5 +30,31 @@ public class RefundBllMapper : IBllMapper<RefundBllDto, RefundDalDto>
         };
 
         return dto;
+    }
+
+    public RefundDalDto? Map(RefundBllDto? dto)
+    {
+        if (dto == null) return null;
+
+        var entity = new RefundDalDto()
+        {
+            Id = dto.Id,
+            OrderProductId = dto.OrderProductId,
+            RefundAmount = dto.RefundAmount,
+            RefundReason = dto.RefundReason,
+            RefundStatus = dto.RefundStatus,
+            OrderProduct = dto.OrderProduct == null
+                ? null
+                : new OrderProductDalDto()
+                {
+                    Id = dto.OrderProduct.Id,
+                    ProductId = dto.OrderProduct.ProductId,
+                    OrderId = dto.OrderProduct.OrderId,
+                    Quantity = dto.OrderProduct.Quantity,
+                    TotalPrice = dto.OrderProduct.TotalPrice
+                },
+        };
+
+        return entity;
     }
 }

@@ -4,6 +4,7 @@ using App.DAL.Contracts;
 using App.DAL.DTO;
 using Base.BLL;
 using Base.BLL.Contracts;
+using Base.Contracts;
 
 namespace App.BLL.Services;
 
@@ -11,7 +12,7 @@ public class CategoryService : BaseService<CategoryBllDto, CategoryDalDto, ICate
 {
     public CategoryService(
         IAppUow serviceUow, 
-        IBllMapper<CategoryBllDto, CategoryDalDto> bllMapper) : base(serviceUow, serviceUow.CategoryRepository, bllMapper)
+        IMapper<CategoryBllDto, CategoryDalDto> mapper) : base(serviceUow, serviceUow.CategoryRepository, mapper)
     {
     }
 }

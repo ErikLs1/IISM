@@ -1,38 +1,11 @@
 using App.BLL.DTO;
 using App.DAL.DTO;
-using Base.BLL.Contracts;
+using Base.Contracts;
 
 namespace App.BLL.Mappers;
 
-public class PaymentBllMapper : IBllMapper<PaymentBllDto, PaymentDalDto>
+public class PaymentBllMapper : IMapper<PaymentBllDto, PaymentDalDto>
 {
-    public PaymentDalDto? Map(PaymentBllDto? dto)
-    {
-        if (dto == null) return null;
-
-        var entity = new PaymentDalDto()
-        {
-            Id = dto.Id,
-            OrderId = dto.OrderId,
-            PaymentMethod = dto.PaymentMethod,
-            PaymentStatus = dto.PaymentStatus,
-            PaymentAmount = dto.PaymentAmount,
-            PaymentDate = dto.PaymentDate,
-            Order = dto.Order == null
-                ? null
-                : new OrderDalDto()
-                {
-                    Id = dto.Order.Id,
-                    PersonId = dto.Order.Id,
-                    OrderShippingAddress = dto.Order.OrderShippingAddress,
-                    OrderStatus = dto.Order.OrderStatus,
-                    OrderTotalPrice = dto.Order.OrderTotalPrice
-                },
-        };
-
-        return entity;
-    }
-
     public PaymentBllDto? Map(PaymentDalDto? entity)
     {
         if (entity == null) return null;
@@ -58,5 +31,32 @@ public class PaymentBllMapper : IBllMapper<PaymentBllDto, PaymentDalDto>
         };
 
         return dto;
+    }
+
+    public PaymentDalDto? Map(PaymentBllDto? dto)
+    {
+        if (dto == null) return null;
+
+        var entity = new PaymentDalDto()
+        {
+            Id = dto.Id,
+            OrderId = dto.OrderId,
+            PaymentMethod = dto.PaymentMethod,
+            PaymentStatus = dto.PaymentStatus,
+            PaymentAmount = dto.PaymentAmount,
+            PaymentDate = dto.PaymentDate,
+            Order = dto.Order == null
+                ? null
+                : new OrderDalDto()
+                {
+                    Id = dto.Order.Id,
+                    PersonId = dto.Order.Id,
+                    OrderShippingAddress = dto.Order.OrderShippingAddress,
+                    OrderStatus = dto.Order.OrderStatus,
+                    OrderTotalPrice = dto.Order.OrderTotalPrice
+                },
+        };
+
+        return entity;
     }
 }

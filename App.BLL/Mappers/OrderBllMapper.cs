@@ -1,55 +1,11 @@
 using App.BLL.DTO;
 using App.DAL.DTO;
-using Base.BLL.Contracts;
+using Base.Contracts;
 
 namespace App.BLL.Mappers;
 
-public class OrderBllMapper : IBllMapper<OrderBllDto, OrderDalDto>
+public class OrderBllMapper : IMapper<OrderBllDto, OrderDalDto>
 {
-    public OrderDalDto? Map(OrderBllDto? dto)
-    {
-        if (dto == null) return null;
-
-        var entity = new OrderDalDto()
-        {
-            Id = dto.Id,
-            PersonId = dto.PersonId,
-            OrderShippingAddress = dto.OrderShippingAddress,
-            OrderStatus = dto.OrderStatus,
-            OrderTotalPrice = dto.OrderTotalPrice,
-            Person = dto.Person == null
-                ? null
-                : new PersonDalDto()
-                {
-                    Id = dto.Person.Id
-                },
-        };
-
-        if (dto.OrderProducts != null)
-        {
-            entity.OrderProducts = dto.OrderProducts == null
-                ? []
-                : dto.OrderProducts
-                    .Select(o => new OrderProductDalDto()
-                    {
-                        Id = o.Id
-                    }).ToList();
-        }
-
-        if (dto.Payments != null)
-        {
-            entity.Payments = dto.Payments == null
-                ? []
-                : dto.Payments
-                    .Select(o => new PaymentDalDto()
-                    {
-                        Id = o.Id
-                    }).ToList();
-        }
-
-        return entity;
-    }
-
     public OrderBllDto? Map(OrderDalDto? entity)
     {
         if (entity == null) return null;
@@ -97,5 +53,49 @@ public class OrderBllMapper : IBllMapper<OrderBllDto, OrderDalDto>
         };
 
         return dto;
+    }
+
+    public OrderDalDto? Map(OrderBllDto? dto)
+    {
+        if (dto == null) return null;
+
+        var entity = new OrderDalDto()
+        {
+            Id = dto.Id,
+            PersonId = dto.PersonId,
+            OrderShippingAddress = dto.OrderShippingAddress,
+            OrderStatus = dto.OrderStatus,
+            OrderTotalPrice = dto.OrderTotalPrice,
+            Person = dto.Person == null
+                ? null
+                : new PersonDalDto()
+                {
+                    Id = dto.Person.Id
+                },
+        };
+
+        if (dto.OrderProducts != null)
+        {
+            entity.OrderProducts = dto.OrderProducts == null
+                ? []
+                : dto.OrderProducts
+                    .Select(o => new OrderProductDalDto()
+                    {
+                        Id = o.Id
+                    }).ToList();
+        }
+
+        if (dto.Payments != null)
+        {
+            entity.Payments = dto.Payments == null
+                ? []
+                : dto.Payments
+                    .Select(o => new PaymentDalDto()
+                    {
+                        Id = o.Id
+                    }).ToList();
+        }
+
+        return entity;
     }
 }

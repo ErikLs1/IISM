@@ -1,68 +1,68 @@
 using App.BLL.DTO;
 using App.DAL.DTO;
-using Base.BLL.Contracts;
+using Base.Contracts;
 
 namespace App.BLL.Mappers;
 
-public class PersonBllMapper : IBllMapper<PersonBllDto, PersonDalDto>
+public class PersonBllMapper : IMapper<PersonBllDto, PersonDalDto>
 {
-    public PersonDalDto? Map(PersonBllDto? dto)
-    {
-        if (dto == null) return null;
-
-        var entity = new PersonDalDto()
+        public PersonBllDto? Map(PersonDalDto? entity)
         {
-            Id = dto.Id,
-            PersonFirstName = dto.PersonFirstName,
-            PersonLastName = dto.PersonLastName,
-            PersonPhoneNumber = dto.PersonPhoneNumber,
-            PersonAddress = dto.PersonAddress,
-            PersonGender = dto.PersonGender,
-            PersonDateOfBirth = dto.PersonDateOfBirth,
-        };
+            if (entity == null) return null;
 
-        if (dto.Orders != null)
-        {
-            entity.Orders = dto.Orders
-                .Select(o => new OrderDalDto()
-                {
-                    Id =o.Id,
-                    PersonId = o.PersonId,
-                    OrderShippingAddress = o.OrderShippingAddress,
-                    OrderStatus = o.OrderStatus,
-                    OrderTotalPrice = o.OrderTotalPrice,
-                })
-                .ToList();
+            var dto = new PersonBllDto()
+            {
+                Id = entity.Id,
+                PersonFirstName = entity.PersonFirstName,
+                PersonLastName = entity.PersonLastName,
+                PersonPhoneNumber = entity.PersonPhoneNumber,
+                PersonAddress = entity.PersonAddress,
+                PersonGender = entity.PersonGender,
+                PersonDateOfBirth = entity.PersonDateOfBirth,
+                Orders = entity.Orders == null ? [] : 
+                    entity.Orders
+                        .Select(o => new OrderBllDto()
+                        {
+                            Id =o.Id,
+                            PersonId = o.PersonId,
+                            OrderShippingAddress = o.OrderShippingAddress,
+                            OrderStatus = o.OrderStatus,
+                            OrderTotalPrice = o.OrderTotalPrice,
+                        }).ToList(),
+            };
+
+            return dto;
         }
 
-        return entity;
-    }
-
-    public PersonBllDto? Map(PersonDalDto? entity)
-    {
-        if (entity == null) return null;
-
-        var dto = new PersonBllDto()
+        public PersonDalDto? Map(PersonBllDto? dto)
         {
-            Id = entity.Id,
-            PersonFirstName = entity.PersonFirstName,
-            PersonLastName = entity.PersonLastName,
-            PersonPhoneNumber = entity.PersonPhoneNumber,
-            PersonAddress = entity.PersonAddress,
-            PersonGender = entity.PersonGender,
-            PersonDateOfBirth = entity.PersonDateOfBirth,
-            Orders = entity.Orders == null ? [] : 
-                entity.Orders
-                    .Select(o => new OrderBllDto()
+            if (dto == null) return null;
+
+            var entity = new PersonDalDto()
+            {
+                Id = dto.Id,
+                PersonFirstName = dto.PersonFirstName,
+                PersonLastName = dto.PersonLastName,
+                PersonPhoneNumber = dto.PersonPhoneNumber,
+                PersonAddress = dto.PersonAddress,
+                PersonGender = dto.PersonGender,
+                PersonDateOfBirth = dto.PersonDateOfBirth,
+            };
+
+            if (dto.Orders != null)
+            {
+                entity.Orders = dto.Orders
+                    .Select(o => new OrderDalDto()
                     {
                         Id =o.Id,
                         PersonId = o.PersonId,
                         OrderShippingAddress = o.OrderShippingAddress,
                         OrderStatus = o.OrderStatus,
                         OrderTotalPrice = o.OrderTotalPrice,
-                    }).ToList(),
-        };
+                    })
+                    .ToList();
+            }
 
-        return dto;
-    }
+            return entity;
+        }
 }

@@ -1,47 +1,11 @@
 using App.BLL.DTO;
 using App.DAL.DTO;
-using Base.BLL.Contracts;
+using Base.Contracts;
 
 namespace App.BLL.Mappers;
 
-public class ProductSupplierBllMapper : IBllMapper<ProductSupplierBllDto, ProductSupplierDalDto>
+public class ProductSupplierBllMapper : IMapper<ProductSupplierBllDto, ProductSupplierDalDto>
 {
-    public ProductSupplierDalDto? Map(ProductSupplierBllDto? dto)
-    {
-        if (dto == null) return null;
-
-        var entity = new ProductSupplierDalDto()
-        {
-            Id = dto.Id,
-            SupplierId = dto.SupplierId,
-            ProductId = dto.ProductId,
-            UnitCost = dto.UnitCost,
-            Supplier = dto.Supplier == null
-                ? null
-                : new SupplierDalDto()
-                {
-                    Id = dto.Supplier.Id,
-                    SupplierName = dto.Supplier.SupplierName,
-                    SupplierPhoneNumber = dto.Supplier.SupplierPhoneNumber,
-                    SupplierEmail = dto.Supplier.SupplierEmail,
-                    SupplierAddress = dto.Supplier.SupplierAddress
-                },
-            Product = dto.Product == null
-                ? null
-                : new ProductDalDto()
-                {
-                    Id = dto.Product.Id,
-                    CategoryId = dto.Product.CategoryId,
-                    ProductName = dto.Product.ProductName,
-                    ProductDescription = dto.Product.ProductDescription,
-                    ProductPrice = dto.Product.ProductPrice,
-                    ProductStatus = dto.Product.ProductStatus,
-                },
-        };
-
-        return entity;
-    }
-
     public ProductSupplierBllDto? Map(ProductSupplierDalDto? entity)
     {
         if (entity == null) return null;
@@ -76,5 +40,41 @@ public class ProductSupplierBllMapper : IBllMapper<ProductSupplierBllDto, Produc
         };
 
         return dto;
+    }
+
+    public ProductSupplierDalDto? Map(ProductSupplierBllDto? dto)
+    {
+        if (dto == null) return null;
+
+        var entity = new ProductSupplierDalDto()
+        {
+            Id = dto.Id,
+            SupplierId = dto.SupplierId,
+            ProductId = dto.ProductId,
+            UnitCost = dto.UnitCost,
+            Supplier = dto.Supplier == null
+                ? null
+                : new SupplierDalDto()
+                {
+                    Id = dto.Supplier.Id,
+                    SupplierName = dto.Supplier.SupplierName,
+                    SupplierPhoneNumber = dto.Supplier.SupplierPhoneNumber,
+                    SupplierEmail = dto.Supplier.SupplierEmail,
+                    SupplierAddress = dto.Supplier.SupplierAddress
+                },
+            Product = dto.Product == null
+                ? null
+                : new ProductDalDto()
+                {
+                    Id = dto.Product.Id,
+                    CategoryId = dto.Product.CategoryId,
+                    ProductName = dto.Product.ProductName,
+                    ProductDescription = dto.Product.ProductDescription,
+                    ProductPrice = dto.Product.ProductPrice,
+                    ProductStatus = dto.Product.ProductStatus,
+                },
+        };
+
+        return entity;
     }
 }

@@ -20,7 +20,8 @@ public interface IBaseRepository<TEntity, TKey>
 
     void Add(TEntity entity, TKey? userId = default!);
 
-    TEntity Update(TEntity entity);
+    TEntity? Update(TEntity entity, TKey? userId = default!);
+    Task<TEntity?> UpdateAsync(TEntity entity, TKey? userId = default!);
 
     void Remove(TEntity entity, TKey? userId = default!);
 

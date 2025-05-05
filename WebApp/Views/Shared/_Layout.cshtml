@@ -54,6 +54,33 @@
                             </ul>
                         </li>
                     }
+
+                    @if (User.IsInRole("admin"))
+                    {
+                        <li class="nav-item dropdown">
+                            <a class="nav-link text-dark dropdown-toggle" href="javascript:{}" id="adminDropdown"
+                               role="button" data-bs-toggle="dropdown" aria-expanded="false">Admin</a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" asp-area="admin" asp-controller="Categories" asp-action="Index">@Base.Resources.Common.Category</a></li>
+                                <li><a class="dropdown-item" asp-area="admin" asp-controller="Inventories" asp-action="Index">@Base.Resources.Common.Inventory</a></li>
+                                <li><a class="dropdown-item" asp-area="admin" asp-controller="OrderProducts" asp-action="Index">@Base.Resources.Common.OrderProduct</a></li>
+                                <li><a class="dropdown-item" asp-area="admin" asp-controller="Orders" asp-action="Index">@Base.Resources.Common.Order</a></li>
+                                <li><a class="dropdown-item" asp-area="admin" asp-controller="Payments" asp-action="Index">@Base.Resources.Common.Payment</a></li>
+                                <li><a class="dropdown-item" asp-area="admin" asp-controller="Persons" asp-action="Index">@Base.Resources.Common.Person</a></li>
+                                <li><a class="dropdown-item" asp-area="admin" asp-controller="Products" asp-action="Index">@Base.Resources.Common.Product</a></li>
+                                <li><a class="dropdown-item" asp-area="admin" asp-controller="ProductSuppliers" asp-action="Index">@Base.Resources.Common.ProdcutSupplier</a></li>
+                                <li><a class="dropdown-item" asp-area="admin" asp-controller="Refunds" asp-action="Index">@Base.Resources.Common.Refund</a></li>
+                                <li><a class="dropdown-item" asp-area="admin" asp-controller="StockOrderItems" asp-action="Index">@Base.Resources.Common.StockOrderItem</a></li>
+                                <li><a class="dropdown-item" asp-area="admin" asp-controller="StockOrders" asp-action="Index">@Base.Resources.Common.StockOrder</a></li>
+                                <li><a class="dropdown-item" asp-area="admin" asp-controller="Suppliers" asp-action="Index">@Base.Resources.Common.Supplier</a></li>
+                                <li><a class="dropdown-item" asp-area="admin" asp-controller="Warehouses" asp-action="Index">@Base.Resources.Common.Warehouse</a></li>
+                            </ul>
+                        </li>
+                    }
+                    
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="/swagger">Api</a>
+                    </li>
                     <partial name="_LanguageSelection"/>
                 </ul>
                 <partial name="_LoginPartial"/>
@@ -69,7 +96,8 @@
 
 <footer class="border-top footer text-muted">
     <div class="container">
-        &copy; 2025 - WebApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">@Base.Resources.Common.Privacy</a>
+        &copy; 2025 - WebApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">@Base.Resources.Common.Privacy</a> |
+        <a href="/swagger">Api</a> |
         @Thread.CurrentThread.CurrentCulture.Name | @Thread.CurrentThread.CurrentUICulture.Name
     </div>
 </footer>

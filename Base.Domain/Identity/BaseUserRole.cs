@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations.Schema;
 using Base.Contracts;
 using Microsoft.AspNetCore.Identity;
 
@@ -15,6 +16,7 @@ public abstract class BaseUserRole<TKey, TUser, TRole> : IdentityUserRole<TKey>,
     where TRole : class //BaseRole<TKey, BaseUserRole<TKey, TUser, TRole>>
 {
     // TODO - this causes problems with Role manager
+    [NotMapped]
     public TKey Id { get; set; } = default!;
 
     public TUser? User { get; set; }

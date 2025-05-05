@@ -4,6 +4,7 @@ using Base.Contracts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace App.DAL.EF;
 
@@ -25,8 +26,12 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid, IdentityUs
     public DbSet<Warehouse> Warehouses { get; set; } = default!;
     public DbSet<AppRefreshToken> RefreshTokens { get; set; } = default!;
     
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+    private readonly IUserNameResolver _userNameResolver;
+    private readonly ILogger<AppDbContext> _logger;
+    public AppDbContext(DbContextOptions<AppDbContext> options, IUserNameResolver userNameResolver, ILogger<AppDbContext> logger) : base(options)
     {
+        _userNameResolver = userNameResolver;
+        _logger = logger;
     }
     
     protected override void OnModelCreating(ModelBuilder builder)
@@ -42,10 +47,9 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid, IdentityUs
 
         // We have custom UserRole - with separate PK and navigation for Role and User
         // override default Identity EF config
-        builder.Entity<AppUserRole>().HasKey(a => new {a.UserId, a.RoleId });
+        builder.Entity<AppUserRole>().HasKey(a => new { a.UserId, a.RoleId });
         builder.Entity<AppUserRole>().HasAlternateKey(a => a.Id);
         builder.Entity<AppUserRole>().HasIndex(a => new { a.UserId, a.RoleId }).IsUnique();
-        
         
 
         builder.Entity<AppUserRole>()
@@ -66,20 +70,32 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid, IdentityUs
 
         foreach (var entry in addedEntries)
         {
-            if (entry.State == EntityState.Added)
+            if (entry is { Entity: IDomainMeta })
             {
-                (entry.Entity as IDomainMeta)!.CreatedAt = DateTime.UtcNow;
-                (entry.Entity as IDomainMeta)!.CreatedBy = "system";
-            }
-            else if (entry.State == EntityState.Modified)
-            {
-                (entry.Entity as IDomainMeta)!.ChangedAt = DateTime.UtcNow;
-                (entry.Entity as IDomainMeta)!.ChangedBy = "system";
+                switch (entry.State)
+                {
+                    case EntityState.Added:
+                        (entry.Entity as IDomainMeta)!.CreatedAt = DateTime.UtcNow;
+                        (entry.Entity as IDomainMeta)!.CreatedBy = _userNameResolver.CurrentUserName;
+                        break;
+                    case EntityState.Modified:
+                        entry.Property("ChangedAt").IsModified = true;
+                        entry.Property("ChangedBy").IsModified = true;
+                        (entry.Entity as IDomainMeta)!.ChangedAt = DateTime.UtcNow;
+                        (entry.Entity as IDomainMeta)!.ChangedBy = _userNameResolver.CurrentUserName;
 
-                // Prevent overwriting CreatedBy/CreatedAt/UserId on update
-                entry.Property("CreatedAt").IsModified = false;
-                entry.Property("CreateBy").IsModified = false;
+                        // Prevent overwriting CreatedBy/CreatedAt on update
+                        entry.Property("CreatedAt").IsModified = false;
+                        entry.Property("CreatedBy").IsModified = false;
+                        break;
+                }
+            }
+
+            if (entry is { Entity: IDomainUserId, State: EntityState.Modified })
+            {
+                // do not allow userid modification
                 entry.Property("UserId").IsModified = false;
+                _logger.LogWarning("UserId modification attempt. Denied!");
             }
         }
         

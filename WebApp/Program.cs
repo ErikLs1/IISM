@@ -10,6 +10,8 @@ using App.DAL.EF.Repositories;
 using App.Domain.Identity;
 using Asp.Versioning;
 using Asp.Versioning.ApiExplorer;
+using Base.Contracts;
+using Base.Helpers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
@@ -85,6 +87,8 @@ builder.Services
     .AddEntityFrameworkStores<AppDbContext>();*/
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<IUserNameResolver, UserNameResolver>();
 
 // add culture switching support
 var supportedCultures = builder.Configuration

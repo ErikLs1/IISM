@@ -3485,6 +3485,10 @@
       "App.DTO/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v9.0",
+        "dependencies": {
+          "App.BLL.DTO": "1.0.0",
+          "Base.Contracts": "1.0.0"
+        },
         "compile": {
           "bin/placeholder/App.DTO.dll": {}
         },

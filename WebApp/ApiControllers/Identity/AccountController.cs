@@ -124,6 +124,7 @@ public class AccountController : ControllerBase
         var refreshToken = new AppRefreshToken()
         {
             UserId = appUser.Id,
+            RefreshToken = Guid.NewGuid().ToString(),
             Expiration = GetExpirationDateTime(refreshTokenExpiresInSeconds, SettingsJwtRefreshTokenExpiresInSeconds)
         };
         _context.RefreshTokens.Add(refreshToken);
@@ -311,9 +312,7 @@ public class AccountController : ControllerBase
         {
             return Problem("More than one valid refresh token found.");
         }
-
-        // generate new jwt
-
+        
         // get claims based user
         var claimsPrincipal = await _signInManager.CreateUserPrincipalAsync(appUser);
 

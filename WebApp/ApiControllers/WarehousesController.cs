@@ -1,112 +1,113 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+using App.BLL.Contracts;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using App.DAL.EF;
-using App.Domain;
+using App.DTO.V1.DTO;
+using App.DTO.V1.Mappers;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.ApiControllers;
 
+/// <inheritdoc />
 [ApiVersion( "1.0" )]
 [ApiController]
 [Route("api/v{version:apiVersion}/[controller]")]
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class WarehousesController : ControllerBase
 {
-    private readonly AppDbContext _context;
+    private readonly IAppBll _bll;
+    private readonly WarehouseMapper _mapper = new WarehouseMapper();
 
-    public WarehousesController(AppDbContext context)
+    /// <inheritdoc />
+    public WarehousesController(IAppBll bll)
     {
-        _context = context;
+        _bll = bll;
     }
 
-    // GET: api/Warehouses
+    /// <summary>
+    /// Get all existing warehouses.
+    /// </summary>
+    /// <returns>List of warehouses.</returns>
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Warehouse>>> GetWarehouses()
+    [Produces("application/json")]
+    [ProducesResponseType(typeof(IEnumerable<WarehouseDto>), 200)]
+    [ProducesResponseType(404)]
+    public async Task<ActionResult<IEnumerable<WarehouseDto>>> GetWarehouses()
     {
-        return await _context.Warehouses.ToListAsync();
+        var data = await _bll.WarehouseService.AllAsync();
+        var res = data.Select(x => _mapper.Map(x)!).ToList();
+        return res;
     }
 
-    // GET: api/Warehouses/5
+    /// <summary>
+    /// Get the warehouse data by id.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpGet("{id}")]
-    public async Task<ActionResult<Warehouse>> GetWarehouse(Guid id)
+    [ProducesResponseType(typeof(IEnumerable<WarehouseDto>), 200)]
+    [ProducesResponseType(404)]
+    public async Task<ActionResult<WarehouseDto>> GetWarehouse(Guid id)
     {
-        var warehouse = await _context.Warehouses.FindAsync(id);
+        var warehouse = await _bll.WarehouseService.FindAsync(id);
 
         if (warehouse == null)
         {
             return NotFound();
         }
 
-        return warehouse;
+        return _mapper.Map(warehouse)!;
     }
 
-    // PUT: api/Warehouses/5
-    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+    /// <summary>
+    /// Update warehouse.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="warehouse"></param>
+    /// <returns></returns>
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutWarehouse(Guid id, Warehouse warehouse)
+    public async Task<IActionResult> PutWarehouse(Guid id, WarehouseDto warehouse)
     {
         if (id != warehouse.Id)
         {
             return BadRequest();
         }
 
-        _context.Entry(warehouse).State = EntityState.Modified;
-
-        try
-        {
-            await _context.SaveChangesAsync();
-        }
-        catch (DbUpdateConcurrencyException)
-        {
-            if (!WarehouseExists(id))
-            {
-                return NotFound();
-            }
-            else
-            {
-                throw;
-            }
-        }
-
+        await _bll.WarehouseService.UpdateAsync(_mapper.Map(warehouse)!);
+        await _bll.SaveChangesAsync();
+        
         return NoContent();
     }
-
-    // POST: api/Warehouses
-    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+    
+    /// <summary>
+    /// Create new warehouse
+    /// </summary>
+    /// <param name="warehouse"></param>
+    /// <returns></returns>
     [HttpPost]
-    public async Task<ActionResult<Warehouse>> PostWarehouse(Warehouse warehouse)
+    public async Task<ActionResult<WarehouseDto>> PostWarehouse(WarehouseCreateDto warehouse)
     {
-        _context.Warehouses.Add(warehouse);
-        await _context.SaveChangesAsync();
-
-        return CreatedAtAction("GetWarehouse", new { id = warehouse.Id }, warehouse);
+        var bllEntity = _mapper.Map(warehouse);
+        _bll.WarehouseService.Add(bllEntity!);
+        await _bll.SaveChangesAsync();
+        
+        return CreatedAtAction("GetWarehouse", new
+        {
+            id = bllEntity?.Id,
+            version = HttpContext.GetRequestedApiVersion()!.ToString()
+        }, warehouse);
     }
 
-    // DELETE: api/Warehouses/5
+    /// <summary>
+    /// Delete warehouse by id.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteWarehouse(Guid id)
     {
-        var warehouse = await _context.Warehouses.FindAsync(id);
-        if (warehouse == null)
-        {
-            return NotFound();
-        }
-
-        _context.Warehouses.Remove(warehouse);
-        await _context.SaveChangesAsync();
-
+        await _bll.WarehouseService.RemoveAsync(id);
+        await _bll.SaveChangesAsync();
         return NoContent();
-    }
-
-    private bool WarehouseExists(Guid id)
-    {
-        return _context.Warehouses.Any(e => e.Id == id);
     }
 }

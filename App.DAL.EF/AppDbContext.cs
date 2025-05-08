@@ -54,6 +54,10 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid, IdentityUs
         builder.Entity<AppUserRole>().HasIndex(a => new { a.UserId, a.RoleId }).IsUnique();
         */
         
+        builder.Entity<AppUser>()
+            .HasMany(u => u.RefreshTokens)
+            .WithOne(t => t.User)
+            .HasForeignKey(t => t.UserId);
 
         builder.Entity<AppUserRole>()
             .HasOne(a => a.User)

@@ -211,6 +211,8 @@ public class AccountController : ControllerBase
                 GetExpirationDateTime(jwtExpiresInSeconds, SettingsJwtExpiresInSeconds)
             );
             _logger.LogInformation("WebApi login. User {User}", registerModel.Email);
+
+            await _context.SaveChangesAsync();
             return Ok(new JwtResponseDto()
             {
                 Jwt = jwt,
@@ -296,7 +298,7 @@ public class AccountController : ControllerBase
                 (x.PreviousRefreshToken == refreshTokenModel.RefreshToken &&
                  x.PreviousExpiration > DateTime.UtcNow)
             )
-            .ToListAsync();
+            .LoadAsync();
 
         if (appUser.RefreshTokens == null)
         {
@@ -327,6 +329,10 @@ public class AccountController : ControllerBase
 
         // make new refresh token, obsolete old ones
         var refreshToken = appUser.RefreshTokens.First();
+        
+        if (refreshToken.RefreshToken != refreshTokenModel.RefreshToken)
+            return BadRequest(new MessageDto("Refresh token is no longer valid"));
+        
         if (refreshToken.RefreshToken == refreshTokenModel.RefreshToken)
         {
             refreshToken.PreviousRefreshToken = refreshToken.RefreshToken;

@@ -29,7 +29,7 @@ public class Person : BaseEntityUser<AppUser>
     public string PersonGender { get; set; } = default!;
     
     [Display(Name = nameof(PersonDateOfBirth), Prompt = nameof(PersonDateOfBirth), ResourceType = typeof(App.Resources.Domain.Person))]
-    public DateTime? PersonDateOfBirth { get; set; } = DateTime.UtcNow;
+    public DateOnly? PersonDateOfBirth { get; set; }
 
     public ICollection<Order>? Orders { get; set; } = new List<Order>();
 }

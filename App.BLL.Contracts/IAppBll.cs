@@ -17,4 +17,6 @@ public interface IAppBll : IBaseBll
     IStockOrderService StockOrderService { get; }
     ISupplierService SupplierService { get; }
     IWarehouseService WarehouseService { get; }
+    
+    /*IAccountService AccountService { get; }*/
 }

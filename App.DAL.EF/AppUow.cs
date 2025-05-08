@@ -61,4 +61,8 @@ public class AppUow : BaseUow<AppDbContext>, IAppUow
     private IWarehouseRepository? _warehouseRepository;
     public IWarehouseRepository WarehouseRepository =>
         _warehouseRepository ??= new WarehouseRepository(UowDbContext);
+    
+    private IRefreshTokenRepository? _refreshTokenRepository;
+    public IRefreshTokenRepository RefreshTokenRepository =>
+        _refreshTokenRepository ??= new RefreshTokenRepository(UowDbContext);
 }

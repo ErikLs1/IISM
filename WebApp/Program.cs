@@ -9,6 +9,7 @@ using App.DAL.EF;
 using App.DAL.EF.DataSeeding;
 using App.DAL.EF.Repositories;
 using App.Domain.Identity;
+using App.DTO.V1.Mappers;
 using Asp.Versioning;
 using Asp.Versioning.ApiExplorer;
 using Base.Contracts;
@@ -55,6 +56,14 @@ else
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 // Repos
+// if you inject the concrete AccountService type:
+builder.Services.AddScoped<App.BLL.Services.AccountService>();
+
+// or, better, if you inject the interface IAccountService:
+builder.Services.AddScoped<IAccountService, App.BLL.Services.AccountService>();
+
+// and don’t forget to register your mapper too:
+builder.Services.AddScoped<AccountMapper>();
 builder.Services.AddScoped<IAppUow, AppUow>();
 builder.Services.AddScoped<IAppBll, AppBll>();
 

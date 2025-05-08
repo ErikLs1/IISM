@@ -17,4 +17,5 @@ public interface IAppUow : IBaseUow
     IStockOrderRepository StockOrderRepository { get; }
     ISupplierRepository SupplierRepository { get; }
     IWarehouseRepository WarehouseRepository { get; }
+    IRefreshTokenRepository RefreshTokenRepository { get; }
 }

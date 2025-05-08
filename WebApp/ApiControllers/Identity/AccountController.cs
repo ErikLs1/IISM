@@ -1,9 +1,11 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using App.BLL.Services;
 using App.DAL.EF;
 using App.Domain.Identity;
 using App.DTO.Identity;
 using App.DTO.V1.DTO;
+using App.DTO.V1.Mappers;
 using Asp.Versioning;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -22,43 +24,16 @@ namespace WebApp.ApiControllers.Identity;
 [Route("api/v{version:apiVersion}/[controller]/[action]")]
 public class AccountController : ControllerBase
 {
-    private readonly UserManager<AppUser> _userManager;
-    private readonly ILogger<AccountController> _logger;
-    private readonly SignInManager<AppUser> _signInManager;
-    private readonly IConfiguration _configuration;
-    private readonly Random _random = new Random();
-    private readonly AppDbContext _context;
+    private readonly AccountService _accountService;
+    private readonly AccountMapper _accountMapper;
 
-    private const string UserPassProblem = "User/Password problem";
-    private const int RandomDelayMin = 500;
-    private const int RandomDelayMax = 5000;
-    
-    private const string SettingsJwtPrefix = "JWTSecurity";
-    private const string SettingsJwtKey = SettingsJwtPrefix + ":Key";
-    private const string SettingsJwtIssuer = SettingsJwtPrefix + ":Issuer";
-    private const string SettingsJwtAudience = SettingsJwtPrefix + ":Audience";
-    private const string SettingsJwtExpiresInSeconds = SettingsJwtPrefix + ":ExpiresInSeconds";
-    private const string SettingsJwtRefreshTokenExpiresInSeconds = SettingsJwtPrefix + ":RefreshTokenExpiresInSeconds";
 
-    /// <summary>
-    /// Constructor
-    /// </summary>
-    /// <param name="configuration"></param>
-    /// <param name="userManager"></param>
-    /// <param name="logger"></param>
-    /// <param name="signInManager"></param>
-    /// <param name="context"></param>
-    public AccountController(IConfiguration configuration, UserManager<AppUser> userManager, 
-        ILogger<AccountController> logger, SignInManager<AppUser> signInManager, AppDbContext context)
+    public AccountController(AccountService accountService, AccountMapper accountMapper)
     {
-        _configuration = configuration;
-        _userManager = userManager;
-        _logger = logger;
-        _signInManager = signInManager;
-        _context = context;
+        _accountService = accountService;
+        _accountMapper = accountMapper;
     }
 
-    
     /// <summary>
     /// User authentication, returns JWT and refresh token
     /// </summary>
@@ -80,7 +55,12 @@ public class AccountController : ControllerBase
         int? refreshTokenExpiresInSeconds
     )
     {
-        // verify user
+
+        var res = await _accountService.LoginAsync(_accountMapper.Map(loginInfo)!, jwtExpiresInSeconds,
+            refreshTokenExpiresInSeconds);
+        return Ok(_accountMapper.Map(res));
+        
+        /*// verify user
         var appUser = await _userManager.FindByEmailAsync(loginInfo.Email);
         if (appUser == null)
         {
@@ -146,10 +126,10 @@ public class AccountController : ControllerBase
             Role = role.FirstOrDefault()
         };
 
-        return Ok(responseData);
+        return Ok(responseData);*/
     }
     
-    /// <summary>
+    /*/// <summary>
     /// Register endpoint for REST API.
     /// </summary>
     /// <param name="registerModel"></param>
@@ -169,6 +149,10 @@ public class AccountController : ControllerBase
         [FromQuery]
         int? refreshTokenExpiresInSeconds)
     {
+        var res = await _accountService.RegisterAsync(_accountMapper.Map(registerModel)!, jwtExpiresInSeconds,
+            refreshTokenExpiresInSeconds);
+        return Ok(_accountMapper.Map(res));
+        
         // is user already registered
         var appUser = await _userManager.FindByEmailAsync(registerModel.Email);
         if (appUser != null)
@@ -247,6 +231,11 @@ public class AccountController : ControllerBase
         int? refreshTokenExpiresInSeconds
     )
     {
+        
+        var res = await _accountService.RenewTokenAsync(_accountMapper.Map(refreshTokenModel)!, jwtExpiresInSeconds,
+            refreshTokenExpiresInSeconds);
+        return Ok(_accountMapper.Map(res));
+        
         JwtSecurityToken jwtToken;
         // get user info from jwt
         try
@@ -364,6 +353,8 @@ public class AccountController : ControllerBase
     [HttpPost]
     public async Task<ActionResult> Logout([FromBody] LogoutDto logout)
     {
+        
+        
         // delete the refresh token - so user is kicked out after jwt expiration
         // We do not invalidate the jwt on serverside - that would require pipeline modification and checking against db on every request
         // so client can actually continue to use the jwt until it expires (keep the jwt expiration time short ~1 min)
@@ -405,5 +396,5 @@ public class AccountController : ControllerBase
             : _configuration.GetValue<int>(settingsKey);
 
         return DateTime.UtcNow.AddSeconds(expiresInSeconds ?? 60);
-    }
+    }*/
 }

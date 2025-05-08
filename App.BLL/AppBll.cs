@@ -89,4 +89,10 @@ public class AppBll : BaseBll<IAppUow>, IAppBll
         _warehouseService ??= new WarehouseService(
             BllUow, 
             new WarehouseBllMapper());
+    
+    /*private IAccountService? _accountService;
+    public IAccountService AccountService =>
+        _accountService ??= new AccountService(
+            BllUow, 
+            new AccountBllMapper());*/
 }

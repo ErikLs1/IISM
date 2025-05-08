@@ -226,7 +226,7 @@ namespace App.DAL.EF.Migrations
                     PersonPhoneNumber = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
                     PersonAddress = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     PersonGender = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
-                    PersonDateOfBirth = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    PersonDateOfBirth = table.Column<DateOnly>(type: "date", nullable: true),
                     CreatedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     ChangedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),

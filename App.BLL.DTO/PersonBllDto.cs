@@ -10,6 +10,6 @@ public class PersonBllDto : IDomainId
     public string PersonPhoneNumber { get; set; } = default!;
     public string PersonAddress { get; set; } = default!;
     public string PersonGender { get; set; } = default!;
-    public DateTime? PersonDateOfBirth { get; set; } = DateTime.UtcNow;
+    public DateOnly? PersonDateOfBirth { get; set; }
     public ICollection<OrderBllDto>? Orders { get; set; } = new List<OrderBllDto>();
 }

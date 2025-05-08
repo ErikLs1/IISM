@@ -129,7 +129,6 @@ public class AccountController : ControllerBase
         };
         _context.RefreshTokens.Add(refreshToken);
         await _context.SaveChangesAsync();
-
         
         var jwt = IdentityExtensions.GenerateJwt(
             claimsPrincipal.Claims,
@@ -139,10 +138,12 @@ public class AccountController : ControllerBase
             GetExpirationDateTime(jwtExpiresInSeconds, SettingsJwtExpiresInSeconds)
         );
 
+        var role = await _userManager.GetRolesAsync(appUser);
         var responseData = new JwtResponseDto()
         {
             Jwt = jwt,
-            RefreshToken = refreshToken.RefreshToken
+            RefreshToken = refreshToken.RefreshToken,
+            Role = role.FirstOrDefault()
         };
 
         return Ok(responseData);
@@ -345,10 +346,12 @@ public class AccountController : ControllerBase
             await _context.SaveChangesAsync();
         }
 
+        var role = await _userManager.GetRolesAsync(appUser);
         var res = new JwtResponseDto()
         {
             Jwt = jwt,
             RefreshToken = refreshToken.RefreshToken,
+            Role = role.FirstOrDefault()
         };
 
         return Ok(res);

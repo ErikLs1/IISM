@@ -18,11 +18,10 @@ public static class IdentityExtensions
 
     public static string GenerateJwt(
         IEnumerable<Claim> claims,
-        string key, 
-        string issuer, 
-        string audience, 
-        DateTime expires
-        )
+        string key,
+        string issuer,
+        string audience,
+        DateTime expires)
     {
         var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
         var signingCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha512);

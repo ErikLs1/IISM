@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
 using App.BLL;
 using App.BLL.Contracts;
@@ -75,6 +76,7 @@ builder.Services
         // options.SaveToken = false;
         options.TokenValidationParameters = new TokenValidationParameters()
         {
+            RoleClaimType = ClaimTypes.Role,
             ValidIssuer = builder.Configuration["JWTSecurity:Issuer"],
             ValidAudience = builder.Configuration["JWTSecurity:Audience"],
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWTSecurity:Key"]!)),

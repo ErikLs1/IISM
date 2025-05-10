@@ -42,6 +42,7 @@ public class PersonUowMapper : IMapper<PersonDalDto, Person>
         var entity = new Person()
         {
             Id = dto.Id,
+            UserId = dto.UserId,
             PersonFirstName = dto.PersonFirstName,
             PersonLastName = dto.PersonLastName,
             PersonPhoneNumber = dto.PersonPhoneNumber,

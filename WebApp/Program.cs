@@ -4,6 +4,7 @@ using System.Security.Claims;
 using System.Text;
 using App.BLL;
 using App.BLL.Contracts;
+using App.BLL.Mappers;
 using App.DAL.Contracts;
 using App.DAL.EF;
 using App.DAL.EF.DataSeeding;
@@ -63,6 +64,7 @@ builder.Services.AddScoped<App.BLL.Services.AccountService>();
 builder.Services.AddScoped<IAccountService, App.BLL.Services.AccountService>();
 
 // and don’t forget to register your mapper too:
+builder.Services.AddScoped<AccountBllMapper>();
 builder.Services.AddScoped<AccountMapper>();
 builder.Services.AddScoped<IAppUow, AppUow>();
 builder.Services.AddScoped<IAppBll, AppBll>();

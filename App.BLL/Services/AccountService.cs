@@ -1,7 +1,9 @@
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Authentication;
 using System.Security.Claims;
 using App.BLL.Contracts;
 using App.BLL.DTO.Identity;
+using App.BLL.Mappers;
 using App.DAL.Contracts;
 using App.DAL.DTO;
 using App.Domain.Identity;
@@ -18,6 +20,7 @@ public class AccountService : IAccountService
     private readonly UserManager<AppUser> _userManager;
     private readonly SignInManager<AppUser> _signInManager;
     private readonly IConfiguration _configuration;
+    private readonly AccountBllMapper _mapper;
 
     private const string SettingsJwtPrefix = "JWTSecurity";
     private const string SettingsJwtKey = SettingsJwtPrefix + ":Key";
@@ -31,17 +34,72 @@ public class AccountService : IAccountService
     public AccountService(
         IAppUow uow, 
         UserManager<AppUser> userManager, 
-        SignInManager<AppUser> signInManager, IConfiguration configuration)
+        SignInManager<AppUser> signInManager, IConfiguration configuration, AccountBllMapper mapper)
     {
         _uow = uow;
         _userManager = userManager;
         _signInManager = signInManager;
         _configuration = configuration;
+        _mapper = mapper;
     }
 
-    public Task<JwtResponseBllDto> RegisterAsync(RegisterBllDto dto, int? jwtExpiresInSeconds, int? refreshTokenExpiresInSeconds)
+    public async Task<JwtResponseBllDto> RegisterAsync(RegisterBllDto dto, int? jwtExpiresInSeconds, int? refreshTokenExpiresInSeconds)
     {
-        throw new NotImplementedException();
+        // is user already registered
+        var appUser = await _userManager.FindByEmailAsync(dto.Email);
+        if (appUser != null)
+        {
+            throw new InvalidCredentialException("The user with this email is already registered.");
+        }
+
+        // register user
+        var refreshToken = new AppRefreshToken()
+        {
+            Expiration = GetExpirationDateTime(refreshTokenExpiresInSeconds, SettingsJwtRefreshTokenExpiresInSeconds)
+        };
+        
+        var user = new AppUser()
+        {
+            Email = dto.Email,
+            UserName = dto.Email,
+            FirstName = dto.FirstName,
+            LastName = dto.LastName,
+            RefreshTokens = new List<AppRefreshToken>()
+            {
+                refreshToken
+            }
+        };
+        
+        var result = await _userManager.CreateAsync(user, dto.Password);
+
+        if (!result.Succeeded) throw new InvalidCredentialException("Failed to create user.");
+
+        var personDal = _mapper.Map(dto);
+        personDal!.UserId = user.Id;
+        
+        _uow.PersonRepository.Add(personDal, user.Id);
+        await _uow.SaveChangesAsync();
+        
+        
+        await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.GivenName, user.FirstName));
+        await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Surname, user.LastName));
+
+        var claimsPrincipal = await _signInManager.CreateUserPrincipalAsync(user);
+        var jwt = IdentityExtensions.GenerateJwt(
+            claimsPrincipal.Claims,
+            _configuration[SettingsJwtKey]!,
+            _configuration[SettingsJwtIssuer]!,
+            _configuration[SettingsJwtAudience]!,
+            GetExpirationDateTime(jwtExpiresInSeconds, SettingsJwtExpiresInSeconds)
+        );
+        
+        var responseData = new JwtResponseBllDto()
+        {
+            Jwt = jwt,
+            RefreshToken = refreshToken.RefreshToken,
+        };
+
+        return responseData;
     }
 
     public async Task<JwtResponseBllDto> LoginAsync(LoginBllDto dto, int? jwtExpiresInSeconds, int? refreshTokenExpiresInSeconds)
@@ -88,20 +146,90 @@ public class AccountService : IAccountService
         return responseData;
     }
 
-    public Task<JwtResponseBllDto> RenewTokenAsync(RefreshTokenBllDto dto, int? jwtExpiresInSeconds, int? refreshTokenExpiresInSeconds)
+    public async Task<JwtResponseBllDto> RenewTokenAsync(RefreshTokenBllDto dto, int? jwtExpiresInSeconds, int? refreshTokenExpiresInSeconds)
     {
-        throw new NotImplementedException();
+        JwtSecurityToken jwtToken;
+        // get user info from jwt
+        try
+        {
+            jwtToken = new JwtSecurityTokenHandler().ReadJwtToken(dto.Jwt);
+        }
+        catch (Exception e)
+        {
+            throw new InvalidCredentialException($"Cannot parse JWT: {e.Message}");
+        }
+        
+        // validate jwt, ignore expiration date
+        if (!IdentityExtensions.ValidateJwt(
+                dto.Jwt,
+                _configuration[SettingsJwtKey]!,
+                _configuration[SettingsJwtIssuer]!,
+                _configuration[SettingsJwtAudience]!
+            ))
+        {
+            throw new InvalidCredentialException("JWT validation failed");
+        }
+
+        var userEmail = jwtToken.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value ??
+                        throw new InvalidCredentialException("No email in jwt.");
+
+        // get user and tokens
+        var user = await _userManager.FindByEmailAsync(userEmail) ??
+                      throw new InvalidCredentialException($"User with email {userEmail} not found");
+
+        await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.GivenName, user.FirstName));
+        await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Surname, user.LastName));
+
+        await _uow.RefreshTokenRepository.DeleteExpiredTokenAsync(user.Id);
+
+        var tokens = await _uow.RefreshTokenRepository.FindByTokenAsync(user.Id, dto.RefreshToken);
+        if (tokens.Count != 1)
+        {
+            throw new InvalidCredentialException("No valid refresh tokens found.");
+        }
+
+        var refreshToken = tokens.Single();
+        if (refreshToken.RefreshToken != dto.RefreshToken)
+        {
+            throw new InvalidCredentialException("Refresh token is no longer valid");
+        }
+
+        if (refreshToken.RefreshToken == dto.RefreshToken)
+        {
+            refreshToken.PreviousRefreshToken = refreshToken.RefreshToken;
+            refreshToken.PreviousExpiration = DateTime.UtcNow.AddMinutes(1);
+
+            refreshToken.RefreshToken = Guid.NewGuid().ToString();
+            refreshToken.Expiration =
+                GetExpirationDateTime(refreshTokenExpiresInSeconds, SettingsJwtRefreshTokenExpiresInSeconds);
+        }
+
+        _uow.RefreshTokenRepository.Update(refreshToken);
+        await _uow.SaveChangesAsync();
+        
+        var claimsPrincipal = await _signInManager.CreateUserPrincipalAsync(user);
+        
+        // generate jwt
+        var newJwt = IdentityExtensions.GenerateJwt(
+            claimsPrincipal.Claims,
+            _configuration[SettingsJwtKey]!,
+            _configuration[SettingsJwtIssuer]!,
+            _configuration[SettingsJwtAudience]!,
+            GetExpirationDateTime(jwtExpiresInSeconds, SettingsJwtExpiresInSeconds)
+        );
+        
+        var roles = await _userManager.GetRolesAsync(user);
+        return new JwtResponseBllDto
+        {
+            Jwt          = newJwt,
+            RefreshToken = refreshToken.RefreshToken,
+            Role         = roles.FirstOrDefault()!
+        };
     }
 
-    public Task Logout(Guid userId, string refreshToken)
+    public async Task LogoutAsync(Guid userId, string refreshToken)
     {
-        throw new NotImplementedException();
-    }
-    
-    private Task<JwtResponseBllDto> CreateJwtTokenAsync(AppUser user, int? jwtExpiresInSeconds,
-        int? refreshTokenExpiresInSeconds, AppRefreshToken? refreshToken)
-    {
-        throw new NotImplementedException();
+        await _uow.RefreshTokenRepository.DeleteByTokenAsync(userId, refreshToken);
     }
     
     private DateTime GetExpirationDateTime(int? expiresInSeconds, string settingsKey)

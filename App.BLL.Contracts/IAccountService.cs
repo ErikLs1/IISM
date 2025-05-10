@@ -20,5 +20,5 @@ public interface IAccountService
         RefreshTokenBllDto dto,
         int? jwtExpiresInSeconds,
         int? refreshTokenExpiresInSeconds);
-    Task Logout(Guid userId, string refreshToken);
+    Task LogoutAsync(Guid userId, string refreshToken);
 }

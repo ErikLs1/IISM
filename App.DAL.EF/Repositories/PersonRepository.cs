@@ -27,4 +27,11 @@ public class PersonRepository : BaseRepository<PersonDalDto, Person>, IPersonRep
         return await query
             .CountAsync(p => p.PersonFirstName == name);
     }
+
+    public async Task<PersonDalDto> FindByUserIdAsync(Guid userId)
+    {
+        var query = GetQuery(userId);
+        var res = await query.FirstOrDefaultAsync(p => p.UserId == userId);
+        return Mapper.Map(res)!;
+    }
 }

@@ -1,5 +1,6 @@
 using App.BLL.Contracts;
 using App.BLL.DTO;
+using App.BLL.DTO.Identity;
 using App.DAL.Contracts;
 using App.DAL.DTO;
 using Base.BLL;
@@ -21,5 +22,20 @@ public class PersonService : BaseService<PersonBllDto, PersonDalDto, IPersonRepo
     {
         var count = await ServiceRepository.GetPersonCountByNameAsync(name, userId);
         return count;
+    }
+
+    public async Task<ProfileInfoBllDto> GetProfileAsync(Guid userId)
+    {
+        var dal = await ServiceRepository.FindByUserIdAsync(userId);
+        var res = new ProfileInfoBllDto()
+        {
+            PersonFirstName = dal.PersonFirstName,
+            PersonLastName = dal.PersonLastName,
+            PersonPhoneNumber = dal.PersonPhoneNumber,
+            PersonAddress = dal.PersonAddress,
+            PersonGender = dal.PersonGender,
+            PersonBirthDate = dal.PersonDateOfBirth
+        };
+        return res;
     }
 }

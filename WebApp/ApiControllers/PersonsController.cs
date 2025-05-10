@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using App.BLL.Contracts;
 using App.DTO.V1;
 using App.DTO.V1.DTO;
@@ -14,7 +15,7 @@ namespace WebApp.ApiControllers;
 /// </summary>
 [ApiVersion( "1.0" )]
 [ApiController]
-[Route("api/v{version:apiVersion}/[controller]")]
+[Route("api/v{version:apiVersion}/[controller]/[action]")]
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class PersonsController : ControllerBase
 {
@@ -47,22 +48,30 @@ public class PersonsController : ControllerBase
         return res;
     }
 
-    
-    [HttpGet("{id}")]
-    public async Task<ActionResult<PersonDto>> GetPerson(Guid id)
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    [HttpGet]
+    [ProducesResponseType( typeof( ProfileInfoDto ), 200 )]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    public async Task<ActionResult<ProfileInfoDto>> GetProfileInfo()
     {
-        var person = await _bll.PersonService.FindAsync(id);
-
-        if (person == null)
+        var userId = User.GetUserId();
+        var bll = await _bll.PersonService.GetProfileAsync(userId);
+        var res = new ProfileInfoDto()
         {
-            return NotFound();
-        }
-        var res = new PersonDto()
-        {
-            Id = person.Id,
-            PersonFirstName = person.PersonFirstName,
-            PersonLastName = person.PersonLastName
+            UserId = User.GetUserId(),
+            PersonFirstName = bll.PersonFirstName,
+            PersonLastName = bll.PersonLastName,
+            PersonPhoneNumber = bll.PersonPhoneNumber,
+            PersonAddress = bll.PersonAddress,
+            PersonGender = bll.PersonGender,
+            PersonDateOfBirth = bll.PersonBirthDate,
+            Email = User.FindFirstValue(ClaimTypes.Email)!
         };
+        
         return res;
     }
 

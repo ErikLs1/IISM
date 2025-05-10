@@ -1,8 +1,4 @@
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using App.BLL.Services;
-using App.DAL.EF;
-using App.Domain.Identity;
 using App.DTO.Identity;
 using App.DTO.V1.DTO;
 using App.DTO.V1.Mappers;
@@ -10,9 +6,7 @@ using Asp.Versioning;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace WebApp.ApiControllers.Identity;
 

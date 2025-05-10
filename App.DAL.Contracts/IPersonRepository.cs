@@ -5,6 +5,7 @@ namespace App.DAL.Contracts;
 
 public interface IPersonRepository : IBaseRepository<PersonDalDto>, IPersonRepositoryCustom
 {
+    Task<PersonDalDto> FindByUserIdAsync(Guid userId);
 }
 
 public interface IPersonRepositoryCustom

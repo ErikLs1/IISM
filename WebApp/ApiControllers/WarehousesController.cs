@@ -17,7 +17,7 @@ public class WarehousesController : ControllerBase
 {
     private readonly IAppBll _bll;
     private readonly WarehouseMapper _mapper = new WarehouseMapper();
-
+    
     /// <inheritdoc />
     public WarehousesController(IAppBll bll)
     {
@@ -66,7 +66,9 @@ public class WarehousesController : ControllerBase
     /// <param name="warehouse"></param>
     /// <returns></returns>
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutWarehouse(Guid id, WarehouseDto warehouse)
+    [ProducesResponseType(typeof(IEnumerable<WarehouseDto>), 201)]
+    [ProducesResponseType(404)]
+    public async Task<IActionResult> UpdateWarehouse(Guid id, WarehouseDto warehouse)
     {
         if (id != warehouse.Id)
         {
@@ -85,7 +87,7 @@ public class WarehousesController : ControllerBase
     /// <param name="warehouse"></param>
     /// <returns></returns>
     [HttpPost]
-    public async Task<ActionResult<WarehouseDto>> PostWarehouse(WarehouseCreateDto warehouse)
+    public async Task<ActionResult<WarehouseDto>> CreateWarehouse(WarehouseCreateDto warehouse)
     {
         var bllEntity = _mapper.Map(warehouse);
         _bll.WarehouseService.Add(bllEntity!);

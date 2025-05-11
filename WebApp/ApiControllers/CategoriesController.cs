@@ -1,112 +1,116 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+using App.BLL.Contracts;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using App.DAL.EF;
 using App.Domain;
+using App.DTO.V1.DTO;
+using App.DTO.V1.Mappers;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.ApiControllers;
 
+/// <inheritdoc />
 [ApiVersion( "1.0" )]
 [ApiController]
 [Route("api/v{version:apiVersion}/[controller]")]
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class CategoriesController : ControllerBase
 {
-    private readonly AppDbContext _context;
+    private readonly IAppBll _bll;
+    private readonly CategoryMapper _mapper = new CategoryMapper();
 
-    public CategoriesController(AppDbContext context)
+    /// <inheritdoc />
+    public CategoriesController(IAppBll bll)
     {
-        _context = context;
+        _bll = bll;
     }
 
-    // GET: api/Categories
+    
+    /// <summary>
+    /// Get all categories
+    /// </summary>
+    /// <returns></returns>
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
+    [Produces("application/json")]
+    [ProducesResponseType(typeof(IEnumerable<CategoryDto>), 200)]
+    [ProducesResponseType(404)]
+    public async Task<ActionResult<IEnumerable<CategoryDto>>> GetCategories()
     {
-        return await _context.Categories.ToListAsync();
+        var data = await _bll.CategoryService.AllAsync();
+        var res = data.Select(x => _mapper.Map(x)!).ToList();
+        return res;
     }
 
-    // GET: api/Categories/5
+    /// <summary>
+    /// Get category by id.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpGet("{id}")]
-    public async Task<ActionResult<Category>> GetCategory(Guid id)
+    [ProducesResponseType(typeof(IEnumerable<CategoryDto>), 200)]
+    [ProducesResponseType(404)]
+    public async Task<ActionResult<CategoryDto>> GetCategory(Guid id)
     {
-        var category = await _context.Categories.FindAsync(id);
+        var category = await _bll.CategoryService.FindAsync(id);
 
         if (category == null)
         {
             return NotFound();
         }
 
-        return category;
+        return _mapper.Map(category)!;
     }
 
-    // PUT: api/Categories/5
-    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+    /// <summary>
+    /// Update category.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="category"></param>
+    /// <returns></returns>
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutCategory(Guid id, Category category)
+    [ProducesResponseType(typeof(IEnumerable<CategoryDto>), 201)]
+    [ProducesResponseType(404)]
+    public async Task<IActionResult> UpdateCategory(Guid id, CategoryDto category)
     {
         if (id != category.Id)
         {
             return BadRequest();
         }
 
-        _context.Entry(category).State = EntityState.Modified;
-
-        try
-        {
-            await _context.SaveChangesAsync();
-        }
-        catch (DbUpdateConcurrencyException)
-        {
-            if (!CategoryExists(id))
-            {
-                return NotFound();
-            }
-            else
-            {
-                throw;
-            }
-        }
-
+        await _bll.CategoryService.UpdateAsync(_mapper.Map(category)!);
+        await _bll.SaveChangesAsync();
+        
         return NoContent();
     }
 
-    // POST: api/Categories
-    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+    /// <summary>
+    /// Create new category.
+    /// </summary>
+    /// <param name="category"></param>
+    /// <returns></returns>
     [HttpPost]
-    public async Task<ActionResult<Category>> PostCategory(Category category)
+    public async Task<ActionResult<Category>> CreateCategory(CategoryCreateDto category)
     {
-        _context.Categories.Add(category);
-        await _context.SaveChangesAsync();
+        var bllEntity = _mapper.Map(category);
+        _bll.CategoryService.Add(bllEntity!);
+        await _bll.SaveChangesAsync();
+        
+        return CreatedAtAction("GetWarehouse", new
+        {
+            id = bllEntity?.Id,
+            version = HttpContext.GetRequestedApiVersion()!.ToString()
+        }, category);}
 
-        return CreatedAtAction("GetCategory", new { id = category.Id }, category);
-    }
-
-    // DELETE: api/Categories/5
+    /// <summary>
+    /// Delete category by id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteCategory(Guid id)
     {
-        var category = await _context.Categories.FindAsync(id);
-        if (category == null)
-        {
-            return NotFound();
-        }
-
-        _context.Categories.Remove(category);
-        await _context.SaveChangesAsync();
-
+        await _bll.CategoryService.RemoveAsync(id);
+        await _bll.SaveChangesAsync();
         return NoContent();
-    }
-
-    private bool CategoryExists(Guid id)
-    {
-        return _context.Categories.Any(e => e.Id == id);
     }
 }

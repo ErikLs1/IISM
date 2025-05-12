@@ -15,6 +15,11 @@ public class WarehouseUowMapper : IMapper<WarehouseDalDto, Warehouse>
         {
             Id = entity.Id,
             WarehouseAddress = entity.WarehouseAddress,
+            WarehouseStreet = entity.WarehouseStreet,
+            WarehouseCity = entity.WarehouseCity,
+            WarehouseState = entity.WarehouseState,
+            WarehouseCountry = entity.WarehouseCountry,
+            WarehousePostalCode = entity.WarehousePostalCode,
             WarehouseEmail = entity.WarehouseEmail,
             WarehouseCapacity = entity.WarehouseCapacity,
             StockOrders = entity.StockOrders == null
@@ -51,6 +56,11 @@ public class WarehouseUowMapper : IMapper<WarehouseDalDto, Warehouse>
         {
             Id = dto.Id,
             WarehouseAddress = dto.WarehouseAddress,
+            WarehouseStreet = dto.WarehouseStreet,
+            WarehouseCity = dto.WarehouseCity,
+            WarehouseState = dto.WarehouseState,
+            WarehouseCountry = dto.WarehouseCountry,
+            WarehousePostalCode = dto.WarehousePostalCode,
             WarehouseEmail = dto.WarehouseEmail,
             WarehouseCapacity = dto.WarehouseCapacity,
         };

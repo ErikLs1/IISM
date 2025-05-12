@@ -14,6 +14,11 @@ public class WarehouseMapper : IMapper<WarehouseDto, WarehouseBllDto>
         {
             Id = entity.Id,
             WarehouseAddress = entity.WarehouseAddress,
+            WarehouseStreet = entity.WarehouseStreet,
+            WarehouseCity = entity.WarehouseCity,
+            WarehouseState = entity.WarehouseState,
+            WarehouseCountry = entity.WarehouseCountry,
+            WarehousePostalCode = entity.WarehousePostalCode,
             WarehouseEmail = entity.WarehouseEmail,
             WarehouseCapacity = entity.WarehouseCapacity
         };
@@ -29,6 +34,11 @@ public class WarehouseMapper : IMapper<WarehouseDto, WarehouseBllDto>
         {
             Id = entity.Id,
             WarehouseAddress = entity.WarehouseAddress,
+            WarehouseStreet = entity.WarehouseStreet,
+            WarehouseCity = entity.WarehouseCity,
+            WarehouseState = entity.WarehouseState,
+            WarehouseCountry = entity.WarehouseCountry,
+            WarehousePostalCode = entity.WarehousePostalCode,
             WarehouseEmail = entity.WarehouseEmail,
             WarehouseCapacity = entity.WarehouseCapacity
         };

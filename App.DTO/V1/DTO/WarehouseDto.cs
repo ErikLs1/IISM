@@ -9,7 +9,12 @@ public class WarehouseDto : IDomainId
     
     [Required]
     [MaxLength(100)]
-    public string WarehouseAddress { get; set; } = default!;
+    public string WarehouseAddress { get; set; } = default!;    
+    public string WarehouseStreet { get; set; } = default!;
+    public string WarehouseCity { get; set; } = default!;
+    public string WarehouseState { get; set; } = default!;
+    public string WarehouseCountry { get; set; } = default!;
+    public string WarehousePostalCode { get; set; } = default!;
     
     [Required]
     [MaxLength(100)]

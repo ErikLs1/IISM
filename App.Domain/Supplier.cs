@@ -21,6 +21,21 @@ public class Supplier : BaseEntity
     [Display(Name = nameof(SupplierAddress), Prompt = nameof(SupplierAddress), ResourceType = typeof(App.Resources.Domain.Supplier))]
     public string SupplierAddress { get; set; } = default!;
 
+    [MaxLength(100)]
+    public string SupplierStreet { get; set; } = default!;
+    
+    [MaxLength(50)]
+    public string SupplierCity { get; set; } = default!;
+    
+    [MaxLength(50)]
+    public string SupplierState { get; set; } = default!;
+    
+    [MaxLength(50)]
+    public string SupplierCountry { get; set; } = default!;
+    
+    [MaxLength(20)]
+    public string SupplierPostalCode { get; set; } = default!;
+
     public ICollection<StockOrder>? StockOrders { get; set; } = new List<StockOrder>();
     public ICollection<ProductSupplier>? ProductSuppliers { get; set; } = new List<ProductSupplier>();
 

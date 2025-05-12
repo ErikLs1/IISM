@@ -10,6 +10,21 @@ public class Warehouse : BaseEntity
     public string WarehouseAddress { get; set; } = default!;
     
     [MaxLength(100)]
+    public string WarehouseStreet { get; set; } = default!;
+    
+    [MaxLength(50)]
+    public string WarehouseCity { get; set; } = default!;
+    
+    [MaxLength(50)]
+    public string WarehouseState { get; set; } = default!;
+    
+    [MaxLength(50)]
+    public string WarehouseCountry { get; set; } = default!;
+    
+    [MaxLength(20)]
+    public string WarehousePostalCode { get; set; } = default!;
+    
+    [MaxLength(100)]
     [Display(Name = nameof(WarehouseEmail), Prompt = nameof(WarehouseEmail), ResourceType = typeof(App.Resources.Domain.Warehouse))]
     public string WarehouseEmail { get; set; } = default!;
     

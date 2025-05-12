@@ -151,33 +151,51 @@ public static class InitialData
             ("USB Flash Drive 64 GB", "USB-3.0 swivel flash drive", 15.99M, "ACTIVE", "Office Supplies",null)
         ];
     
-    public static readonly (string supplierName, string supplierPhoneNumber, string supplierEmail, string supplierAddress, Guid? id)[]
+    public static readonly (string supplierName, string supplierPhoneNumber, string supplierEmail, string supplierAddress, 
+        string supplierStreet, string supplierCity, string supplierState, string supplierCountry, string supplierPostalCode, Guid? id)[]
         Suppliers =
         [
-            ("GlobalTech Ltd", "+1-800-555-0101", "sales@globaltech.com", "123 Tech Drive, Silicon Valley, CA", null ),
-            ("HomeComfort Inc", "+1-800-555-0202", "orders@homecomfort.com", "456 Maple Ave, Springfield, IL", null),
-            ("FashionHub", "+1-800-555-0303", "contact@fashionhub.com", "789 Style Blvd, New York, NY", null),
-            ("FreshHarvest Foods", "+1-800-555-0404", "sales@freshharvestfoods.com", "321 Farm Road, Des Moines, IA", null),
-            ("HealthPlus Pharma", "+1-800-555-0505", "info@healthpluspharma.com", "654 Wellness St, Boston, MA", null),
-            ("SportGear Co", "+1-800-555-0606", "support@sportgearco.com", "987 Stadium Way, Denver, CO", null),
-            ("AutoParts Depot", "+1-800-555-0707", "parts@autopartsdepot.com", "159 Mechanic Ln, Detroit, MI", null),
-            ("OfficePro Services", "+1-800-555-0808", "service@officepro.com", "753 Paper Rd, Seattle, WA", null),
-            ("ElectroWorld Plus", "+1-800-555-1001", "contact@electroworldplus.com", "100 Tech Lane, Austin, TX", null),
-            ("CircuitPro Components", "+1-800-555-1002", "sales@circuitpro.com", "200 Silicon Blvd, Austin, TX", null),
-            ("GadgetGalaxy", "+1-800-555-1003", "info@gadgetgalaxy.com", "300 Innovation Drive, Palo Alto, CA", null),
-            ("FurniLux Designs", "+1-800-555-2001", "support@furnilux.com", "123 Comfort St, Dallas, TX", null),
-            ("UrbanChic Furnishings", "+1-800-555-2002", "sales@urbanchic.com", "456 Trendy Ave, Los Angeles, CA", null),
-            ("StyleVista", "+1-800-555-3001", "contact@stylevista.com", "789 Fashion Blvd, New York, NY", null),
-            ("ApparelEdge", "+1-800-555-3002", "sales@appareledge.com", "321 Runway Rd, Miami, FL", null),
-            ("GourmetHarvest", "+1-800-555-4001", "orders@gourmetharvest.com", "234 Farm Lane, Portland, OR", null),
-            ("BeverageBarn", "+1-800-555-4002", "sales@beveragebarn.com", "567 Drink St, Seattle, WA", null),
-            ("BeautyEssence", "+1-800-555-5001", "info@beautyessence.com", "89 Spa Rd, Scottsdale, AZ", null),
-            ("HealthHarvest", "+1-800-555-5002", "orders@healthharvest.com", "123 Wellness Way, Austin, TX", null),
-            ("PeakPerformance Gear", "+1-800-555-6001", "support@peakperformance.com", "234 Summit Blvd, Boulder, CO", null),
-            ("OutdoorMaster", "+1-800-555-6002", "sales@outdoormaster.com", "345 Trail Rd, Denver, CO", null),
-            ("AutoPro Parts", "+1-800-555-7001", "contact@autoproparts.com", "456 Garage St, Detroit, MI", null),
-            ("DriveTech", "+1-800-555-7002", "sales@drivetech.com", "789 Mechanic Ave, Cleveland, OH", null),
-            ("PaperPlus Supplies", "+1-800-555-8001", "orders@paperplus.com", "890 Office Park, Boston, MA", null),
-            ("StationeryWorld", "+1-800-555-8002", "sales@stationeryworld.com", "123 Pen Rd, Chicago, IL", null),
+            ("GlobalTech Ltd", "+1-800-555-0101", "sales@globaltech.com", "123 Tech Drive, Silicon Valley, CA 94043", "123 Tech Drive", "Silicon Valley", "CA", "USA", "94043", null ),
+            ("HomeComfort Inc", "+1-800-555-0202", "orders@homecomfort.com", "456 Maple Ave, Springfield, IL 62701","456 Maple Ave", "Springfield", "IL", "USA", "62701", null),
+            ("FashionHub", "+1-800-555-0303", "contact@fashionhub.com", "789 Style Blvd, New York, NY 10001","789 Style Blvd", "New York", "NY", "USA", "10001", null),
+            ("FreshHarvest Foods", "+1-800-555-0404", "sales@freshharvestfoods.com", "321 Farm Road, Des Moines, IA 50309", "321 Farm Road", "Des Moines", "IA", "USA", "50309",null),
+            ("HealthPlus Pharma", "+1-800-555-0505", "info@healthpluspharma.com", "654 Wellness St, Boston, MA 02118", "654 Wellness St", "Boston", "MA", "USA", "02118",null),
+            ("SportGear Co", "+1-800-555-0606", "support@sportgearco.com", "987 Stadium Way, Denver, CO 80205", "987 Stadium Way", "Denver", "CO", "USA", "80205",null),
+            ("AutoParts Depot", "+1-800-555-0707", "parts@autopartsdepot.com", "159 Mechanic Ln, Detroit, MI 48201", "159 Mechanic Ln", "Detroit", "MI", "USA", "48201",null),
+            ("OfficePro Services", "+1-800-555-0808", "service@officepro.com", "753 Paper Rd, Seattle, WA 98101", "753 Paper Rd", "Seattle", "WA", "USA", "98101",null),
+            ("ElectroWorld Plus", "+1-800-555-1001", "contact@electroworldplus.com", "100 Tech Lane, Austin, TX 78701", "100 Tech Lane", "Austin", "TX", "USA", "78701",null),
+            ("CircuitPro Components", "+1-800-555-1002", "sales@circuitpro.com", "200 Silicon Blvd, Austin, TX 78758", "200 Silicon Blvd", "Austin", "TX", "USA", "78758",null),
+            ("GadgetGalaxy", "+1-800-555-1003", "info@gadgetgalaxy.com", "300 Innovation Drive, Palo Alto, CA 94301", "300 Innovation Drive", "Palo Alto", "CA", "USA", "94301",null),
+            ("FurniLux Designs", "+1-800-555-2001", "support@furnilux.com", "123 Comfort St, Dallas, TX 75201", "123 Comfort St", "Dallas", "TX", "USA", "75201",null),
+            ("UrbanChic Furnishings", "+1-800-555-2002", "sales@urbanchic.com", "456 Trendy Ave, Los Angeles, CA 90012", "456 Trendy Ave", "Los Angeles", "CA", "USA", "90012",null),
+            ("StyleVista", "+1-800-555-3001", "contact@stylevista.com", "789 Fashion Blvd, New York, NY 10018", "789 Fashion Blvd", "New York", "NY", "USA", "10018",null),
+            ("ApparelEdge", "+1-800-555-3002", "sales@appareledge.com", "321 Runway Rd, Miami, FL 33101", "321 Runway Rd", "Miami", "FL", "USA", "33101",null),
+            ("GourmetHarvest", "+1-800-555-4001", "orders@gourmetharvest.com", "234 Farm Lane, Portland, OR 97201", "234 Farm Lane", "Portland", "OR", "USA", "97201",null),
+            ("BeverageBarn", "+1-800-555-4002", "sales@beveragebarn.com", "567 Drink St, Seattle, WA 98109", "567 Drink St", "Seattle", "WA", "USA", "98109",null),
+            ("BeautyEssence", "+1-800-555-5001", "info@beautyessence.com", "89 Spa Rd, Scottsdale, AZ 85250", "89 Spa Rd", "Scottsdale", "AZ", "USA", "85250",null),
+            ("HealthHarvest", "+1-800-555-5002", "orders@healthharvest.com", "123 Wellness Way, Austin, TX 78759", "123 Wellness Way", "Austin", "TX", "USA", "78759",null),
+            ("PeakPerformance Gear", "+1-800-555-6001", "support@peakperformance.com", "234 Summit Blvd, Boulder, CO 80302", "234 Summit Blvd", "Boulder", "CO", "USA", "80302",null),
+            ("OutdoorMaster", "+1-800-555-6002", "sales@outdoormaster.com", "345 Trail Rd, Denver, CO 80204", "345 Trail Rd", "Denver", "CO", "USA", "80204",null),
+            ("AutoPro Parts", "+1-800-555-7001", "contact@autoproparts.com", "456 Garage St, Detroit, MI 48202", "456 Garage St", "Detroit", "MI", "USA", "48202",null),
+            ("DriveTech", "+1-800-555-7002", "sales@drivetech.com", "789 Mechanic Ave, Cleveland, OH 44114", "789 Mechanic Ave", "Cleveland", "OH", "USA", "44114",null),
+            ("PaperPlus Supplies", "+1-800-555-8001", "orders@paperplus.com", "890 Office Park, Boston, MA 02109", "890 Office Park", "Boston", "MA", "USA", "02109",null),
+            ("StationeryWorld", "+1-800-555-8002", "sales@stationeryworld.com", "123 Pen Rd, Chicago, IL 60601", "123 Pen Rd", "Chicago", "IL", "USA", "60601",null),
+        ];
+    
+        
+    public static readonly (string warehouseAddress, string warehouseStreet,  string warehouseCity, string warehouserState, 
+    string warehouseCountry, string warehousePostalCode,string warehouseEmail, int warehouseCapacity, Guid? id)[]
+        Warehouses =
+        [
+            ("100 Industrial Road, Chicago, IL 60607", "100 Industrial Road", "Chicago", "IL", "USA", "60607",   "wh-chicago@warehouseco.com",      5000, null),
+            ("250 Logistics Blvd, Atlanta, GA 30303", "250 Logistics Blvd", "Atlanta", "GA", "USA", "30303",    "wh-atlanta@warehouseco.com",      4500, null),
+            ("75 Portside Drive, Long Beach, CA 90802", "75 Portside Drive", "Long Beach", "CA", "USA", "90802",  "wh-longbeach@warehouseco.com",    6000, null),
+            ("12 Distribution Lane, Dallas, TX 75201", "12 Distribution Lane", "Dallas", "TX", "USA", "75201",   "wh-dallas@warehouseco.com",       4000, null),
+            ("5000 Supply Way, Seattle, WA 98101", "5000 Supply Way", "Seattle", "WA", "USA", "98101",      "wh-seattle@warehouseco.com",      5500, null),
+            ("8000 Storage Park, Orlando, FL 32801", "8000 Storage Park", "Orlando", "FL", "USA", "32801",    "wh-orlando@warehouseco.com",      3000, null),
+            ("330 Freight Avenue, New York, NY 10001","330 Freight Avenue", "New York", "NY", "USA", "10001",   "wh-nyc@warehouseco.com",          7000, null),
+            ("1200 Cargo Road, Memphis, TN 38103", "1200 Cargo Road", "Memphis", "TN", "USA", "38103",      "wh-memphis@warehouseco.com",      4800, null),
+            ("4500 Inland Empire, San Bernardino, CA 38104","4500 Inland Empire", "San Bernardino", "CA", "USA", "38104",   "wh-sb@warehouseco.com",           5200, null),
+            ("200 Bay Street, Newark, NJ 07102", "200 Bay Street", "Newark", "NJ", "USA", "07102",        "wh-newark@warehouseco.com",       6500, null),
         ];
 }  

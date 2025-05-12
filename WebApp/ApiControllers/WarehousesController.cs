@@ -11,7 +11,7 @@ namespace WebApp.ApiControllers;
 /// <inheritdoc />
 [ApiVersion( "1.0" )]
 [ApiController]
-[Route("api/v{version:apiVersion}/[controller]")]
+[Route("api/v{version:apiVersion}/[controller]/[action]")]
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class WarehousesController : ControllerBase
 {
@@ -111,5 +111,49 @@ public class WarehousesController : ControllerBase
         await _bll.WarehouseService.RemoveAsync(id);
         await _bll.SaveChangesAsync();
         return NoContent();
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="street"></param>
+    /// <param name="city"></param>
+    /// <param name="state"></param>
+    /// <param name="country"></param>
+    /// <returns></returns>
+    [HttpGet]
+    [ProducesResponseType(typeof(IEnumerable<WarehouseDto>), 200)]
+    public async Task<ActionResult<IEnumerable<WarehouseDto>>> GetFilteredWarehouses(
+        [FromQuery] string? street,
+        [FromQuery] string? city,
+        [FromQuery] string? state,
+        [FromQuery] string? country
+    )
+    {
+        var warehouses = await _bll
+            .WarehouseService
+            .GetFilteredWarehousesAsync(street, city, state, country);
+        var res = warehouses.Select(x => _mapper.Map(x)!);
+        return Ok(res);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet]
+    [ProducesResponseType(typeof(WarehouseFiltersDto), 200)]
+    public async Task<ActionResult<WarehouseFiltersDto>> GetFilters()
+    {
+        var filters = await _bll.WarehouseService.GetWarehouseFiltersAsync();
+        var dto = new WarehouseFiltersDto()
+        {
+            States = filters.States,
+            Streets = filters.Streets,
+            Cities = filters.Cities,
+            Countries = filters.Countries
+        };
+
+        return Ok(dto);
     }
 }

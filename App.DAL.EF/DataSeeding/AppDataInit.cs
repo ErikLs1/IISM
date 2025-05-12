@@ -41,6 +41,11 @@ public class AppDataInit
                 SupplierPhoneNumber = sup.supplierPhoneNumber,
                 SupplierEmail = sup.supplierEmail,
                 SupplierAddress = sup.supplierAddress,
+                SupplierStreet = sup.supplierStreet,
+                SupplierCity = sup.supplierCity,
+                SupplierState = sup.supplierState,
+                SupplierCountry = sup.supplierCountry,
+                SupplierPostalCode = sup.supplierPostalCode,
                 CreatedAt = DateTime.UtcNow,
                 CreatedBy = "system"
             };
@@ -95,17 +100,37 @@ public class AppDataInit
                 
                 productSuppliers.Add(new ProductSupplier
                 {
-                    Id         = Guid.NewGuid(),
-                    ProductId  = product.Id,
+                    Id = Guid.NewGuid(),
+                    ProductId = product.Id,
                     SupplierId = supplier.Id,
-                    UnitCost   = cost,
-                    CreatedAt  = DateTime.UtcNow,
-                    CreatedBy  = "system"
+                    UnitCost = cost,
+                    CreatedAt = DateTime.UtcNow,
+                    CreatedBy = "system"
                 });
             }
         }
         
         context.ProductSuppliers.AddRange(productSuppliers);
+        context.SaveChanges();
+        
+        foreach (var w in InitialData.Warehouses)
+        {
+            var warehouse = new Warehouse
+            {
+                Id = w.id ?? Guid.NewGuid(),
+                WarehouseAddress = w.warehouseAddress,
+                WarehouseStreet = w.warehouseStreet,
+                WarehouseCity = w.warehouseCity,
+                WarehouseState = w.warehouserState,
+                WarehouseCountry = w.warehouseCountry,
+                WarehousePostalCode = w.warehousePostalCode,
+                WarehouseEmail = w.warehouseEmail,
+                WarehouseCapacity = w.warehouseCapacity,
+                CreatedAt = DateTime.UtcNow,
+                CreatedBy = "system"
+            };
+            context.Warehouses.Add(warehouse);
+        }
         context.SaveChanges();
     }
 

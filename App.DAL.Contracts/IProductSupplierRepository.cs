@@ -5,5 +5,5 @@ namespace App.DAL.Contracts;
 
 public interface IProductSupplierRepository : IBaseRepository<ProductSupplierDalDto>
 {
-    
+    Task<IEnumerable<ProductSupplierDalDto>> GetAllProductSuppliersAsync();
 }

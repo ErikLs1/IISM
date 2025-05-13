@@ -1,39 +1,45 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+using App.BLL.Contracts;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using App.DAL.EF;
-using App.Domain;
+using App.DTO.V1.DTO;
+using App.DTO.V1.Mappers;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.ApiControllers;
 
+/// <inheritdoc />
 [ApiVersion( "1.0" )]
 [ApiController]
-[Route("api/v{version:apiVersion}/[controller]")]
+[Route("api/v{version:apiVersion}/[controller]/[action]")]
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class ProductSuppliersController : ControllerBase
 {
-    private readonly AppDbContext _context;
+    private readonly IAppBll _bll;
+    private readonly ProductSuppliersMapper _mapper = new ProductSuppliersMapper();
 
-    public ProductSuppliersController(AppDbContext context)
+    /// <inheritdoc />
+    public ProductSuppliersController(IAppBll bll)
     {
-        _context = context;
+        _bll = bll;
     }
-
-    // GET: api/ProductSuppliers
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<ProductSupplier>>> GetProductSuppliers()
+    [Produces("application/json")]
+    [ProducesResponseType(typeof(IEnumerable<ProductSupplierDto>), 200)]
+    [ProducesResponseType(404)]
+    public async Task<ActionResult<IEnumerable<ProductSupplierDto>>> GetProductSuppliers()
     {
-        return await _context.ProductSuppliers.ToListAsync();
+        var data = await _bll.ProductSupplierService.GetAllProductSuppliersAsync();
+        var res = data.Select(x => _mapper.Map(x)!).ToList();
+        return res;
     }
 
-    // GET: api/ProductSuppliers/5
+    /*// GET: api/ProductSuppliers/5
     [HttpGet("{id}")]
     public async Task<ActionResult<ProductSupplier>> GetProductSupplier(Guid id)
     {
@@ -108,5 +114,5 @@ public class ProductSuppliersController : ControllerBase
     private bool ProductSupplierExists(Guid id)
     {
         return _context.ProductSuppliers.Any(e => e.Id == id);
-    }
+    }*/
 }

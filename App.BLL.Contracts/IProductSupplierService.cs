@@ -5,5 +5,5 @@ namespace App.BLL.Contracts;
 
 public interface IProductSupplierService : IBaseService<ProductSupplierBllDto>
 {
-    
+    Task<IEnumerable<ProductSupplierBllDto>> GetAllProductSuppliersAsync();
 }

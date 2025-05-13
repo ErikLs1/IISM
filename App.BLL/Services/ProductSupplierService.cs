@@ -16,4 +16,11 @@ public class ProductSupplierService : BaseService<ProductSupplierBllDto, Product
         IMapper<ProductSupplierBllDto, ProductSupplierDalDto> mapper) : base(serviceUow, serviceUow.ProductSupplierRepository, mapper)
     {
     }
+
+    public async Task<IEnumerable<ProductSupplierBllDto>> GetAllProductSuppliersAsync()
+    {
+        var res = await ServiceRepository
+            .GetAllProductSuppliersAsync();
+        return res.Select(x => Mapper.Map(x)!);
+    }
 }

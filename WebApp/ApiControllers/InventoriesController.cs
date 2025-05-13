@@ -1,112 +1,48 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+using App.BLL.Contracts;
+using App.DTO.V1.DTO;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using App.DAL.EF;
-using App.Domain;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.ApiControllers;
 
+/// <inheritdoc />
 [ApiVersion( "1.0" )]
 [ApiController]
-[Route("api/v{version:apiVersion}/[controller]")]
+[Route("api/v{version:apiVersion}/[controller]/[action]")]
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class InventoriesController : ControllerBase
 {
-    private readonly AppDbContext _context;
+    private readonly IAppBll _bll;
 
-    public InventoriesController(AppDbContext context)
+    /// <inheritdoc />
+    public InventoriesController(IAppBll bll)
     {
-        _context = context;
+        _bll = bll;
     }
-
-    // GET: api/Inventories
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="warehouseId"></param>
+    /// <returns></returns>
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Inventory>>> GetInventories()
+    [Produces("application/json")]
+    [ProducesResponseType(typeof(IEnumerable<InventoryItemDto>), 200)]
+    [ProducesResponseType(404)]
+    public async Task<ActionResult<IEnumerable<InventoryItemDto>>> GetProductsForWarehouse([FromQuery] Guid warehouseId)
     {
-        return await _context.Inventories.ToListAsync();
-    }
-
-    // GET: api/Inventories/5
-    [HttpGet("{id}")]
-    public async Task<ActionResult<Inventory>> GetInventory(Guid id)
-    {
-        var inventory = await _context.Inventories.FindAsync(id);
-
-        if (inventory == null)
-        {
-            return NotFound();
-        }
-
-        return inventory;
-    }
-
-    // PUT: api/Inventories/5
-    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-    [HttpPut("{id}")]
-    public async Task<IActionResult> PutInventory(Guid id, Inventory inventory)
-    {
-        if (id != inventory.Id)
-        {
-            return BadRequest();
-        }
-
-        _context.Entry(inventory).State = EntityState.Modified;
-
-        try
-        {
-            await _context.SaveChangesAsync();
-        }
-        catch (DbUpdateConcurrencyException)
-        {
-            if (!InventoryExists(id))
+        var data = await _bll.InventoryService.GetProductsByWarehouseIdAsync(warehouseId);
+        var res = data
+            .Select(i => new InventoryItemDto()
             {
-                return NotFound();
-            }
-            else
-            {
-                throw;
-            }
-        }
-
-        return NoContent();
-    }
-
-    // POST: api/Inventories
-    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-    [HttpPost]
-    public async Task<ActionResult<Inventory>> PostInventory(Inventory inventory)
-    {
-        _context.Inventories.Add(inventory);
-        await _context.SaveChangesAsync();
-
-        return CreatedAtAction("GetInventory", new { id = inventory.Id }, inventory);
-    }
-
-    // DELETE: api/Inventories/5
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteInventory(Guid id)
-    {
-        var inventory = await _context.Inventories.FindAsync(id);
-        if (inventory == null)
-        {
-            return NotFound();
-        }
-
-        _context.Inventories.Remove(inventory);
-        await _context.SaveChangesAsync();
-
-        return NoContent();
-    }
-
-    private bool InventoryExists(Guid id)
-    {
-        return _context.Inventories.Any(e => e.Id == id);
+                ProductId = i.ProductId,
+                ProductName = i.Product!.ProductName,
+                ProductDescription = i.Product!.ProductDescription,
+                Quantity = i.Quantity
+            })
+            .ToList();
+        return res;
     }
 }

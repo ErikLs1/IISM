@@ -16,4 +16,10 @@ public class InventoryService : BaseService<InventoryBllDto, InventoryDalDto, II
         IMapper<InventoryBllDto, InventoryDalDto> mapper) : base(serviceUow, serviceUow.InventoryRepository, mapper)
     {
     }
+
+    public async Task<IEnumerable<InventoryBllDto>> GetProductsByWarehouseIdAsync(Guid warehouseId)
+    {
+        var dal = await ServiceRepository.GetProductsByWarehouseIdAsync(warehouseId);
+        return dal.Select(x => Mapper.Map(x)!);
+    }
 }

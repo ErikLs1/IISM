@@ -1,112 +1,45 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+using App.BLL.Contracts;
+using App.BLL.DTO;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using App.DAL.EF;
-using App.Domain;
+using App.DTO.V1.DTO;
+using App.DTO.V1.Mappers;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.ApiControllers;
 
+/// <inheritdoc />
 [ApiVersion( "1.0" )]
 [ApiController]
-[Route("api/v{version:apiVersion}/[controller]")]
+[Route("api/v{version:apiVersion}/[controller]/[action]")]
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class StockOrdersController : ControllerBase
 {
-    private readonly AppDbContext _context;
+    private readonly IAppBll _bll;
+    private readonly StockOrderMapper _mapper = new StockOrderMapper();
 
-    public StockOrdersController(AppDbContext context)
+    /// <inheritdoc />
+    public StockOrdersController(IAppBll bll)
     {
-        _context = context;
+        _bll = bll;
     }
 
-    // GET: api/StockOrders
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<StockOrder>>> GetStockOrders()
-    {
-        return await _context.StockOrders.ToListAsync();
-    }
-
-    // GET: api/StockOrders/5
-    [HttpGet("{id}")]
-    public async Task<ActionResult<StockOrder>> GetStockOrder(Guid id)
-    {
-        var stockOrder = await _context.StockOrders.FindAsync(id);
-
-        if (stockOrder == null)
-        {
-            return NotFound();
-        }
-
-        return stockOrder;
-    }
-
-    // PUT: api/StockOrders/5
-    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-    [HttpPut("{id}")]
-    public async Task<IActionResult> PutStockOrder(Guid id, StockOrder stockOrder)
-    {
-        if (id != stockOrder.Id)
-        {
-            return BadRequest();
-        }
-
-        _context.Entry(stockOrder).State = EntityState.Modified;
-
-        try
-        {
-            await _context.SaveChangesAsync();
-        }
-        catch (DbUpdateConcurrencyException)
-        {
-            if (!StockOrderExists(id))
-            {
-                return NotFound();
-            }
-            else
-            {
-                throw;
-            }
-        }
-
-        return NoContent();
-    }
-
-    // POST: api/StockOrders
-    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="dto"></param>
+    /// <returns></returns>
     [HttpPost]
-    public async Task<ActionResult<StockOrder>> PostStockOrder(StockOrder stockOrder)
+    public async Task<IActionResult> PlaceStockOrder(CreateStockOrderDto dto)
     {
-        _context.StockOrders.Add(stockOrder);
-        await _context.SaveChangesAsync();
-
-        return CreatedAtAction("GetStockOrder", new { id = stockOrder.Id }, stockOrder);
-    }
-
-    // DELETE: api/StockOrders/5
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteStockOrder(Guid id)
-    {
-        var stockOrder = await _context.StockOrders.FindAsync(id);
-        if (stockOrder == null)
+        
+        var result = await _bll.StockOrderService.PlaceStockOrderAsync(dto);
+        var stockOrder = _mapper.Map(result);
+        return CreatedAtAction("",new
         {
-            return NotFound();
-        }
-
-        _context.StockOrders.Remove(stockOrder);
-        await _context.SaveChangesAsync();
-
-        return NoContent();
-    }
-
-    private bool StockOrderExists(Guid id)
-    {
-        return _context.StockOrders.Any(e => e.Id == id);
+            id = stockOrder!.Id,
+            version = HttpContext.GetRequestedApiVersion()!.ToString()
+        }, stockOrder);
     }
 }

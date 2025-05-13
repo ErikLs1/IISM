@@ -3497,6 +3497,7 @@
         "dependencies": {
           "App.BLL.DTO": "1.0.0",
           "App.DAL.Contracts": "1.0.0",
+          "App.DTO": "1.0.0",
           "Base.BLL.Contracts": "1.0.0"
         },
         "compile": {

@@ -2,111 +2,56 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.BLL.Contracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
 using App.Domain;
+using App.DTO.V1.DTO;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.ApiControllers;
 
+/// <inheritdoc />
 [ApiVersion( "1.0" )]
 [ApiController]
 [Route("api/v{version:apiVersion}/[controller]")]
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class OrdersController : ControllerBase
 {
-    private readonly AppDbContext _context;
+    private readonly IAppBll _bll;
 
-    public OrdersController(AppDbContext context)
+    /// <inheritdoc />
+    public OrdersController(IAppBll bll)
     {
-        _context = context;
+        _bll = bll;
     }
 
-    // GET: api/Orders
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
-    {
-        return await _context.Orders.ToListAsync();
-    }
-
-    // GET: api/Orders/5
-    [HttpGet("{id}")]
-    public async Task<ActionResult<Order>> GetOrder(Guid id)
-    {
-        var order = await _context.Orders.FindAsync(id);
-
-        if (order == null)
-        {
-            return NotFound();
-        }
-
-        return order;
-    }
-
-    // PUT: api/Orders/5
-    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-    [HttpPut("{id}")]
-    public async Task<IActionResult> PutOrder(Guid id, Order order)
-    {
-        if (id != order.Id)
-        {
-            return BadRequest();
-        }
-
-        _context.Entry(order).State = EntityState.Modified;
-
-        try
-        {
-            await _context.SaveChangesAsync();
-        }
-        catch (DbUpdateConcurrencyException)
-        {
-            if (!OrderExists(id))
-            {
-                return NotFound();
-            }
-            else
-            {
-                throw;
-            }
-        }
-
-        return NoContent();
-    }
-
-    // POST: api/Orders
-    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+    // TODO - ORDER PLACING
     [HttpPost]
-    public async Task<ActionResult<Order>> PostOrder(Order order)
+    [ProducesResponseType(typeof(OrderDto), 201)]
+    public async Task<IActionResult> PlaceTheOrder(CreateOrderDto dto)
     {
-        _context.Orders.Add(order);
-        await _context.SaveChangesAsync();
-
-        return CreatedAtAction("GetOrder", new { id = order.Id }, order);
+        throw new NotImplementedException();
     }
-
-    // DELETE: api/Orders/5
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteOrder(Guid id)
+    
+    // TODO - ENDPOINT FOR USERS ORDERS
+    [HttpGet]
+    [ProducesResponseType(typeof(OrderDto), 200)]
+    public async Task<ActionResult<IEnumerable<ProductDto>>> GetUsersOrders()
     {
-        var order = await _context.Orders.FindAsync(id);
-        if (order == null)
-        {
-            return NotFound();
-        }
-
-        _context.Orders.Remove(order);
-        await _context.SaveChangesAsync();
-
-        return NoContent();
+        throw new NotImplementedException();
     }
-
-    private bool OrderExists(Guid id)
+    
+    // TODO - ENDPOINT FOR ALL ORDER (FOR MANAGER)
+    [HttpGet]
+    [Authorize(Roles = "manager")]
+    [ProducesResponseType(typeof(OrderDto), 200)]
+    public async Task<ActionResult<IEnumerable<OrderDto>>> GetAllOrder()
     {
-        return _context.Orders.Any(e => e.Id == id);
+        throw new NotImplementedException();
     }
 }

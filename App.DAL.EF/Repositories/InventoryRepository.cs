@@ -32,4 +32,26 @@ public class InventoryRepository : BaseRepository<InventoryDalDto, Inventory>, I
 
         return products.Select(x => Mapper.Map(x)!);
     }
+
+    public async Task<IEnumerable<InventoryProductsDalDto>> GetAllInventoryProductsAsync()
+    {
+        var product = await GetQuery()
+            .Include(i => i.Product)
+            .ThenInclude(i => i!.Category)
+            .Include(i => i.Warehouse)
+            .ToListAsync();
+
+        return product.Select(e => new InventoryProductsDalDto()
+        {
+            WarehouseId = e.WarehouseId,
+            ProductId = e.ProductId,
+            ProductName = e.Product!.ProductName,
+            CategoryName = e.Product!.Category!.CategoryName,
+            ProductPrice = e.Product!.ProductPrice,
+            WarehouseCity = e.Warehouse!.WarehouseCity,
+            WarehouseState = e.Warehouse!.WarehouseState,
+            WarehouseCountry = e.Warehouse!.WarehouseCountry,
+            ProductDescription = e.Product!.ProductDescription,
+        }).ToList();
+    }
 }

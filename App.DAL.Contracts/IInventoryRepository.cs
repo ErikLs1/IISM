@@ -8,4 +8,6 @@ public interface IInventoryRepository : IBaseRepository<InventoryDalDto>
 {
     Task<Inventory?> FindByWarehouseIdAndProductIdAsync(Guid warehouseId, Guid productId);
     Task<IEnumerable<InventoryDalDto>> GetProductsByWarehouseIdAsync(Guid warehouseId);
+
+    Task<IEnumerable<InventoryProductsDalDto>> GetAllInventoryProductsAsync();
 }

@@ -1,6 +1,6 @@
 namespace App.DTO.V1.DTO;
 
-public class InventoryItemDto
+public class WarehouseInventoryItemsDto
 {
     public Guid ProductId { get; set; }
     public string ProductName { get; set; } = default!;

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using App.DTO.V1.DTO;
 using App.DTO.V1.Mappers;
 using Asp.Versioning;
+using Base.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 
@@ -29,90 +30,57 @@ public class ProductSuppliersController : ControllerBase
     /// </summary>
     /// <returns></returns>
     [HttpGet]
+    [ProducesResponseType(typeof(ProductSupplierFiltersDto), 200)]
+    public async Task<ActionResult<ProductSupplierFiltersDto>> GetFilters()
+    {
+        var filters = await _bll.ProductSupplierService.GetProductSupplierFilterAsync();
+        var dto = new ProductSupplierFiltersDto()
+        {
+            States = filters.States,
+            Cities = filters.Cities,
+            Countries = filters.Countries,
+            Categories = filters.Categories,
+            Suppliers = filters.Suppliers
+        };
+
+        return Ok(dto);
+    }
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="pageIndex"></param>
+    /// <param name="pageSize"></param>
+    /// <param name="city"></param>
+    /// <param name="state"></param>
+    /// <param name="country"></param>
+    /// <param name="category"></param>
+    /// <param name="supplier"></param>
+    /// <returns></returns>
+    [HttpGet]
     [Produces("application/json")]
-    [ProducesResponseType(typeof(IEnumerable<ProductSupplierDto>), 200)]
+    [ProducesResponseType(typeof(PagedData<ProductSupplierDto>), 200)]
     [ProducesResponseType(404)]
-    public async Task<ActionResult<IEnumerable<ProductSupplierDto>>> GetProductSuppliers()
+    public async Task<ActionResult<PagedData<ProductSupplierDto>>> GetFilteredProductSuppliers(
+        [FromQuery] int pageIndex,
+        [FromQuery] int pageSize,
+        [FromQuery] string? city,
+        [FromQuery] string? state,
+        [FromQuery] string? country,
+        [FromQuery] string? category,
+        [FromQuery] string? supplier
+        )
     {
-        var data = await _bll.ProductSupplierService.GetAllProductSuppliersAsync();
-        var res = data.Select(x => _mapper.Map(x)!).ToList();
-        return res;
-    }
-
-    /*// GET: api/ProductSuppliers/5
-    [HttpGet("{id}")]
-    public async Task<ActionResult<ProductSupplier>> GetProductSupplier(Guid id)
-    {
-        var productSupplier = await _context.ProductSuppliers.FindAsync(id);
-
-        if (productSupplier == null)
+        var data = await _bll.ProductSupplierService.GetPagedDataAsync(
+            pageIndex, pageSize, city, state, country, category, supplier);
+        var dto = data.Items.Select(x => _mapper.Map(x)!);
+        var res = new PagedData<ProductSupplierDto>()
         {
-            return NotFound();
-        }
-
-        return productSupplier;
+            Items = dto,
+            TotalCount = data.TotalCount,
+            PageIndex = data.PageIndex,
+            PageSize = data.PageSize
+        };
+        return Ok(res);
     }
-
-    // PUT: api/ProductSuppliers/5
-    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-    [HttpPut("{id}")]
-    public async Task<IActionResult> PutProductSupplier(Guid id, ProductSupplier productSupplier)
-    {
-        if (id != productSupplier.Id)
-        {
-            return BadRequest();
-        }
-
-        _context.Entry(productSupplier).State = EntityState.Modified;
-
-        try
-        {
-            await _context.SaveChangesAsync();
-        }
-        catch (DbUpdateConcurrencyException)
-        {
-            if (!ProductSupplierExists(id))
-            {
-                return NotFound();
-            }
-            else
-            {
-                throw;
-            }
-        }
-
-        return NoContent();
-    }
-
-    // POST: api/ProductSuppliers
-    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-    [HttpPost]
-    public async Task<ActionResult<ProductSupplier>> PostProductSupplier(ProductSupplier productSupplier)
-    {
-        _context.ProductSuppliers.Add(productSupplier);
-        await _context.SaveChangesAsync();
-
-        return CreatedAtAction("GetProductSupplier", new { id = productSupplier.Id }, productSupplier);
-    }
-
-    // DELETE: api/ProductSuppliers/5
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteProductSupplier(Guid id)
-    {
-        var productSupplier = await _context.ProductSuppliers.FindAsync(id);
-        if (productSupplier == null)
-        {
-            return NotFound();
-        }
-
-        _context.ProductSuppliers.Remove(productSupplier);
-        await _context.SaveChangesAsync();
-
-        return NoContent();
-    }
-
-    private bool ProductSupplierExists(Guid id)
-    {
-        return _context.ProductSuppliers.Any(e => e.Id == id);
-    }*/
 }

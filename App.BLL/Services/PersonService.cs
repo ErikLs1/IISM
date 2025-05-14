@@ -38,4 +38,9 @@ public class PersonService : BaseService<PersonBllDto, PersonDalDto, IPersonRepo
         };
         return res;
     }
+
+    public async Task<Guid> GetPersonIdByUserIdAsync(Guid userId)
+    {
+        return await ServiceRepository.FindPersonIdByUserIdAsync(userId);
+    }
 }

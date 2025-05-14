@@ -5,5 +5,5 @@ namespace App.DAL.Contracts;
 
 public interface IProductRepository : IBaseRepository<ProductDalDto>
 {
-    
+    Task<Decimal> GetProductPriceById(Guid productId);
 }

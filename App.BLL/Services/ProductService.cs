@@ -12,8 +12,10 @@ namespace App.BLL.Services;
 public class ProductService : BaseService<ProductBllDto, ProductDalDto, IProductRepository>, IProductService
 {
     public ProductService(
-        IAppUow serviceUow, 
-        IMapper<ProductBllDto, ProductDalDto> mapper) : base(serviceUow, serviceUow.ProductRepository, mapper)
+        IAppUow ouw, 
+        IMapper<ProductBllDto, ProductDalDto> mapper) : base(ouw, ouw.ProductRepository, mapper)
     {
     }
+    
+    
 }

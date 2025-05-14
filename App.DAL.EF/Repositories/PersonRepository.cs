@@ -34,4 +34,13 @@ public class PersonRepository : BaseRepository<PersonDalDto, Person>, IPersonRep
         var res = await query.FirstOrDefaultAsync(p => p.UserId == userId);
         return Mapper.Map(res)!;
     }
+
+    public async Task<Guid> FindPersonIdByUserIdAsync(Guid userId)
+    {
+        var person = await RepositoryDbSet
+            .AsNoTracking()
+            .FirstOrDefaultAsync(p => p.UserId == userId);
+
+        return person!.Id;
+    }
 }

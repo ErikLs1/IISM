@@ -26,18 +26,20 @@ public class StockOrderService : BaseService<StockOrderBllDto, StockOrderDalDto,
     {
         var order = new StockOrderDalDto()
         {
+            Id = Guid.NewGuid(),
             SupplierId = dto.SupplierId,
             WarehouseId = dto.WarehouseId,
             Status = "Done!",
             TotalCost = dto.Products.Sum(i => i.UnitCost * i.Quantity)
         };
+        
         _uow.StockOrderRepository.Add(order);
 
         foreach (var product in dto.Products)
         {
             var line = new StockOrderItemDalDto()
             {
-                StockOrder = order,
+                StockOrderId = order.Id,
                 ProductId = product.ProductId,
                 Quantity = product.Quantity,
                 Cost = product.UnitCost * product.Quantity

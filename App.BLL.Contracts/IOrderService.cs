@@ -6,5 +6,9 @@ namespace App.BLL.Contracts;
 
 public interface IOrderService : IBaseService<OrderBllDto>
 {
+    // TODO - CHANGE DTO TYPE
     Task<OrderBllDto> PlaceOrderAsync(Guid personId, CreateOrderDto dto);
+    
+    // TODO - CHANGE DTO TYPE
+    Task<IEnumerable<UserOrdersDto>> GetUsersOrders(Guid personId);
 }

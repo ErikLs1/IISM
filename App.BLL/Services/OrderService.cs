@@ -67,4 +67,24 @@ public class OrderService : BaseService<OrderBllDto, OrderDalDto, IOrderReposito
 
         return Mapper.Map(created)!;
     }
+
+    // TODO MAPPER LATER
+    public async Task<IEnumerable<UserOrdersDto>> GetUsersOrders(Guid personId)
+    {
+        var orders = await _uow.OrderRepository.GetOrdersByPersonIdAsync(personId);
+        
+        return orders.Select(o => new UserOrdersDto
+        {
+            OrderTotalPrice        = o.OrderTotalPrice,
+            OrderShippingAddress   = o.OrderShippingAddress,
+            OrderStatus            = o.OrderStatus,
+            Products = o.OrderProducts!.Select(op => new OrderProductDto
+            {
+                Quantity            = op.Quantity,
+                OrderProductPrice   = op.TotalPrice,
+                ProductName         = op.Product!.ProductName,
+                ProductDescription  = op.Product!.ProductDescription
+            }).ToList()
+        });
+    }
 }

@@ -11,7 +11,6 @@ namespace WebApp.ApiControllers;
 [ApiVersion( "1.0" )]
 [ApiController]
 [Route("api/v{version:apiVersion}/[controller]/[action]")]
-[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class InventoriesController : ControllerBase
 {
     private readonly IAppBll _bll;
@@ -22,6 +21,7 @@ public class InventoriesController : ControllerBase
         _bll = bll;
     }
     
+    // TODO - Pagination later
     /// <summary>
     /// 
     /// </summary>
@@ -31,6 +31,7 @@ public class InventoriesController : ControllerBase
     [Produces("application/json")]
     [ProducesResponseType(typeof(IEnumerable<WarehouseInventoryItemsDto>), 200)]
     [ProducesResponseType(404)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public async Task<ActionResult<IEnumerable<WarehouseInventoryItemsDto>>> GetProductsForWarehouse([FromQuery] Guid warehouseId)
     {
         var data = await _bll.InventoryService.GetProductsByWarehouseIdAsync(warehouseId);
@@ -46,6 +47,7 @@ public class InventoriesController : ControllerBase
         return res;
     }
     
+    // TODO - Pagination later
     /// <summary>
     /// 
     /// </summary>
@@ -74,6 +76,7 @@ public class InventoriesController : ControllerBase
         return res;
     }
     
+    // TODO - Pagination later
     /// <summary>
     /// 
     /// </summary>

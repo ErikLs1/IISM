@@ -25,7 +25,6 @@ public class OrdersController : ControllerBase
         _logger = logger;
     }
 
-    // TODO - ORDER PLACING
     /// <summary>
     /// 
     /// </summary>
@@ -35,16 +34,10 @@ public class OrdersController : ControllerBase
     [ProducesResponseType(typeof(OrderDto), 201)]
     public async Task<IActionResult> PlaceTheOrder(CreateOrderDto dto)
     {
-        // Get user id
         var userId = User.GetUserId();
         
-        // Get currently logged in personId
         var personId = await _bll.PersonService.GetPersonIdByUserIdAsync(userId);
         
-        // 3) log it
-        _logger.LogInformation("=========================== ======== PersonId={PersonId}", personId);
-
-        // Assign person id to dto
         var bllDto = await _bll.OrderService.PlaceOrderAsync(personId, dto);
 
         return CreatedAtAction("", new
@@ -54,20 +47,25 @@ public class OrdersController : ControllerBase
         });
     }
     
-    /*// TODO - ENDPOINT FOR USERS ORDERS
+    // TODO - ENDPOINT FOR USERS ORDERS
     /// <summary>
     /// 
     /// </summary>
     /// <returns></returns>
     /// <exception cref="NotImplementedException"></exception>
     [HttpGet]
-    [ProducesResponseType(typeof(OrderDto), 200)]
-    public async Task<ActionResult<IEnumerable<ProductDto>>> GetUsersOrders()
+    [ProducesResponseType(typeof(UserOrdersDto), 200)]
+    public async Task<ActionResult<IEnumerable<UserOrdersDto>>> GetUsersOrders()
     {
-        throw new NotImplementedException();
+        var userId = User.GetUserId();
+        
+        var personId = await _bll.PersonService.GetPersonIdByUserIdAsync(userId);
+
+        var userOrders = await _bll.OrderService.GetUsersOrders(personId);
+        return Ok(userOrders);
     }
     
-    // TODO - ENDPOINT FOR ALL ORDER (FOR MANAGER)
+    /*// TODO - ENDPOINT FOR ALL ORDER (FOR MANAGER)
     /// <summary>
     /// 
     /// </summary>

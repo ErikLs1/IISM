@@ -32,7 +32,7 @@ public class CategoriesController : ControllerBase
     /// <returns></returns>
     [HttpGet]
     [Produces("application/json")]
-    [ProducesResponseType(typeof(IEnumerable<CategoryDto>), 200)]
+    [ProducesResponseType(typeof(IEnumerable<CategoryDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(404)]
     public async Task<ActionResult<IEnumerable<CategoryDto>>> GetCategories()
     {
@@ -47,7 +47,7 @@ public class CategoriesController : ControllerBase
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpGet("{id}")]
-    [ProducesResponseType(typeof(IEnumerable<CategoryDto>), 200)]
+    [ProducesResponseType(typeof(IEnumerable<CategoryDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(404)]
     public async Task<ActionResult<CategoryDto>> GetCategory(Guid id)
     {
@@ -68,8 +68,8 @@ public class CategoriesController : ControllerBase
     /// <param name="category"></param>
     /// <returns></returns>
     [HttpPut("{id}")]
-    [ProducesResponseType(typeof(IEnumerable<CategoryDto>), 201)]
-    [ProducesResponseType(404)]
+    [ProducesResponseType(typeof(IEnumerable<CategoryDto>), StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> UpdateCategory(Guid id, CategoryDto category)
     {
         if (id != category.Id)
@@ -89,6 +89,7 @@ public class CategoriesController : ControllerBase
     /// <param name="category"></param>
     /// <returns></returns>
     [HttpPost]
+    [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<ActionResult<Category>> CreateCategory(CategoryCreateDto category)
     {
         var bllEntity = _mapper.Map(category);
@@ -107,6 +108,7 @@ public class CategoriesController : ControllerBase
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> DeleteCategory(Guid id)
     {
         await _bll.CategoryService.RemoveAsync(id);

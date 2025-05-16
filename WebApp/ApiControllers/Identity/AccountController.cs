@@ -10,9 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebApp.ApiControllers.Identity;
 
-/// <summary>
-/// User account controller with login, register functionality.
-/// </summary>
+/// <inheritdoc />
 [ApiVersion( "1.0" )]
 [ApiController]
 [Route("api/v{version:apiVersion}/[controller]/[action]")]
@@ -21,7 +19,7 @@ public class AccountController : ControllerBase
     private readonly AccountService _accountService;
     private readonly AccountMapper _accountMapper;
 
-
+    /// <inheritdoc />
     public AccountController(AccountService accountService, AccountMapper accountMapper)
     {
         _accountService = accountService;
@@ -29,12 +27,15 @@ public class AccountController : ControllerBase
     }
 
     /// <summary>
-    /// User authentication, returns JWT and refresh token
+    /// Authenticates a user and returns a JWT access token and refresh token.
     /// </summary>
-    /// <param name="loginInfo">Login model</param>
-    /// <param name="jwtExpiresInSeconds">Custom jwt expiration</param>
-    /// <param name="refreshTokenExpiresInSeconds">Custom refresh token expiration</param>
-    /// <returns></returns>
+    /// <param name="loginInfo">The users login credentials.</param>
+    /// <param name="jwtExpiresInSeconds">(Optional) Custom expiration time for JWT in seconds.</param>
+    /// <param name="refreshTokenExpiresInSeconds">(Optional) Custom expiration time for the issued refresh token, in seconds.</param>
+    /// <returns>
+    /// 200 OK containing the access token, refresh token and role;
+    /// 404 Not Found if provided credentials are invalid.
+    /// </returns>
     [Produces("application/json")]
     [Consumes("application/json")]
     [ProducesResponseType(typeof(JwtResponseDto), StatusCodes.Status200OK)]
@@ -56,12 +57,15 @@ public class AccountController : ControllerBase
     }
     
     /// <summary>
-    /// Register endpoint for REST API.
+    /// Registers a new user and issues a JWT access token, refresh token and role of the user.
     /// </summary>
-    /// <param name="registerModel"></param>
-    /// <param name="jwtExpiresInSeconds"></param>
-    /// <param name="refreshTokenExpiresInSeconds"></param>
-    /// <returns></returns>
+    /// <param name="registerModel">The users registration details.</param>
+    /// <param name="jwtExpiresInSeconds">(Optional) Custom expiration time for JWT in seconds.</param>
+    /// <param name="refreshTokenExpiresInSeconds">(Optional) Custom expiration time for the issued refresh token, in seconds.</param>
+    /// <returns>
+    /// 200 OK containing the access token, refresh token and role;
+    /// 404 Not Found if registration data is invalid or user already exists.
+    /// </returns>
     [Produces("application/json")]
     [Consumes("application/json")]
     [ProducesResponseType(typeof(JwtResponseDto), StatusCodes.Status200OK)]
@@ -81,12 +85,16 @@ public class AccountController : ControllerBase
     }
     
     /// <summary>
-    /// Refresh token renewal endpoint for rest API
+    /// Renews expired refresh token and issues new tokens.
     /// </summary>
-    /// <param name="refreshTokenModel">Data for renewal</param>
-    /// <param name="jwtExpiresInSeconds">Custom expiration for jwt</param>
-    /// <param name="refreshTokenExpiresInSeconds">Custom expiration for refresh token</param>
-    /// <returns></returns>
+    /// <param name="refreshTokenModel">The current jwt and refresh token.</param>
+    /// <param name="jwtExpiresInSeconds">(Optional) Custom expiration time for JWT in seconds.</param>
+    /// <param name="refreshTokenExpiresInSeconds">(Optional) Custom expiration time for the issued refresh token, in seconds.</param>
+    /// <returns>
+    /// 200 OK containing the access token, refresh token and role;
+    /// 400 Bad Request if refresh token is invalid.
+    /// 500 Internal Server Error for unexpected errors.
+    /// </returns>
     [Produces("application/json")]
     [Consumes("application/json")]
     [ProducesResponseType(typeof(JwtResponseDto), StatusCodes.Status200OK)]
@@ -108,10 +116,13 @@ public class AccountController : ControllerBase
     }
     
     /// <summary>
-    /// 
+    /// Kicks out the user and deletes the refresh token.
     /// </summary>
-    /// <param name="logout"></param>
-    /// <returns></returns>
+    /// <param name="logout">The refresh token to delete.</param>
+    /// <returns>
+    /// 200 OK if logout was successful;
+    /// 404 Not Found if given token was not found.
+    /// </returns>
     [Produces("application/json")]
     [Consumes("application/json")]
     [ProducesResponseType(typeof(MessageDto), StatusCodes.Status404NotFound)]

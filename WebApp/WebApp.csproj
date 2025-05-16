@@ -114,6 +114,7 @@
     <ItemGroup>
       <Folder Include="Areas\Admin\Controllers\Identity\" />
       <Folder Include="Models\Edit\" />
+      <Folder Include="Models\Index\Mappers\" />
     </ItemGroup>
 
 </Project>

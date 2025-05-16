@@ -1,6 +1,5 @@
 using System.Security.Claims;
 using App.BLL.Contracts;
-using App.DTO.V1;
 using App.DTO.V1.DTO;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
@@ -10,9 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.ApiControllers;
 
-/// <summary>
-/// 
-/// </summary>
+/// <inheritdoc />
 [ApiVersion( "1.0" )]
 [ApiController]
 [Route("api/v{version:apiVersion}/[controller]/[action]")]
@@ -21,23 +18,20 @@ public class PersonsController : ControllerBase
 {
 
     private readonly IAppBll _bll;
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="bll"></param>
+    
+    /// <inheritdoc />
     public PersonsController(IAppBll bll)
     {
         _bll = bll;
     }
 
+
     /// <summary>
     /// 
     /// </summary>
-    /// <param name="id"></param>
     /// <returns></returns>
     [HttpGet]
-    [ProducesResponseType( typeof( ProfileInfoDto ), 200 )]
+    [ProducesResponseType( typeof( ProfileInfoDto ), StatusCodes.Status200OK)]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public async Task<ActionResult<ProfileInfoDto>> GetProfileInfo()
     {

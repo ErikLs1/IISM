@@ -64,7 +64,6 @@ public class OrdersController : ControllerBase
         return Ok(userOrders);
     }
     
-    // TODO - ENDPOINT FOR ALL ORDER (FOR MANAGER)
     /// <summary>
     /// 
     /// </summary>
@@ -79,8 +78,9 @@ public class OrdersController : ControllerBase
         return Ok(orders);
     }
     
+    // TODO MAPPER
     /// <summary>
-    /// Manager-only: change the status of an existing order.
+    /// 
     /// </summary>
     [HttpPut]
     [Authorize(Roles = "manager")]

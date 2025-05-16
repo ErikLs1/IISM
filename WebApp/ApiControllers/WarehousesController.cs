@@ -25,13 +25,16 @@ public class WarehousesController : ControllerBase
     }
 
     /// <summary>
-    /// Get all existing warehouses.
+    /// Retrieves all existing warehouses.
     /// </summary>
-    /// <returns>List of warehouses.</returns>
+    /// <returns>
+    /// 200 OK with list of warehouses that exists.
+    /// 404 Not Found If no warehouses was found.
+    /// </returns>
     [HttpGet]
     [Produces("application/json")]
-    [ProducesResponseType(typeof(IEnumerable<WarehouseDto>), 200)]
-    [ProducesResponseType(404)]
+    [ProducesResponseType(typeof(IEnumerable<WarehouseDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<IEnumerable<WarehouseDto>>> GetWarehouses()
     {
         var data = await _bll.WarehouseService.AllAsync();
@@ -40,13 +43,16 @@ public class WarehousesController : ControllerBase
     }
 
     /// <summary>
-    /// Get the warehouse data by id.
+    /// Retrieves a single warehouse by its id.
     /// </summary>
-    /// <param name="id"></param>
-    /// <returns></returns>
+    /// <param name="id">The unique identifier of the warehouse to retrieve.</param>
+    /// <returns>
+    /// 200 OK with WarehouseDto when data is found.
+    /// 404 Not Found if warehouse with provided id does not exist.
+    /// </returns>
     [HttpGet("{id}")]
-    [ProducesResponseType(typeof(IEnumerable<WarehouseDto>), 200)]
-    [ProducesResponseType(404)]
+    [ProducesResponseType(typeof(IEnumerable<WarehouseDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<WarehouseDto>> GetWarehouse(Guid id)
     {
         var warehouse = await _bll.WarehouseService.FindAsync(id);
@@ -60,14 +66,19 @@ public class WarehousesController : ControllerBase
     }
 
     /// <summary>
-    /// Update warehouse.
+    /// Update an existing warehouse.
     /// </summary>
-    /// <param name="id"></param>
-    /// <param name="warehouse"></param>
-    /// <returns></returns>
+    /// <param name="id">The id of the warehouse to update.</param>
+    /// <param name="warehouse">The updated warehouse data.</param>
+    /// <returns>
+    /// 204 No Content when update succeeds;
+    /// 400 Bad Request If provided id does not match;
+    /// 404 Not Found If warehouse does not exist;
+    /// </returns>
     [HttpPut("{id}")]
-    [ProducesResponseType(typeof(IEnumerable<WarehouseDto>), 201)]
-    [ProducesResponseType(404)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> UpdateWarehouse(Guid id, WarehouseDto warehouse)
     {
         if (id != warehouse.Id)
@@ -82,11 +93,16 @@ public class WarehousesController : ControllerBase
     }
     
     /// <summary>
-    /// Create new warehouse
+    /// Creates a new warehouse
     /// </summary>
-    /// <param name="warehouse"></param>
-    /// <returns></returns>
+    /// <param name="warehouse">The data of the warehouse to create.</param>
+    /// <returns>
+    /// 201 Created if warehouse was successfully created;
+    /// 400 Bad Request If inputs are invalid;
+    /// </returns>
     [HttpPost]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<WarehouseDto>> CreateWarehouse(WarehouseCreateDto warehouse)
     {
         var bllEntity = _mapper.Map(warehouse);
@@ -101,11 +117,16 @@ public class WarehousesController : ControllerBase
     }
 
     /// <summary>
-    /// Delete warehouse by id.
+    /// Deletes a warehouse by id.
     /// </summary>
-    /// <param name="id"></param>
-    /// <returns></returns>
+    /// <param name="id">The unique identifier of the warehouse to delete.</param>
+    /// <returns>
+    /// 204 No Content When deletion is successful;
+    /// 404 Not Found If warehouse was not found;
+    /// </returns>
     [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteWarehouse(Guid id)
     {
         await _bll.WarehouseService.RemoveAsync(id);
@@ -114,15 +135,17 @@ public class WarehousesController : ControllerBase
     }
 
     /// <summary>
-    /// 
+    /// Warehouse filtered by the address.
     /// </summary>
-    /// <param name="street"></param>
-    /// <param name="city"></param>
-    /// <param name="state"></param>
-    /// <param name="country"></param>
-    /// <returns></returns>
+    /// <param name="street">(Optional) street name to filter by.</param>
+    /// <param name="city">(Optional) city name to filter by.</param>
+    /// <param name="state">(Optional) state name to filter by.</param>
+    /// <param name="country">(Optional) country name to filter by.</param>
+    /// <returns>
+    /// 200 OK  and list of warehouses matching the filters.
+    /// </returns>
     [HttpGet]
-    [ProducesResponseType(typeof(IEnumerable<WarehouseDto>), 200)]
+    [ProducesResponseType(typeof(IEnumerable<WarehouseDto>), StatusCodes.Status200OK)]
     public async Task<ActionResult<IEnumerable<WarehouseDto>>> GetFilteredWarehouses(
         [FromQuery] string? street,
         [FromQuery] string? city,
@@ -136,13 +159,15 @@ public class WarehousesController : ControllerBase
         var res = warehouses.Select(x => _mapper.Map(x)!);
         return Ok(res);
     }
-
+    
     /// <summary>
-    /// 
+    /// Retrieves the distinct filter values for warehouse.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>
+    /// 200 OK Containing lists of streets, cities, states and countries.
+    /// </returns>
     [HttpGet]
-    [ProducesResponseType(typeof(WarehouseFiltersDto), 200)]
+    [ProducesResponseType(typeof(WarehouseFiltersDto), StatusCodes.Status200OK)]
     public async Task<ActionResult<WarehouseFiltersDto>> GetFilters()
     {
         var filters = await _bll.WarehouseService.GetWarehouseFiltersAsync();

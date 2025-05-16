@@ -4,9 +4,7 @@ using App.DAL.Contracts;
 using App.DAL.DTO;
 using App.DTO.V1.DTO;
 using Base.BLL;
-using Base.BLL.Contracts;
 using Base.Contracts;
-using Base.DAL.Contracts;
 
 namespace App.BLL.Services;
 
@@ -69,7 +67,7 @@ public class OrderService : BaseService<OrderBllDto, OrderDalDto, IOrderReposito
     }
 
     // TODO MAPPER LATER
-    public async Task<IEnumerable<UserOrdersDto>> GetUsersOrders(Guid personId)
+    public async Task<IEnumerable<UserOrdersDto>> GetUsersOrdersAsync(Guid personId)
     {
         var orders = await _uow.OrderRepository.GetOrdersByPersonIdAsync(personId);
         
@@ -86,5 +84,35 @@ public class OrderService : BaseService<OrderBllDto, OrderDalDto, IOrderReposito
                 ProductDescription  = op.Product!.ProductDescription
             }).ToList()
         });
+    }
+
+    // TODO MAPPER LATER
+    public async Task<IEnumerable<PlacedOrderDto>> GetAllPlacedOrdersAsync()
+    {
+        var orders = await _uow.OrderRepository.GetAllPlacedOrdersAsync();
+        
+        return orders.Select(o => new PlacedOrderDto()
+        {
+            OrderId        = o.Id,
+            CustomerFirstName   = o.Person!.PersonFirstName,
+            CustomerLastName   = o.Person!.PersonLastName,
+            TotalNumberOfProducts   = o.OrderProducts!.Sum(op => op.Quantity),
+            OrderedAt   = o.CreatedAt,
+            OrderStatus            = o.OrderStatus,
+            Products = o.OrderProducts!.Select(op => new OrderProductDto
+            {
+                Quantity            = op.Quantity,
+                OrderProductPrice   = op.TotalPrice,
+                ProductName         = op.Product!.ProductName,
+                ProductDescription  = op.Product!.ProductDescription
+            }).ToList()
+        });
+    }
+
+    
+    public async Task ChangeOrderStatusAsync(Guid orderId, string newStatus)
+    {
+        await _uow.OrderRepository.UpdateOrderStatus(orderId, newStatus);
+        await _uow.SaveChangesAsync();
     }
 }

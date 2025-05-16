@@ -7,4 +7,6 @@ namespace App.DAL.Contracts;
 public interface IOrderRepository : IBaseRepository<OrderDalDto>
 {
     Task<List<Order>> GetOrdersByPersonIdAsync(Guid personId);
+    Task<List<Order>> GetAllPlacedOrdersAsync();
+    Task UpdateOrderStatus(Guid orderId, string orderStatus);
 }

@@ -47,7 +47,6 @@ public class OrdersController : ControllerBase
         });
     }
     
-    // TODO - ENDPOINT FOR USERS ORDERS
     /// <summary>
     /// 
     /// </summary>
@@ -61,11 +60,11 @@ public class OrdersController : ControllerBase
         
         var personId = await _bll.PersonService.GetPersonIdByUserIdAsync(userId);
 
-        var userOrders = await _bll.OrderService.GetUsersOrders(personId);
+        var userOrders = await _bll.OrderService.GetUsersOrdersAsync(personId);
         return Ok(userOrders);
     }
     
-    /*// TODO - ENDPOINT FOR ALL ORDER (FOR MANAGER)
+    // TODO - ENDPOINT FOR ALL ORDER (FOR MANAGER)
     /// <summary>
     /// 
     /// </summary>
@@ -74,8 +73,30 @@ public class OrdersController : ControllerBase
     [HttpGet]
     [Authorize(Roles = "manager")]
     [ProducesResponseType(typeof(OrderDto), 200)]
-    public async Task<ActionResult<IEnumerable<OrderDto>>> GetAllOrder()
+    public async Task<ActionResult<IEnumerable<PlacedOrderDto>>> GetAllPlacedOrder()
     {
-        throw new NotImplementedException();
-    }*/
+        var orders = await _bll.OrderService.GetAllPlacedOrdersAsync();
+        return Ok(orders);
+    }
+    
+    /// <summary>
+    /// Manager-only: change the status of an existing order.
+    /// </summary>
+    [HttpPut]
+    [Authorize(Roles = "manager")]
+    [ProducesResponseType(204)]
+    [ProducesResponseType(404)]
+    public async Task<IActionResult> ChangeOrderStatus(
+        [FromBody] ChangeOrderStatusDto dto)
+    {
+        try
+        {
+            await _bll.OrderService.ChangeOrderStatusAsync(dto.OrderId, dto.OrderStatus);
+            return NoContent();
+        }
+        catch (InvalidOperationException)
+        {
+            return NotFound();
+        }
+    }
 }

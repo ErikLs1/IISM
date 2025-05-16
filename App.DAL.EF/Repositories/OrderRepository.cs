@@ -25,4 +25,20 @@ public class OrderRepository : BaseRepository<OrderDalDto, Order>, IOrderReposit
 
         return res;
     }
+
+    public async Task<List<Order>> GetAllPlacedOrdersAsync()
+    {
+        return await GetQuery()
+            .Include(o => o.OrderProducts)!
+            .ThenInclude(op => op.Product)
+            .Include(o => o.Person)
+            .ToListAsync();
+    }
+
+    public async Task UpdateOrderStatus(Guid orderId, string orderStatus)
+    { 
+        var res =  await GetQuery()                       // IQueryable<Order>
+            .FirstOrDefaultAsync(o => o.Id == orderId);
+        res!.OrderStatus = orderStatus;
+    }
 }

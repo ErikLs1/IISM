@@ -10,5 +10,7 @@ public interface IOrderService : IBaseService<OrderBllDto>
     Task<OrderBllDto> PlaceOrderAsync(Guid personId, CreateOrderDto dto);
     
     // TODO - CHANGE DTO TYPE
-    Task<IEnumerable<UserOrdersDto>> GetUsersOrders(Guid personId);
+    Task<IEnumerable<UserOrdersDto>> GetUsersOrdersAsync(Guid personId);
+    Task<IEnumerable<PlacedOrderDto>> GetAllPlacedOrdersAsync();
+    Task ChangeOrderStatusAsync(Guid orderId, string newStatus);
 }

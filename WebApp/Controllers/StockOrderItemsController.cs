@@ -5,6 +5,7 @@ using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using WebApp.Models.Index;
 using WebApp.Models.Index.Mappers;
+using WebApp.Models.Index.MvcDto;
 using WebApp.Models.Index.ViewModel;
 
 namespace WebApp.Controllers;
@@ -23,7 +24,6 @@ public class StockOrderItemsController : Controller
         _bll = uow;
     }
 
-    // GET: StockOrderItems
     public async Task<IActionResult> Index()
     {
 
@@ -38,7 +38,6 @@ public class StockOrderItemsController : Controller
         return View(res);
     }
 
-    // GET: StockOrderItems/Details/5
     public async Task<IActionResult> Details(Guid? id)
     {
         if (id == null)
@@ -56,18 +55,14 @@ public class StockOrderItemsController : Controller
         return View(entity);
     }
 
-    // GET: StockOrderItems/Create
     public IActionResult Create()
     {
        return View();
     }
-
-    // POST: StockOrderItems/Create
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(StockOrderItemBllDto entity)
+    public async Task<IActionResult> Create(StockOrderItemMvcDto entity)
     {
         if (ModelState.IsValid)
         {
@@ -78,7 +73,6 @@ public class StockOrderItemsController : Controller
         return View(entity);
     }
 
-    // GET: StockOrderItems/Edit/5
     public async Task<IActionResult> Edit(Guid? id)
     {
         if (id == null)
@@ -94,13 +88,10 @@ public class StockOrderItemsController : Controller
         }
         return View(entity);
     }
-
-    // POST: StockOrderItems/Edit/5
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(Guid id, StockOrderItemBllDto entity)
+    public async Task<IActionResult> Edit(Guid id, StockOrderItemMvcDto entity)
     {
         if (id != entity.Id)
         {
@@ -116,7 +107,6 @@ public class StockOrderItemsController : Controller
         return View(entity);
     }
 
-    // GET: StockOrderItems/Delete/5
     public async Task<IActionResult> Delete(Guid? id)
     {
         if (id == null)
@@ -134,7 +124,6 @@ public class StockOrderItemsController : Controller
         return View(entity);
     }
 
-    // POST: StockOrderItems/Delete/5
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)

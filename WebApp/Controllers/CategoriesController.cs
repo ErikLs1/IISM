@@ -1,9 +1,9 @@
 using App.BLL.Contracts;
-using App.BLL.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using WebApp.Models.Index.Mappers;
+using WebApp.Models.Index.MvcDto;
 using WebApp.Models.Index.ViewModel;
 
 namespace WebApp.Controllers;
@@ -21,7 +21,6 @@ public class CategoriesController : Controller
         _bll = uow;
     }
 
-    // GET: Categories
     public async Task<IActionResult> Index()
     {
         var dtos = (await _bll.CategoryService.AllAsync(User.GetUserId())).ToList();
@@ -35,7 +34,6 @@ public class CategoriesController : Controller
         return View(res);
     }
 
-    // GET: Categories/Details/5
     public async Task<IActionResult> Details(Guid? id)
     {
         if (id == null)
@@ -53,18 +51,14 @@ public class CategoriesController : Controller
         return View(entity);
     }
 
-    // GET: Categories/Create
     public IActionResult Create()
     {
         return View();
     }
-
-    // POST: Categories/Create
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(CategoryBllDto entity)
+    public async Task<IActionResult> Create(CategoryMvcDto entity)
     {
         if (ModelState.IsValid)
         {
@@ -75,7 +69,6 @@ public class CategoriesController : Controller
         return View(entity);
     }
 
-    // GET: Categories/Edit/5
     public async Task<IActionResult> Edit(Guid? id)
     {
         if (id == null)
@@ -92,13 +85,10 @@ public class CategoriesController : Controller
         
         return View(entity);
     }
-
-    // POST: Categories/Edit/5
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(Guid id, CategoryBllDto entity)
+    public async Task<IActionResult> Edit(Guid id, CategoryMvcDto entity)
     {
         if (id != entity.Id)
         {
@@ -114,7 +104,6 @@ public class CategoriesController : Controller
         return View(entity);
     }
 
-    // GET: Categories/Delete/5
     public async Task<IActionResult> Delete(Guid? id)
     {
         if (id == null)
@@ -131,7 +120,6 @@ public class CategoriesController : Controller
         return View(entity);
     }
 
-    // POST: Categories/Delete/5
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)

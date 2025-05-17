@@ -1,9 +1,9 @@
 using App.BLL.Contracts;
-using App.BLL.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using WebApp.Models.Index.Mappers;
+using WebApp.Models.Index.MvcDto;
 using WebApp.Models.Index.ViewModel;
 
 namespace WebApp.Controllers;
@@ -21,10 +21,6 @@ public class InventoriesController : Controller
         _bll = uow;
     }
     
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <returns></returns>
     public async Task<IActionResult> Index()
     {
         var dtos = (await _bll.InventoryService.AllAsync(User.GetUserId())).ToList();
@@ -38,7 +34,6 @@ public class InventoriesController : Controller
         return View(res);
     }
 
-    // GET: Inventories/Details/5
     public async Task<IActionResult> Details(Guid? id)
     {
         if (id == null)
@@ -56,20 +51,16 @@ public class InventoriesController : Controller
 
         return View(entity);
     }
-
-    // GET: Inventories/Create
+    
     public IActionResult Create()
     {
         
         return View();
     }
-
-    // POST: Inventories/Create
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(InventoryBllDto entity)
+    public async Task<IActionResult> Create(InventoryMvcDto entity)
     {
         if (ModelState.IsValid)
         {
@@ -80,7 +71,6 @@ public class InventoriesController : Controller
         return View(entity);
     }
 
-    // GET: Inventories/Edit/5
     public async Task<IActionResult> Edit(Guid? id)
     {
         if (id == null)
@@ -96,13 +86,10 @@ public class InventoriesController : Controller
         
         return View(entity);
     }
-
-    // POST: Inventories/Edit/5
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(Guid id, InventoryBllDto entity)
+    public async Task<IActionResult> Edit(Guid id, InventoryMvcDto entity)
     {
         if (id != entity.Id)
         {
@@ -118,7 +105,6 @@ public class InventoriesController : Controller
         return View(entity);
     }
 
-    // GET: Inventories/Delete/5
     public async Task<IActionResult> Delete(Guid? id)
     {
         if (id == null)
@@ -135,7 +121,6 @@ public class InventoriesController : Controller
         return View(entity);
     }
 
-    // POST: Inventories/Delete/5
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)

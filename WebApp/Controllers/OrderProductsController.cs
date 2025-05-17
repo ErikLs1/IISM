@@ -5,6 +5,7 @@ using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using WebApp.Models.Index;
 using WebApp.Models.Index.Mappers;
+using WebApp.Models.Index.MvcDto;
 using WebApp.Models.Index.ViewModel;
 
 namespace WebApp.Controllers;
@@ -22,7 +23,6 @@ public class OrderProductsController : Controller
         _bll = uow;
     }
 
-    // GET: OrderProducts
     public async Task<IActionResult> Index()
     {
         var dtos = (await _bll.OrderProductService.AllAsync(User.GetUserId())).ToList();
@@ -36,7 +36,6 @@ public class OrderProductsController : Controller
         return View(res);
     }
 
-    // GET: OrderProducts/Details/5
     public async Task<IActionResult> Details(Guid? id)
     {
         if (id == null)
@@ -53,18 +52,14 @@ public class OrderProductsController : Controller
         return View(entity);
     }
 
-    // GET: OrderProducts/Create
     public IActionResult Create()
     {
         return View();
     }
-
-    // POST: OrderProducts/Create
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(OrderProductBllDto entity)
+    public async Task<IActionResult> Create(OrderProductMvcDto entity)
     {
         if (ModelState.IsValid)
         {
@@ -75,7 +70,6 @@ public class OrderProductsController : Controller
         return View(entity);
     }
 
-    // GET: OrderProducts/Edit/5
     public async Task<IActionResult> Edit(Guid? id)
     {
         if (id == null)
@@ -91,13 +85,10 @@ public class OrderProductsController : Controller
         }
         return View(entity);
     }
-
-    // POST: OrderProducts/Edit/5
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(Guid id, OrderProductBllDto entity)
+    public async Task<IActionResult> Edit(Guid id, OrderProductMvcDto entity)
     {
         if (id != entity.Id)
         {
@@ -113,7 +104,6 @@ public class OrderProductsController : Controller
         return View(entity);
     }
 
-    // GET: OrderProducts/Delete/5
     public async Task<IActionResult> Delete(Guid? id)
     {
         if (id == null)
@@ -130,7 +120,6 @@ public class OrderProductsController : Controller
         return View(entity);
     }
 
-    // POST: OrderProducts/Delete/5
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)

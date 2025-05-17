@@ -1,10 +1,9 @@
 using App.BLL.Contracts;
-using App.BLL.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
-using WebApp.Models.Index;
 using WebApp.Models.Index.Mappers;
+using WebApp.Models.Index.MvcDto;
 using WebApp.Models.Index.ViewModel;
 
 namespace WebApp.Controllers;
@@ -23,7 +22,6 @@ public class RefundsController : Controller
         _bll = uow;
     }
 
-    // GET: Refunds
     public async Task<IActionResult> Index()
     {
         var dtos = (await _bll.RefundService.AllAsync(User.GetUserId())).ToList();
@@ -37,7 +35,6 @@ public class RefundsController : Controller
         return View(res);
     }
 
-    // GET: Refunds/Details/5
     public async Task<IActionResult> Details(Guid? id)
     {
         if (id == null)
@@ -55,18 +52,14 @@ public class RefundsController : Controller
         return View(entity);
     }
 
-    // GET: Refunds/Create
     public IActionResult Create()
     {
         return View();
     }
-
-    // POST: Refunds/Create
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(RefundBllDto entity)
+    public async Task<IActionResult> Create(RefundMvcDto entity)
     {
         if (ModelState.IsValid)
         {
@@ -77,7 +70,6 @@ public class RefundsController : Controller
         return View(entity);
     }
 
-    // GET: Refunds/Edit/5
     public async Task<IActionResult> Edit(Guid? id)
     {
         if (id == null)
@@ -93,13 +85,10 @@ public class RefundsController : Controller
         }
         return View(entity);
     }
-
-    // POST: Refunds/Edit/5
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(Guid id, RefundBllDto entity)
+    public async Task<IActionResult> Edit(Guid id, RefundMvcDto entity)
     {
         if (id != entity.Id)
         {
@@ -115,7 +104,6 @@ public class RefundsController : Controller
         return View(entity);
     }
 
-    // GET: Refunds/Delete/5
     public async Task<IActionResult> Delete(Guid? id)
     {
         if (id == null)
@@ -133,7 +121,6 @@ public class RefundsController : Controller
         return View(entity);
     }
 
-    // POST: Refunds/Delete/5
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)

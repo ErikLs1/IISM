@@ -1,32 +1,24 @@
+using System.ComponentModel.DataAnnotations;
+using App.Resources.Domain;
+
 namespace WebApp.Models.Index.MvcDto;
 
-/// <summary>
-/// 
-/// </summary>
+
 public class InventoryMvcDto
 {
-    /// <summary>
-    /// 
-    /// </summary>
+
     public Guid Id { get; set; }
     
-    /// <summary>
-    /// 
-    /// </summary>
+    [Display(Name = nameof(Inventory.Quantity), ResourceType = typeof(Inventory))]
+    
     public int Quantity { get; set; }
     
-    /// <summary>
-    /// 
-    /// </summary>
+    [Display(Name = nameof(Inventory.ProductName), ResourceType = typeof(Inventory))]
     public string? ProductName { get; set; }
     
-    /// <summary>
-    /// 
-    /// </summary>
+    [Display(Name = nameof(Inventory.ProductDescription), ResourceType = typeof(Inventory))]
     public string? ProductDescription { get; set; }
     
-    /// <summary>
-    /// 
-    /// </summary>
+    [Display(Name = nameof(Inventory.WarehouseAddress), ResourceType = typeof(Inventory))]
     public string? WarehouseAddress { get; set; }
 }

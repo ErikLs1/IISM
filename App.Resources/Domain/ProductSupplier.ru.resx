@@ -17,7 +17,7 @@
     <data name="SupplierName" xml:space="preserve">
         <value>Название поставщика</value>
     </data>
-    <data name="ProductNae" xml:space="preserve">
+    <data name="ProductName" xml:space="preserve">
         <value>Название продукта</value>
     </data>
 </root>

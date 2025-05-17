@@ -14,13 +14,13 @@
     <thead>
         <tr>
             <th>
-                @App.Resources.Domain.Order.OrderShippingAddress
+                @Html.DisplayNameFor(model => model.Orders.First().OrderShippingAddress)
             </th>
             <th>
-                @App.Resources.Domain.Order.OrderStatus
+                @Html.DisplayNameFor(model => model.Orders.First().OrderStatus)
             </th>
             <th>
-                @App.Resources.Domain.Order.OrderTotalPrice
+                @Html.DisplayNameFor(model => model.Orders.First().OrderTotalPrice)
             </th>
             <th></th>
         </tr>

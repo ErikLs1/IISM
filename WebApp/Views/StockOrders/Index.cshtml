@@ -14,16 +14,16 @@
     <thead>
         <tr>
             <th>
-                @App.Resources.Domain.StockOrder.TotalCost
+                @Html.DisplayNameFor(model => model.StockOrders.First().TotalCost)
             </th>
             <th>
-                @App.Resources.Domain.StockOrder.Status
+                @Html.DisplayNameFor(model => model.StockOrders.First().Status)
             </th>
             <th>
-                @*@App.Resources.Domain.StockOrder.*@
+                @*@Html.DisplayNameFor(model => model.StockOrders.First().WarehouseAddress) TODO - FIGURE OUT THE PROBLEM *@ 
             </th>
             <th>
-                @*@App.Resources.Domain.StockOrder.WarehouseName*@
+                @*@Html.DisplayNameFor(model => model.StockOrders.First().SupplierAddress) TODO - FIGURE OUT THE PROBLEM *@
             </th>
             <th></th>
         </tr>

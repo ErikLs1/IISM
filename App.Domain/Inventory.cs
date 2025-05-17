@@ -12,7 +12,6 @@ public class Inventory : BaseEntity
     [ForeignKey(nameof(Warehouse))]
     public Guid WarehouseId { get; set; }
     
-    [Display(Name = nameof(Quantity), Prompt = nameof(Quantity), ResourceType = typeof(App.Resources.Domain.Inventory))]
     public int Quantity { get; set; }
     
     public Product? Product { get; set; }

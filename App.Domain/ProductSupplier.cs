@@ -12,7 +12,6 @@ public class ProductSupplier : BaseEntity
     [ForeignKey(nameof(Product))]
     public Guid ProductId { get; set; }
     
-    [Display(Name = nameof(UnitCost), Prompt = nameof(UnitCost), ResourceType = typeof(App.Resources.Domain.ProductSupplier))]
     
     public decimal UnitCost { get; set; }
     

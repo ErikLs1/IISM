@@ -57,9 +57,9 @@ namespace App.Resources.Domain {
             }
         }
         
-        public static string ProductNae {
+        public static string ProductName {
             get {
-                return ResourceManager.GetString("ProductNae", resourceCulture);
+                return ResourceManager.GetString("ProductName", resourceCulture);
             }
         }
     }

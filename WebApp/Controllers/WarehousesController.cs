@@ -1,10 +1,9 @@
 using App.BLL.Contracts;
-using App.BLL.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
-using WebApp.Models.Index;
 using WebApp.Models.Index.Mappers;
+using WebApp.Models.Index.MvcDto;
 using WebApp.Models.Index.ViewModel;
 
 namespace WebApp.Controllers;
@@ -50,7 +49,7 @@ public class WarehousesController : Controller
             return NotFound();
         }
 
-        return View(entity);
+        return View(_mapper.Map(entity));
     }
 
     // GET: Warehouses/Create
@@ -64,11 +63,11 @@ public class WarehousesController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(WarehouseBllDto entity)
+    public async Task<IActionResult> Create(WarehouseMvcDto entity)
     {
         if (ModelState.IsValid)
         {
-            _bll.WarehouseService.Add(entity, User.GetUserId());
+            _bll.WarehouseService.Add(_mapper.Map(entity), User.GetUserId());
             await _bll.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
@@ -89,7 +88,7 @@ public class WarehousesController : Controller
         {
             return NotFound();
         }
-        return View(entity);
+        return View(_mapper.Map(entity));
     }
 
     // POST: Warehouses/Edit/5
@@ -97,7 +96,7 @@ public class WarehousesController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(Guid id, WarehouseBllDto entity)
+    public async Task<IActionResult> Edit(Guid id, WarehouseMvcDto entity)
     {
         if (id != entity.Id)
         {
@@ -106,7 +105,7 @@ public class WarehousesController : Controller
 
         if (ModelState.IsValid)
         {
-            _bll.WarehouseService.Update(entity);
+            _bll.WarehouseService.Update(_mapper.Map(entity));
             await _bll.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
@@ -127,7 +126,7 @@ public class WarehousesController : Controller
             return NotFound();
         }
 
-        return View(entity);
+        return View(_mapper.Map(entity));
     }
 
     // POST: Warehouses/Delete/5

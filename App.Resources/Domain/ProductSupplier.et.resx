@@ -17,7 +17,7 @@
     <data name="SupplierName" xml:space="preserve">
         <value>Tarnija nimi</value>
     </data>
-    <data name="ProductNae" xml:space="preserve">
+    <data name="ProductName" xml:space="preserve">
         <value>Toode nimi</value>
     </data>
 </root>

@@ -26,4 +26,23 @@ public class WarehouseViewModelMapper
             WarehouseCapacity = dto.WarehouseCapacity
         };
     }
+    
+    public WarehouseBllDto Map(WarehouseMvcDto dto)
+    {
+        if (dto is null)
+            throw new ArgumentNullException(nameof(dto));
+        
+        return new WarehouseBllDto()
+        {
+            Id = dto.Id,
+            WarehouseAddress = dto.WarehouseAddress,
+            WarehouseStreet = dto.WarehouseStreet,
+            WarehouseCity = dto.WarehouseCity,
+            WarehouseState = dto.WarehouseState,
+            WarehouseCountry = dto.WarehouseCountry,
+            WarehousePostalCode = dto.WarehousePostalCode,
+            WarehouseEmail = dto.WarehouseEmail,
+            WarehouseCapacity = dto.WarehouseCapacity
+        };
+    }
 }

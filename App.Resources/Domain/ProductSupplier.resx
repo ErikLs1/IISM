@@ -24,7 +24,7 @@
     <data name="SupplierName" xml:space="preserve">
         <value>Supplier name</value>
     </data>
-    <data name="ProductNae" xml:space="preserve">
+    <data name="ProductName" xml:space="preserve">
         <value>Product name</value>
     </data>
 </root>

@@ -20,4 +20,19 @@
     <data name="WarehouseEmail" xml:space="preserve">
         <value>Lao e-post</value>
     </data>
+    <data name="WarehouseStreet" xml:space="preserve">
+        <value>Tänav</value>
+    </data>
+    <data name="WarehouseState" xml:space="preserve">
+        <value>Osariik</value>
+    </data>
+    <data name="WarehousePostalCode" xml:space="preserve">
+        <value>Postiindeks</value>
+    </data>
+    <data name="WarehouseCountry" xml:space="preserve">
+        <value>Riik</value>
+    </data>
+    <data name="WarehouseCity" xml:space="preserve">
+        <value>Linn</value>
+    </data>
 </root>

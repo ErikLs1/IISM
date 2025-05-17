@@ -57,16 +57,5 @@ namespace App.Resources.Domain {
             }
         }
         
-        public static string Supplier {
-            get {
-                return ResourceManager.GetString("Supplier", resourceCulture);
-            }
-        }
-        
-        public static string Warehouse {
-            get {
-                return ResourceManager.GetString("Warehouse", resourceCulture);
-            }
-        }
     }
 }

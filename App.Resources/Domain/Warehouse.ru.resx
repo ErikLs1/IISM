@@ -20,4 +20,19 @@
     <data name="WarehouseEmail" xml:space="preserve">
         <value>Электронная почта склада</value>
     </data>
+    <data name="WarehouseCity" xml:space="preserve">
+        <value>Город</value>
+    </data>
+    <data name="WarehouseCountry" xml:space="preserve">
+        <value>Страна</value>
+    </data>
+    <data name="WarehousePostalCode" xml:space="preserve">
+        <value>Почтовый индекс</value>
+    </data>
+    <data name="WarehouseState" xml:space="preserve">
+        <value>Область</value>
+    </data>
+    <data name="WarehouseStreet" xml:space="preserve">
+        <value>Улица</value>
+    </data>
 </root>

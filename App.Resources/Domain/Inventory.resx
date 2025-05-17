@@ -21,10 +21,13 @@
     <data name="Quantity" xml:space="preserve">
         <value>Quantity</value>
     </data>
-    <data name="Product" xml:space="preserve">
-        <value>Product</value>
+    <data name="ProductName" xml:space="preserve">
+        <value>Product Name</value>
     </data>
-    <data name="Warehouse" xml:space="preserve">
-        <value>Warehouse</value>
+    <data name="WarehouseAddress" xml:space="preserve">
+        <value>Warehouse Address</value>
+    </data>
+    <data name="ProductDescription" xml:space="preserve">
+        <value>Product Description</value>
     </data>
 </root>

@@ -14,13 +14,10 @@
     <data name="Cost" xml:space="preserve">
         <value>Maksumus</value>
     </data>
-    <data name="Product" xml:space="preserve">
-        <value>Toode</value>
+    <data name="ProductName" xml:space="preserve">
+        <value>Toode nimi</value>
     </data>
     <data name="Quantity" xml:space="preserve">
         <value>Kogus</value>
-    </data>
-    <data name="StockOrder" xml:space="preserve">
-        <value>Varu tellimus</value>
     </data>
 </root>

@@ -11,8 +11,8 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
-    <data name="Order" xml:space="preserve">
-        <value>Tellimus</value>
+    <data name="OrderId" xml:space="preserve">
+        <value>Tellimus number</value>
     </data>
     <data name="PaymentAmount" xml:space="preserve">
         <value>Makse summa</value>

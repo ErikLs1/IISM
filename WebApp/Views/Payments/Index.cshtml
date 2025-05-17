@@ -8,25 +8,25 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">@Base.Resources.Common.CreateNewLink</a>
 </p>
 <table class="table">
     <thead>
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Payments.First().OrderId))
+            @App.Resources.Domain.Payment.OrderId
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Payments.First().PaymentMethod))
+            @App.Resources.Domain.Payment.PaymentMethod
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Payments.First().PaymentStatus)
+            @App.Resources.Domain.Payment.PaymentStatus
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Payments.First().PaymentAmount)
+            @App.Resources.Domain.Payment.PaymentAmount
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Payments.First().PaymentDate)
+            @App.Resources.Domain.Payment.PaymentDate
         </th>
 
         <th></th>
@@ -51,9 +51,9 @@
             @Html.DisplayFor(modelItem => item.PaymentDate)
         </td>
         <td>
-            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            <a asp-action="Edit" asp-route-id="@item.Id">@Base.Resources.Common.EditLink</a> |
+            <a asp-action="Details" asp-route-id="@item.Id">@Base.Resources.Common.DetailsLink</a> |
+            <a asp-action="Delete" asp-route-id="@item.Id">@Base.Resources.Common.DeleteLink</a>
         </td>
     </tr>
 }

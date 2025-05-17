@@ -7,28 +7,28 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">@Base.Resources.Common.CreateNewLink</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Persons.First().PersonFirstName)
+                @App.Resources.Domain.Person.PersonFirstName
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Persons.First().PersonLastName)
+                @App.Resources.Domain.Person.PersonLastName
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Persons.First().PersonPhoneNumber)
+                @App.Resources.Domain.Person.PersonPhoneNumber
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Persons.First().PersonAddress)
+                @App.Resources.Domain.Person.PersonAddress
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Persons.First().PersonGender)
+                @App.Resources.Domain.Person.PersonGender
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Persons.First().PersonDateOfBirth)
+                @App.Resources.Domain.Person.PersonDateOfBirth
             </th>
             <th></th>
         </tr>
@@ -55,9 +55,9 @@
                 @Html.DisplayFor(modelItem => item.PersonDateOfBirth)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.Id">@Base.Resources.Common.EditLink</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">@Base.Resources.Common.DetailsLink</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">@Base.Resources.Common.DeleteLink</a>
             </td>
         </tr>
 }

@@ -21,10 +21,10 @@
     <data name="UnitCost" xml:space="preserve">
         <value>Unit Cost</value>
     </data>
-    <data name="Supplier" xml:space="preserve">
-        <value>Supplier</value>
+    <data name="SupplierName" xml:space="preserve">
+        <value>Supplier name</value>
     </data>
-    <data name="Product" xml:space="preserve">
-        <value>Product</value>
+    <data name="ProductNae" xml:space="preserve">
+        <value>Product name</value>
     </data>
 </root>

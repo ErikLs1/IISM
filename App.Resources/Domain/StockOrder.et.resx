@@ -14,13 +14,13 @@
     <data name="Status" xml:space="preserve">
         <value>Olek</value>
     </data>
-    <data name="Supplier" xml:space="preserve">
-        <value>Tarnija</value>
-    </data>
     <data name="TotalCost" xml:space="preserve">
         <value>Kogukulu</value>
     </data>
-    <data name="Warehouse" xml:space="preserve">
-        <value>Ladu</value>
+    <data name="SupplierAddress" xml:space="preserve">
+        <value>fas</value>
+    </data>
+    <data name="SupplierName" xml:space="preserve">
+        <value>afs</value>
     </data>
 </root>

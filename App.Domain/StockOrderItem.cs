@@ -18,10 +18,8 @@ public class StockOrderItem : BaseEntity
     [Display(Name = nameof(Cost), Prompt = nameof(Cost), ResourceType = typeof(App.Resources.Domain.StockOrderItem))]
     public decimal Cost { get; set; }
     
-    [Display(Name = nameof(StockOrder), Prompt = nameof(StockOrder), ResourceType = typeof(App.Resources.Domain.StockOrderItem))]
     public StockOrder? StockOrder { get; set; }
     
-    [Display(Name = nameof(Product), Prompt = nameof(Product), ResourceType = typeof(App.Resources.Domain.StockOrderItem))]
     public Product? Product { get; set; }
 
 }

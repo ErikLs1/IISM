@@ -14,10 +14,10 @@
     <data name="UnitCost" xml:space="preserve">
         <value>Ühiku hind</value>
     </data>
-    <data name="Supplier" xml:space="preserve">
-        <value>Tarnija</value>
+    <data name="SupplierName" xml:space="preserve">
+        <value>Tarnija nimi</value>
     </data>
-    <data name="Product" xml:space="preserve">
-        <value>Toode</value>
+    <data name="ProductNae" xml:space="preserve">
+        <value>Toode nimi</value>
     </data>
 </root>

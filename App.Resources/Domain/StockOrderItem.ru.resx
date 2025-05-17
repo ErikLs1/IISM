@@ -14,13 +14,10 @@
     <data name="Cost" xml:space="preserve">
         <value>Стоимость</value>
     </data>
-    <data name="Product" xml:space="preserve">
-        <value>Продукт</value>
+    <data name="ProductName" xml:space="preserve">
+        <value>Название продукта</value>
     </data>
     <data name="Quantity" xml:space="preserve">
         <value>Количество</value>
-    </data>
-    <data name="StockOrder" xml:space="preserve">
-        <value>Закал на склад</value>
     </data>
 </root>

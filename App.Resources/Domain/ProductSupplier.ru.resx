@@ -14,10 +14,10 @@
     <data name="UnitCost" xml:space="preserve">
         <value>Цена за еденицу</value>
     </data>
-    <data name="Supplier" xml:space="preserve">
-        <value>Поставщик</value>
+    <data name="SupplierName" xml:space="preserve">
+        <value>Название поставщика</value>
     </data>
-    <data name="Product" xml:space="preserve">
-        <value>Продук</value>
+    <data name="ProductNae" xml:space="preserve">
+        <value>Название продукта</value>
     </data>
 </root>

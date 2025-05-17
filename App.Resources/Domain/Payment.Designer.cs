@@ -69,9 +69,9 @@ namespace App.Resources.Domain {
             }
         }
         
-        public static string Order {
+        public static string OrderId {
             get {
-                return ResourceManager.GetString("Order", resourceCulture);
+                return ResourceManager.GetString("OrderId", resourceCulture);
             }
         }
     }

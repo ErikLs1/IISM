@@ -30,7 +30,7 @@
     <data name="PaymentDate" xml:space="preserve">
         <value>Payment Date</value>
     </data>
-    <data name="Order" xml:space="preserve">
-        <value>Order</value>
+    <data name="OrderId" xml:space="preserve">
+        <value>Order Number</value>
     </data>
 </root>

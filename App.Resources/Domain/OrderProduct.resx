@@ -22,12 +22,9 @@
         <value>Quantity</value>
     </data>
     <data name="TotalPrice" xml:space="preserve">
-        <value>Total Price</value>
+        <value>Total price</value>
     </data>
-    <data name="Product" xml:space="preserve">
-        <value>Product</value>
-    </data>
-    <data name="Order" xml:space="preserve">
-        <value>Order</value>
+    <data name="ProductName" xml:space="preserve">
+        <value>Product name</value>
     </data>
 </root>

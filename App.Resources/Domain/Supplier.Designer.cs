@@ -68,5 +68,35 @@ namespace App.Resources.Domain {
                 return ResourceManager.GetString("SupplierAddress", resourceCulture);
             }
         }
+        
+        public static string SupplierStreet {
+            get {
+                return ResourceManager.GetString("SupplierStreet", resourceCulture);
+            }
+        }
+        
+        public static string SupplierCity {
+            get {
+                return ResourceManager.GetString("SupplierCity", resourceCulture);
+            }
+        }
+        
+        public static string SupplierState {
+            get {
+                return ResourceManager.GetString("SupplierState", resourceCulture);
+            }
+        }
+        
+        public static string SupplierCountry {
+            get {
+                return ResourceManager.GetString("SupplierCountry", resourceCulture);
+            }
+        }
+        
+        public static string SupplierPostalCode {
+            get {
+                return ResourceManager.GetString("SupplierPostalCode", resourceCulture);
+            }
+        }
     }
 }

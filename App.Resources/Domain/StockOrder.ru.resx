@@ -14,13 +14,13 @@
     <data name="Status" xml:space="preserve">
         <value>Статус</value>
     </data>
-    <data name="Supplier" xml:space="preserve">
-        <value>Поставщик</value>
-    </data>
     <data name="TotalCost" xml:space="preserve">
         <value>Общая стоимость</value>
     </data>
-    <data name="Warehouse" xml:space="preserve">
-        <value>Склад</value>
+    <data name="SupplierName" xml:space="preserve">
+        <value>asf</value>
+    </data>
+    <data name="SupplierAddress" xml:space="preserve">
+        <value>fsa</value>
     </data>
 </root>

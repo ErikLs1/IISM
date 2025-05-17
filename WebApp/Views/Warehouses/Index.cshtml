@@ -8,34 +8,34 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">@Base.Resources.Common.CreateNewLink</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Warehouses.First().WarehouseAddress))
+                @App.Resources.Domain.Warehouse.WarehouseAddress
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Warehouses.First().WarehouseStreet)
+                @App.Resources.Domain.Warehouse.WarehouseStreet
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Warehouses.First().WarehouseCity)
+                @App.Resources.Domain.Warehouse.WarehouseCity
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Warehouses.First().WarehouseState)
+                @App.Resources.Domain.Warehouse.WarehouseState
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Warehouses.First().WarehouseCountry)
+                @App.Resources.Domain.Warehouse.WarehouseCountry
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Warehouses.First().WarehousePostalCode)
+                @App.Resources.Domain.Warehouse.WarehousePostalCode
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Warehouses.First().WarehouseEmail)
+                @App.Resources.Domain.Warehouse.WarehouseEmail
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Warehouses.First().WarehouseCapacity)
+                @App.Resources.Domain.Warehouse.WarehouseCapacity
             </th>
             <th></th>
         </tr>
@@ -68,9 +68,9 @@
                 @Html.DisplayFor(modelItem => item.WarehouseCapacity)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.Id">@Base.Resources.Common.EditLink</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">@Base.Resources.Common.DetailsLink</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">@Base.Resources.Common.DeleteLink</a>
             </td>
         </tr>
 }

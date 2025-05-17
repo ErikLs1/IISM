@@ -22,18 +22,23 @@ public class Supplier : BaseEntity
     public string SupplierAddress { get; set; } = default!;
 
     [MaxLength(100)]
+    [Display(Name = nameof(SupplierStreet), Prompt = nameof(SupplierStreet), ResourceType = typeof(App.Resources.Domain.Supplier))]
     public string SupplierStreet { get; set; } = default!;
     
     [MaxLength(50)]
+    [Display(Name = nameof(SupplierCity), Prompt = nameof(SupplierCity), ResourceType = typeof(App.Resources.Domain.Supplier))]
     public string SupplierCity { get; set; } = default!;
     
     [MaxLength(50)]
+    [Display(Name = nameof(SupplierState), Prompt = nameof(SupplierState), ResourceType = typeof(App.Resources.Domain.Supplier))]
     public string SupplierState { get; set; } = default!;
     
     [MaxLength(50)]
+    [Display(Name = nameof(SupplierCountry), Prompt = nameof(SupplierCountry), ResourceType = typeof(App.Resources.Domain.Supplier))]
     public string SupplierCountry { get; set; } = default!;
     
     [MaxLength(20)]
+    [Display(Name = nameof(SupplierPostalCode), Prompt = nameof(SupplierPostalCode), ResourceType = typeof(App.Resources.Domain.Supplier))]
     public string SupplierPostalCode { get; set; } = default!;
 
     public ICollection<StockOrder>? StockOrders { get; set; } = new List<StockOrder>();

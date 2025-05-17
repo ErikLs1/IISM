@@ -8,19 +8,19 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">@Base.Resources.Common.CreateNewLink</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Refunds.First().RefundAmount))
+                @App.Resources.Domain.Refund.RefundAmount
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Refunds.First().RefundReason)
+                @App.Resources.Domain.Refund.RefundReason
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Refunds.First().RefundStatus)
+                @App.Resources.Domain.Refund.RefundStatus
             </th>
             <th></th>
         </tr>
@@ -38,9 +38,9 @@
                 @Html.DisplayFor(modelItem => item.RefundStatus)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.Id">@Base.Resources.Common.EditLink</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">@Base.Resources.Common.DetailsLink</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">@Base.Resources.Common.DeleteLink</a>
             </td>
         </tr>
 }

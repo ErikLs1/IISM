@@ -10,7 +10,7 @@ public class Payment : BaseEntity
     public Guid OrderId { get; set; }
     
     [MaxLength(50)] 
-    [Display(Name = nameof(PaymentStatus), Prompt = nameof(PaymentStatus), ResourceType = typeof(App.Resources.Domain.Payment))]
+    [Display(Name = nameof(PaymentMethod), Prompt = nameof(PaymentMethod), ResourceType = typeof(App.Resources.Domain.Payment))]
     public string PaymentMethod { get; set; } = default!;
     
     [MaxLength(50)] 
@@ -23,6 +23,5 @@ public class Payment : BaseEntity
     [Display(Name = nameof(PaymentDate), Prompt = nameof(PaymentDate), ResourceType = typeof(App.Resources.Domain.Payment))]
     public DateTime PaymentDate { get; set; } = DateTime.UtcNow;
     
-    [Display(Name = nameof(Order), Prompt = nameof(Order), ResourceType = typeof(App.Resources.Domain.Payment))]
     public Order? Order { get; set; }
 }

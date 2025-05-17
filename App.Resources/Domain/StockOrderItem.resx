@@ -24,10 +24,7 @@
     <data name="Cost" xml:space="preserve">
         <value>Cost</value>
     </data>
-    <data name="StockOrder" xml:space="preserve">
-        <value>Stock Order</value>
-    </data>
-    <data name="Product" xml:space="preserve">
-        <value>Product</value>
+    <data name="ProductName" xml:space="preserve">
+        <value>Product name</value>
     </data>
 </root>

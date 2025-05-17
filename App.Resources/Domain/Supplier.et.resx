@@ -23,4 +23,19 @@
     <data name="SupplierPhoneNumber" xml:space="preserve">
         <value>Tarnija telefoninumber</value>
     </data>
+    <data name="SupplierCity" xml:space="preserve">
+        <value>Linn</value>
+    </data>
+    <data name="SupplierCountry" xml:space="preserve">
+        <value>Riik</value>
+    </data>
+    <data name="SupplierPostalCode" xml:space="preserve">
+        <value>Postiindeks</value>
+    </data>
+    <data name="SupplierState" xml:space="preserve">
+        <value>Osariik</value>
+    </data>
+    <data name="SupplierStreet" xml:space="preserve">
+        <value>Tänav</value>
+    </data>
 </root>

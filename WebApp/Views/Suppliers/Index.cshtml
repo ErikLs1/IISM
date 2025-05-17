@@ -8,37 +8,37 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">@Base.Resources.Common.CreateNewLink</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Suppliers.First().SupplierName))
+                @App.Resources.Domain.Supplier.SupplierName
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Suppliers.First().SupplierPhoneNumber)
+                @App.Resources.Domain.Supplier.SupplierPhoneNumber
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Suppliers.First().SupplierEmail)
+                @App.Resources.Domain.Supplier.SupplierEmail
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Suppliers.First().SupplierAddress)
+                @App.Resources.Domain.Supplier.SupplierAddress
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Suppliers.First().SupplierStreet)
+                @App.Resources.Domain.Supplier.SupplierStreet
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Suppliers.First().SupplierCity)
+                @App.Resources.Domain.Supplier.SupplierCity
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Suppliers.First().SupplierState)
+                @App.Resources.Domain.Supplier.SupplierState
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Suppliers.First().SupplierCountry)
+                @App.Resources.Domain.Supplier.SupplierCountry
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Suppliers.First().SupplierPostalCode)
+                @App.Resources.Domain.Supplier.SupplierPostalCode
             </th>
             <th></th>
         </tr>
@@ -74,9 +74,9 @@
                 @Html.DisplayFor(modelItem => item.SupplierPostalCode)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.Id">@Base.Resources.Common.EditLink</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">@Base.Resources.Common.DetailsLink</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">@Base.Resources.Common.DeleteLink</a>
             </td>
         </tr>
 }

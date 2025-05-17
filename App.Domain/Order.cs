@@ -20,7 +20,6 @@ public class Order : BaseEntity
     [Display(Name = nameof(OrderTotalPrice), Prompt = nameof(OrderTotalPrice), ResourceType = typeof(App.Resources.Domain.Order))]
     public decimal OrderTotalPrice { get; set; }
     
-    [Display(Name = nameof(Person), Prompt = nameof(Person), ResourceType = typeof(App.Resources.Domain.Order))]
     public Person? Person { get; set; }
     public ICollection<OrderProduct>? OrderProducts { get; set; } = new List<OrderProduct>();
     public ICollection<Payment>? Payments { get; set; } = new List<Payment>();

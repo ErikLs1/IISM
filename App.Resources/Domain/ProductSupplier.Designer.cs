@@ -51,15 +51,15 @@ namespace App.Resources.Domain {
             }
         }
         
-        public static string Supplier {
+        public static string SupplierName {
             get {
-                return ResourceManager.GetString("Supplier", resourceCulture);
+                return ResourceManager.GetString("SupplierName", resourceCulture);
             }
         }
         
-        public static string Product {
+        public static string ProductNae {
             get {
-                return ResourceManager.GetString("Product", resourceCulture);
+                return ResourceManager.GetString("ProductNae", resourceCulture);
             }
         }
     }

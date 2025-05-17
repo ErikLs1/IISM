@@ -4,14 +4,17 @@ using Microsoft.AspNetCore.Mvc;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using WebApp.Models.Index;
+using WebApp.Models.Index.ViewModel;
 
 namespace WebApp.Controllers;
 
-[Authorize]
+/// <inheritdoc />
+[Authorize(Roles = "manager")]
 public class WarehousesController : Controller
 {
     private readonly IAppBll _bll;
 
+    /// <inheritdoc />
     public WarehousesController(IAppBll uow)
     {
         _bll = uow;
@@ -20,7 +23,7 @@ public class WarehousesController : Controller
     // GET: Warehouses
     public async Task<IActionResult> Index()
     {
-        var res = new WarehouseIndexViewModel()
+        var res = new WarehouseViewModel()
         {
             Warehouses = (await _bll.WarehouseService.AllAsync(User.GetUserId())).ToList()
         };

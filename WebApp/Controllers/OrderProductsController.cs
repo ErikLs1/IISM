@@ -4,14 +4,17 @@ using Microsoft.AspNetCore.Mvc;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using WebApp.Models.Index;
+using WebApp.Models.Index.ViewModel;
 
 namespace WebApp.Controllers;
 
-[Authorize]
+/// <inheritdoc />
+[Authorize(Roles = "manager")]
 public class OrderProductsController : Controller
 {
     private readonly IAppBll _bll;
 
+    /// <inheritdoc />
     public OrderProductsController(IAppBll uow)
     {
         _bll = uow;
@@ -20,7 +23,7 @@ public class OrderProductsController : Controller
     // GET: OrderProducts
     public async Task<IActionResult> Index()
     {
-        var res = new OrderProductIndexViewModel()
+        var res = new OrderProductViewModel()
         {
             OrderProducts = (await _bll.OrderProductService.AllAsync(User.GetUserId())).ToList()
         };

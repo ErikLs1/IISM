@@ -4,14 +4,19 @@ using Microsoft.AspNetCore.Mvc;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using WebApp.Models.Index;
+using WebApp.Models.Index.Mappers;
+using WebApp.Models.Index.ViewModel;
 
 namespace WebApp.Controllers;
 
-[Authorize]
+/// <inheritdoc />
+[Authorize(Roles = "manager")]
 public class InventoriesController : Controller
 {
     private readonly IAppBll _bll;
+    private readonly InventoryViewModelMapper _mapper = new InventoryViewModelMapper();
 
+    /// <inheritdoc />
     public InventoriesController(IAppBll uow)
     {
         _bll = uow;
@@ -20,9 +25,13 @@ public class InventoriesController : Controller
     // GET: Inventories
     public async Task<IActionResult> Index()
     {
-        var res = new InventoryIndexViewModel()
+        var dtos = (await _bll.InventoryService.AllAsync(User.GetUserId())).ToList();
+
+        var items = dtos.Select(x => _mapper.Map(x)).ToList();
+        
+        var res = new InventoryViewModel()
         {
-            Inventories = (await _bll.InventoryService.AllAsync(User.GetUserId())).ToList()
+           Inventories = items
         };
         return View(res);
     }

@@ -22,6 +22,8 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Integration\Repo\" />
+      <Folder Include="Integration\Service\" />
       <Folder Include="Unit\" />
     </ItemGroup>
 

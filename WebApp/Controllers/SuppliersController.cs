@@ -4,14 +4,17 @@ using Microsoft.AspNetCore.Mvc;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using WebApp.Models.Index;
+using WebApp.Models.Index.ViewModel;
 
 namespace WebApp.Controllers;
 
-[Authorize]
+/// <inheritdoc />
+[Authorize(Roles = "manager")]
 public class SuppliersController : Controller
 {
     private readonly IAppBll _bll;
 
+    /// <inheritdoc />
     public SuppliersController(IAppBll uow)
     {
         _bll = uow;
@@ -20,7 +23,7 @@ public class SuppliersController : Controller
     // GET: Suppliers
     public async Task<IActionResult> Index()
     {
-        var res = new SupplierIndexViewModel()
+        var res = new SupplierViewModel()
         {
             Suppliers = (await _bll.SupplierService.AllAsync(User.GetUserId())).ToList(),
         };

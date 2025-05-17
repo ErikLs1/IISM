@@ -1,8 +1,11 @@
 using App.BLL.DTO;
 
-namespace WebApp.Models.Index;
+namespace WebApp.Models.Index.ViewModel;
 
-public class ProductSupplierIndexViewModel
+/// <summary>
+/// 
+/// </summary>
+public class ProductSupplierViewModel
 {
     public ICollection<ProductSupplierBllDto> ProductSuppliers { get; set; } = default!;
 }

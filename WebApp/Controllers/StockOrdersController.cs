@@ -4,14 +4,17 @@ using Microsoft.AspNetCore.Mvc;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using WebApp.Models.Index;
+using WebApp.Models.Index.ViewModel;
 
 namespace WebApp.Controllers;
 
-[Authorize]
+/// <inheritdoc />
+[Authorize(Roles = "manager")]
 public class StockOrdersController : Controller
 {
     private readonly IAppBll _bll;
 
+    /// <inheritdoc />
     public StockOrdersController(IAppBll uow)
     {
         _bll = uow;
@@ -20,7 +23,7 @@ public class StockOrdersController : Controller
     // GET: StockOrders
     public async Task<IActionResult> Index()
     {
-        var res = new StockOrderIndexViewModel()
+        var res = new StockOrderViewModel()
         {
             StockOrders = (await _bll.StockOrderService.AllAsync(User.GetUserId())).ToList()
         };

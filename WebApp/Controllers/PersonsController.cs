@@ -4,14 +4,17 @@ using Microsoft.AspNetCore.Mvc;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using WebApp.Models.Index;
+using WebApp.Models.Index.ViewModel;
 
 namespace WebApp.Controllers;
 
-[Authorize]
+/// <inheritdoc />
+[Authorize(Roles = "manager")]
 public class PersonsController : Controller
 {
     private readonly IAppBll _bll;
 
+    /// <inheritdoc />
     public PersonsController(IAppBll uow)
     {
         _bll = uow;
@@ -20,7 +23,7 @@ public class PersonsController : Controller
     // GET: Persons
     public async Task<IActionResult> Index()
     {
-        var res = new PersonIndexViewModel()
+        var res = new PersonViewModel()
         {
             Persons = (await _bll.PersonService.AllAsync(User.GetUserId())).ToList(),
             PersonCountByName = await _bll.PersonService.GetPersonCountByNameAsync("Bob", User.GetUserId())

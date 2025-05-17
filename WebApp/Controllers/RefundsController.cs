@@ -4,14 +4,17 @@ using Microsoft.AspNetCore.Mvc;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using WebApp.Models.Index;
+using WebApp.Models.Index.ViewModel;
 
 namespace WebApp.Controllers;
 
-[Authorize]
+/// <inheritdoc />
+[Authorize(Roles = "manager")]
 public class RefundsController : Controller
 {
     private readonly IAppBll _bll;
 
+    /// <inheritdoc />
     public RefundsController(IAppBll uow)
     {
         _bll = uow;
@@ -20,7 +23,7 @@ public class RefundsController : Controller
     // GET: Refunds
     public async Task<IActionResult> Index()
     {
-        var res = new RefundIndexViewModel()
+        var res = new RefundViewModel()
         {
             Refunds = (await _bll.RefundService.AllAsync(User.GetUserId())).ToList(),
         };

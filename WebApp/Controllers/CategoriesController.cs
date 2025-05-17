@@ -4,14 +4,17 @@ using Microsoft.AspNetCore.Mvc;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using WebApp.Models.Index;
+using WebApp.Models.Index.ViewModel;
 
 namespace WebApp.Controllers;
 
-[Authorize]
+/// <inheritdoc />
+[Authorize(Roles = "manager")]
 public class CategoriesController : Controller
 {
     private readonly IAppBll _bll;
 
+    /// <inheritdoc />
     public CategoriesController(IAppBll uow)
     {
         _bll = uow;
@@ -20,7 +23,7 @@ public class CategoriesController : Controller
     // GET: Categories
     public async Task<IActionResult> Index()
     {
-        var res = new CategoryIndexViewModel()
+        var res = new CategoryViewModel()
         {
             Categories = (await _bll.CategoryService.AllAsync(User.GetUserId())).ToList(),
         };

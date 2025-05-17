@@ -20,10 +20,7 @@
                 @Html.DisplayNameFor(model => model.OrderProducts.First().TotalPrice)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.OrderProducts.First().Product)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OrderProducts.First().Order)
+                @Html.DisplayNameFor(model => model.OrderProducts.First().ProductName)
             </th>
             <th></th>
         </tr>
@@ -38,10 +35,7 @@
                 @Html.DisplayFor(modelItem => item.TotalPrice)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Product!.ProductDescription)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Order!.OrderShippingAddress)
+                @Html.DisplayFor(modelItem => item.ProductName)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

@@ -14,13 +14,13 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.ProductSuppliers.First().UnitCost))
+                @Html.DisplayNameFor(model => model.ProductSuppliers.First().UnitCost)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ProductSuppliers.First().Supplier)
+                @Html.DisplayNameFor(model => model.ProductSuppliers.First().SupplierName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ProductSuppliers.First().Product)
+                @Html.DisplayNameFor(model => model.ProductSuppliers.First().ProductName)
             </th>
             <th></th>
         </tr>
@@ -32,10 +32,10 @@
                 @Html.DisplayFor(modelItem => item.UnitCost)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Supplier!.SupplierName)
+                @Html.DisplayFor(modelItem => item.SupplierName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Product!.ProductName)
+                @Html.DisplayFor(modelItem => item.ProductName)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

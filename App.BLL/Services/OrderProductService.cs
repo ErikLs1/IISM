@@ -16,4 +16,10 @@ public class OrderProductService : BaseService<OrderProductBllDto, OrderProductD
         IMapper<OrderProductBllDto, OrderProductDalDto> mapper) : base(serviceUow, serviceUow.OrderProductRepository, mapper)
     {
     }
+
+    public async override Task<IEnumerable<OrderProductBllDto>> AllAsync(Guid userId = default)
+    {
+        var entities = await ServiceRepository.AllAsync(userId);
+        return entities.Select(e => Mapper.Map(e)!).ToList();
+    }
 }

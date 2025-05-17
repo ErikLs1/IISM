@@ -16,4 +16,10 @@ public class StockOrderItemService : BaseService<StockOrderItemBllDto, StockOrde
         IMapper<StockOrderItemBllDto, StockOrderItemDalDto> mapper) : base(serviceUow, serviceUow.StockOrderItemRepository, mapper)
     {
     }
+
+    public async override Task<IEnumerable<StockOrderItemBllDto>> AllAsync(Guid userId = default)
+    {
+        var entities = await ServiceRepository.AllAsync(userId);
+        return entities.Select(e => Mapper.Map(e)!).ToList();
+    }
 }

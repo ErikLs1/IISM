@@ -13,8 +13,13 @@ public class StockOrderViewModelMapper
         if (dto is null)
             throw new ArgumentNullException(nameof(dto));
         
-        return new StockOrderMvcDto()
+        return new StockOrderMvcDto
         {
+            Id = dto.Id,
+            TotalCost = dto.TotalCost,
+            Status = dto.Status,
+            SupplierName = dto.Supplier!.SupplierName,
+            WarehouseAdddress = dto.Warehouse!.WarehouseAddress
         };
     }
 }

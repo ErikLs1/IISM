@@ -32,7 +32,7 @@ public class StockOrdersController : Controller
         
         var res = new StockOrderViewModel()
         {
-            Suppliers = items
+            StockOrders = items
         };
         return View(res);
     }

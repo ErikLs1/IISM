@@ -32,7 +32,7 @@ public class ProductSuppliersController : Controller
         
         var res = new ProductSupplierViewModel()
         {
-            Suppliers = items
+            ProductSuppliers = items
         };
         return View(res);
     }

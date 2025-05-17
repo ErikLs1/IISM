@@ -17,6 +17,7 @@ public class ProductSupplierService : BaseService<ProductSupplierBllDto, Product
     }
     
 
+    // TODO MAPPER
     public async Task<ProductSupplierFiltersBllDto> GetProductSupplierFilterAsync()
     {
         var filters = await ServiceRepository.GetDistinctFiltersAsync();
@@ -30,6 +31,7 @@ public class ProductSupplierService : BaseService<ProductSupplierBllDto, Product
         };
     }
 
+    // TODO MAPPER
     public async Task<PagedData<ProductSupplierBllDto>> GetPagedDataAsync(
         int pageIndex, int pageSize, string? city, string? state, 
         string? country, string? category, string? supplier)
@@ -45,5 +47,11 @@ public class ProductSupplierService : BaseService<ProductSupplierBllDto, Product
             PageIndex = res.PageIndex,
             PageSize = res.PageSize
         };
+    }
+
+    public async override Task<IEnumerable<ProductSupplierBllDto>> AllAsync(Guid userId = default)
+    {
+        var entities = await ServiceRepository.AllAsync(userId);
+        return entities.Select(e => Mapper.Map(e)!).ToList();
     }
 }

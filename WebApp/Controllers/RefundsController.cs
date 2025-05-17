@@ -32,7 +32,7 @@ public class RefundsController : Controller
         
         var res = new RefundViewModel()
         {
-            Suppliers = items
+            Refunds = items
         };
         return View(res);
     }

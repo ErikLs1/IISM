@@ -13,8 +13,12 @@ public class OrderProductViewModelMapper
         if (dto is null)
             throw new ArgumentNullException(nameof(dto));
         
-        return new OrderProductMvcDto()
+        return new OrderProductMvcDto
         {
+            Id = dto.Id,
+            Quantity = dto.Quantity,
+            TotalPrice = dto.TotalPrice,
+            ProductName = dto.Product!.ProductName
         };
     }
 }

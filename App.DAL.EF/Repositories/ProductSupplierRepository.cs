@@ -69,4 +69,13 @@ public class ProductSupplierRepository : BaseRepository<ProductSupplierDalDto, P
             PageSize = pageSize
         };
     }
+
+    public async override Task<IEnumerable<ProductSupplierDalDto>> AllAsync(Guid userId = default)
+    {
+        return await GetQuery()
+            .Include(s => s.Supplier)
+            .Include(p => p.Product)
+            .Select(x => Mapper.Map(x)!)
+            .ToListAsync();
+    }
 }

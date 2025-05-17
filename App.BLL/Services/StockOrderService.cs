@@ -67,4 +67,10 @@ public class StockOrderService : BaseService<StockOrderBllDto, StockOrderDalDto,
         await _uow.SaveChangesAsync();
         return Mapper.Map(order)!;
     }
+
+    public async override Task<IEnumerable<StockOrderBllDto>> AllAsync(Guid userId = default)
+    {
+        var entities = await ServiceRepository.AllAsync(userId);
+        return entities.Select(e => Mapper.Map(e)!).ToList();
+    }
 }

@@ -20,10 +20,10 @@
                 @Html.DisplayNameFor(model => model.StockOrders.First().Status)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.StockOrders.First().Supplier)
+                @Html.DisplayNameFor(model => model.StockOrders.First().SupplierName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.StockOrders.First().Warehouse)
+                @Html.DisplayNameFor(model => model.StockOrders.First().WarehouseAdddress)
             </th>
             <th></th>
         </tr>
@@ -38,10 +38,10 @@
                 @Html.DisplayFor(modelItem => item.Status)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Supplier!.SupplierAddress)
+                @Html.DisplayFor(modelItem => item.SupplierName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Warehouse!.WarehouseAddress)
+                @Html.DisplayFor(modelItem => item.WarehouseAdddress)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

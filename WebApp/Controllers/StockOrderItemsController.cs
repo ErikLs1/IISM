@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using WebApp.Models.Index;
+using WebApp.Models.Index.Mappers;
 using WebApp.Models.Index.ViewModel;
 
 namespace WebApp.Controllers;
@@ -13,7 +14,7 @@ namespace WebApp.Controllers;
 public class StockOrderItemsController : Controller
 {
     private readonly IAppBll _bll;
-    private readonly StockOrderItemViewModel _mapper = new StockOrderItemViewModel();
+    private readonly StockOrderItemViewModelMapper _mapper = new StockOrderItemViewModelMapper();
     
 
     /// <inheritdoc />
@@ -32,7 +33,7 @@ public class StockOrderItemsController : Controller
         
         var res = new StockOrderItemViewModel()
         {
-            Suppliers = items
+            StockOrderItems = items
         };
         return View(res);
     }

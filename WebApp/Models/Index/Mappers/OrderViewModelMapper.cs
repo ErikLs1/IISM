@@ -15,6 +15,10 @@ public class OrderViewModelMapper
         
         return new OrderMvcDto()
         {
+            Id = dto.Id,
+            OrderShippingAddress = dto.OrderShippingAddress,
+            OrderStatus = dto.OrderStatus,
+            OrderTotalPrice = dto.OrderTotalPrice
         };
     }
 }

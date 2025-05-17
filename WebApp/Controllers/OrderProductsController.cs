@@ -31,7 +31,7 @@ public class OrderProductsController : Controller
         
         var res = new OrderProductViewModel()
         {
-            Suppliers = items
+            OrderProducts = items
         };
         return View(res);
     }

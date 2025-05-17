@@ -15,6 +15,10 @@ public class RefundViewModelMapper
         
         return new RefundMvcDto()
         {
+            Id = dto.Id,
+            RefundAmount = dto.RefundAmount,
+            RefundReason = dto.RefundReason,
+            RefundStatus = dto.RefundStatus
         };
     }
 }

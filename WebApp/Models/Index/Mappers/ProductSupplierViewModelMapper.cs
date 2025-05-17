@@ -13,8 +13,12 @@ public class ProductSupplierViewModelMapper
         if (dto is null)
             throw new ArgumentNullException(nameof(dto));
         
-        return new ProductSupplierMvcDto()
+        return new ProductSupplierMvcDto
         {
+            Id = dto.Id,
+            UnitCost = dto.UnitCost,
+            SupplierName = dto.Supplier!.SupplierName,
+            ProductName = dto.Product!.ProductName
         };
     }
 }

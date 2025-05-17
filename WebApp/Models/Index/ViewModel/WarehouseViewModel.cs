@@ -1,4 +1,4 @@
-using App.BLL.DTO;
+using WebApp.Models.Index.MvcDto;
 
 namespace WebApp.Models.Index.ViewModel;
 
@@ -7,5 +7,5 @@ namespace WebApp.Models.Index.ViewModel;
 /// </summary>
 public class WarehouseViewModel
 {
-    public ICollection<WarehouseBllDto> Warehouses { get; set; } = default!;
+    public ICollection<WarehouseMvcDto> Warehouses { get; set; } = default!;
 }

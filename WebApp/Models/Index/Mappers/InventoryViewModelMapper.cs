@@ -22,6 +22,7 @@ public class InventoryViewModelMapper
         {
             Id = dto.Id,
             Quantity = dto.Quantity,
+            ProductName = dto.Product?.ProductName,
             ProductDescription = dto.Product?.ProductDescription,
             WarehouseAddress = dto.Warehouse?.WarehouseAddress
         };

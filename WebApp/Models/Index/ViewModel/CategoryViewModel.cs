@@ -1,4 +1,4 @@
-using App.BLL.DTO;
+using WebApp.Models.Index.MvcDto;
 
 namespace WebApp.Models.Index.ViewModel;
 
@@ -7,5 +7,5 @@ namespace WebApp.Models.Index.ViewModel;
 /// </summary>
 public class CategoryViewModel
 {
-    public ICollection<CategoryBllDto> Categories { get; set; } = default!;
+    public ICollection<CategoryMvcDto> Categories { get; set; } = default!;
 }

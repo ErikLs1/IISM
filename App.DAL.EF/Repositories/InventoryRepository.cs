@@ -54,4 +54,12 @@ public class InventoryRepository : BaseRepository<InventoryDalDto, Inventory>, I
             ProductDescription = e.Product!.ProductDescription,
         }).ToList();
     }
+
+    public async override Task<IEnumerable<InventoryDalDto>> AllAsync(Guid userId = default)
+    {
+        return await GetQuery(userId)
+                .Include(i => i.Product)
+                .Include(i => i.Warehouse)
+            .Select(e => Mapper.Map(e)!).ToListAsync();
+    }
 }

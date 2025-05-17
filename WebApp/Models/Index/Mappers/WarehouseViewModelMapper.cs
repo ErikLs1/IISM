@@ -1,3 +1,6 @@
+using App.BLL.DTO;
+using WebApp.Models.Index.MvcDto;
+
 namespace WebApp.Models.Index.Mappers;
 
 /// <summary>
@@ -5,5 +8,22 @@ namespace WebApp.Models.Index.Mappers;
 /// </summary>
 public class WarehouseViewModelMapper
 {
-    
+    public WarehouseMvcDto Map(WarehouseBllDto dto)
+    {
+        if (dto is null)
+            throw new ArgumentNullException(nameof(dto));
+        
+        return new WarehouseMvcDto()
+        {
+            Id = dto.Id,
+            WarehouseAddress = dto.WarehouseAddress,
+            WarehouseStreet = dto.WarehouseStreet,
+            WarehouseCity = dto.WarehouseCity,
+            WarehouseState = dto.WarehouseState,
+            WarehouseCountry = dto.WarehouseCountry,
+            WarehousePostalCode = dto.WarehousePostalCode,
+            WarehouseEmail = dto.WarehouseEmail,
+            WarehouseCapacity = dto.WarehouseCapacity
+        };
+    }
 }

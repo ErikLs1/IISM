@@ -1,5 +1,8 @@
 namespace WebApp.Models.Index.MvcDto;
 
+/// <summary>
+/// 
+/// </summary>
 public class InventoryMvcDto
 {
     /// <summary>
@@ -11,6 +14,11 @@ public class InventoryMvcDto
     /// 
     /// </summary>
     public int Quantity { get; set; }
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    public string? ProductName { get; set; }
     
     /// <summary>
     /// 

@@ -1,4 +1,4 @@
-using App.BLL.DTO;
+using WebApp.Models.Index.MvcDto;
 
 namespace WebApp.Models.Index.ViewModel;
 
@@ -7,6 +7,6 @@ namespace WebApp.Models.Index.ViewModel;
 /// </summary>
 public class OrderProductViewModel
 {
-    public ICollection<OrderProductBllDto> OrderProducts { get; set; } = default!;
+    public ICollection<OrderProductMvcDto> OrderProducts { get; set; } = default!;
  
 }

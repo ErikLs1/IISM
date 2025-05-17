@@ -77,4 +77,10 @@ public class InventoryService : BaseService<InventoryBllDto, InventoryDalDto, II
 
         return query.ToList();
     }
+
+    public async override Task<IEnumerable<InventoryBllDto>> AllAsync(Guid userId = default)
+    {
+        var entities = await ServiceRepository.AllAsync(userId);
+        return entities.Select(e => Mapper.Map(e)!).ToList();
+    }
 }

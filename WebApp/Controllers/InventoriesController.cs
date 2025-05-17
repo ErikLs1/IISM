@@ -3,7 +3,6 @@ using App.BLL.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
-using WebApp.Models.Index;
 using WebApp.Models.Index.Mappers;
 using WebApp.Models.Index.ViewModel;
 
@@ -21,8 +20,11 @@ public class InventoriesController : Controller
     {
         _bll = uow;
     }
-
-    // GET: Inventories
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     public async Task<IActionResult> Index()
     {
         var dtos = (await _bll.InventoryService.AllAsync(User.GetUserId())).ToList();

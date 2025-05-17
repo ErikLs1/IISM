@@ -27,5 +27,4 @@ public class InventoryViewModelMapper
             WarehouseAddress = dto.Warehouse?.WarehouseAddress
         };
     }
-    
 }

@@ -25,6 +25,21 @@
             <th>
                 @Html.DisplayNameFor(model => model.Suppliers.First().SupplierAddress)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Suppliers.First().SupplierStreet)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Suppliers.First().SupplierCity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Suppliers.First().SupplierState)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Suppliers.First().SupplierCountry)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Suppliers.First().SupplierPostalCode)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -42,6 +57,21 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.SupplierAddress)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SupplierStreet)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SupplierCity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SupplierState)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SupplierCountry)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SupplierPostalCode)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

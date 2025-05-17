@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using WebApp.Models.Index;
+using WebApp.Models.Index.Mappers;
 using WebApp.Models.Index.ViewModel;
 
 namespace WebApp.Controllers;
@@ -13,6 +14,8 @@ namespace WebApp.Controllers;
 public class PersonsController : Controller
 {
     private readonly IAppBll _bll;
+    private readonly PersonViewModelMapper _mapper = new PersonViewModelMapper();
+    
 
     /// <inheritdoc />
     public PersonsController(IAppBll uow)
@@ -23,12 +26,14 @@ public class PersonsController : Controller
     // GET: Persons
     public async Task<IActionResult> Index()
     {
+        var dtos = (await _bll.PersonService.AllAsync(User.GetUserId())).ToList();
+
+        var items = dtos.Select(x => _mapper.Map(x)).ToList();
+        
         var res = new PersonViewModel()
         {
-            Persons = (await _bll.PersonService.AllAsync(User.GetUserId())).ToList(),
-            PersonCountByName = await _bll.PersonService.GetPersonCountByNameAsync("Bob", User.GetUserId())
+            Persons = items
         };
-        
         return View(res);
     }
 

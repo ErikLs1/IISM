@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using WebApp.Models.Index;
+using WebApp.Models.Index.Mappers;
 using WebApp.Models.Index.ViewModel;
 
 namespace WebApp.Controllers;
@@ -13,6 +14,8 @@ namespace WebApp.Controllers;
 public class ProductsController : Controller
 {
     private readonly IAppBll _bll;
+    private readonly ProductViewModelMapper _mapper = new ProductViewModelMapper();
+    
 
     /// <inheritdoc />
     public ProductsController(IAppBll uow)
@@ -23,11 +26,14 @@ public class ProductsController : Controller
     // GET: Products
     public async Task<IActionResult> Index()
     {
+        var dtos = (await _bll.ProductService.AllAsync(User.GetUserId())).ToList();
+
+        var items = dtos.Select(x => _mapper.Map(x)).ToList();
+        
         var res = new ProductViewModel()
         {
-            Products = (await _bll.ProductService.AllAsync(User.GetUserId())).ToList()
+            Products = items
         };
-        
         return View(res);
     }
 

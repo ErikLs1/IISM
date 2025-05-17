@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using WebApp.Models.Index;
+using WebApp.Models.Index.Mappers;
 using WebApp.Models.Index.ViewModel;
 
 namespace WebApp.Controllers;
@@ -13,6 +14,7 @@ namespace WebApp.Controllers;
 public class SuppliersController : Controller
 {
     private readonly IAppBll _bll;
+    private readonly SupplierViewModelMapper _mapper = new SupplierViewModelMapper();
 
     /// <inheritdoc />
     public SuppliersController(IAppBll uow)
@@ -23,11 +25,14 @@ public class SuppliersController : Controller
     // GET: Suppliers
     public async Task<IActionResult> Index()
     {
+        var dtos = (await _bll.SupplierService.AllAsync(User.GetUserId())).ToList();
+
+        var items = dtos.Select(x => _mapper.Map(x)).ToList();
+        
         var res = new SupplierViewModel()
         {
-            Suppliers = (await _bll.SupplierService.AllAsync(User.GetUserId())).ToList(),
+            Suppliers = items
         };
-        
         return View(res);
     }
 

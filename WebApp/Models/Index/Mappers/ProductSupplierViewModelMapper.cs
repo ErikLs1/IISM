@@ -1,3 +1,6 @@
+using App.BLL.DTO;
+using WebApp.Models.Index.MvcDto;
+
 namespace WebApp.Models.Index.Mappers;
 
 /// <summary>
@@ -5,5 +8,13 @@ namespace WebApp.Models.Index.Mappers;
 /// </summary>
 public class ProductSupplierViewModelMapper
 {
-    
+    public ProductSupplierMvcDto Map(ProductSupplierBllDto dto)
+    {
+        if (dto is null)
+            throw new ArgumentNullException(nameof(dto));
+        
+        return new ProductSupplierMvcDto()
+        {
+        };
+    }
 }

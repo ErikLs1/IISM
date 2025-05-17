@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using WebApp.Models.Index;
+using WebApp.Models.Index.Mappers;
 using WebApp.Models.Index.ViewModel;
 
 namespace WebApp.Controllers;
@@ -13,6 +14,8 @@ namespace WebApp.Controllers;
 public class PaymentsController : Controller
 {
     private readonly IAppBll _bll;
+    private readonly PaymentViewModelMapper _mapper = new PaymentViewModelMapper();
+    
 
     /// <inheritdoc />
     public PaymentsController(IAppBll uow)
@@ -23,11 +26,14 @@ public class PaymentsController : Controller
     // GET: Payments
     public async Task<IActionResult> Index()
     {
+        var dtos = (await _bll.PaymentService.AllAsync(User.GetUserId())).ToList();
+
+        var items = dtos.Select(x => _mapper.Map(x)).ToList();
+        
         var res = new PaymentViewModel()
         {
-            Payments = (await _bll.PaymentService.AllAsync(User.GetUserId())).ToList(),
+            Payments = items
         };
-        
         return View(res);
     }
 

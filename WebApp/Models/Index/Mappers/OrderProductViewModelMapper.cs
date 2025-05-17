@@ -6,14 +6,14 @@ namespace WebApp.Models.Index.Mappers;
 /// <summary>
 /// 
 /// </summary>
-public class OrderViewModelMapper
+public class OrderProductViewModelMapper
 {
-    public OrderMvcDto Map(OrderBllDto dto)
+    public OrderProductMvcDto Map(OrderProductBllDto dto)
     {
         if (dto is null)
             throw new ArgumentNullException(nameof(dto));
         
-        return new OrderMvcDto()
+        return new OrderProductMvcDto()
         {
         };
     }

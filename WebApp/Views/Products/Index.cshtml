@@ -22,12 +22,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.Products.First().ProductPrice)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Products.First().ProductStatus)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Products.First().Category!.CategoryName)
-            </th>
             <th></th>
         </tr>
     </thead>
@@ -42,12 +36,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ProductPrice)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProductStatus)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Category!.CategoryName)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

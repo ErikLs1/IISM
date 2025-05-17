@@ -8,5 +8,4 @@ namespace WebApp.Models.Index.ViewModel;
 public class PaymentViewModel
 {
     public ICollection<PaymentMvcDto> Payments { get; set; } = default!;
-
 }

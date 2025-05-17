@@ -13,6 +13,8 @@ namespace WebApp.Controllers;
 public class StockOrderItemsController : Controller
 {
     private readonly IAppBll _bll;
+    private readonly StockOrderItemViewModel _mapper = new StockOrderItemViewModel();
+    
 
     /// <inheritdoc />
     public StockOrderItemsController(IAppBll uow)
@@ -24,11 +26,14 @@ public class StockOrderItemsController : Controller
     public async Task<IActionResult> Index()
     {
 
+        var dtos = (await _bll.StockOrderItemService.AllAsync(User.GetUserId())).ToList();
+
+        var items = dtos.Select(x => _mapper.Map(x)).ToList();
+        
         var res = new StockOrderItemViewModel()
         {
-            StockOrderItems = (await _bll.StockOrderItemService.AllAsync(User.GetUserId())).ToList()
+            Suppliers = items
         };
-        
         return View(res);
     }
 

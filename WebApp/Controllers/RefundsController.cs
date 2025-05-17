@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using WebApp.Models.Index;
+using WebApp.Models.Index.Mappers;
 using WebApp.Models.Index.ViewModel;
 
 namespace WebApp.Controllers;
@@ -13,6 +14,8 @@ namespace WebApp.Controllers;
 public class RefundsController : Controller
 {
     private readonly IAppBll _bll;
+    private readonly RefundViewModelMapper _mapper = new RefundViewModelMapper();
+    
 
     /// <inheritdoc />
     public RefundsController(IAppBll uow)
@@ -23,11 +26,14 @@ public class RefundsController : Controller
     // GET: Refunds
     public async Task<IActionResult> Index()
     {
+        var dtos = (await _bll.RefundService.AllAsync(User.GetUserId())).ToList();
+
+        var items = dtos.Select(x => _mapper.Map(x)).ToList();
+        
         var res = new RefundViewModel()
         {
-            Refunds = (await _bll.RefundService.AllAsync(User.GetUserId())).ToList(),
+            Suppliers = items
         };
-        
         return View(res);
     }
 

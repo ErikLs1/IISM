@@ -3,7 +3,7 @@ using App.BLL.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
-using WebApp.Models.Index;
+using WebApp.Models.Index.Mappers;
 using WebApp.Models.Index.ViewModel;
 
 namespace WebApp.Controllers;
@@ -13,6 +13,7 @@ namespace WebApp.Controllers;
 public class CategoriesController : Controller
 {
     private readonly IAppBll _bll;
+    private readonly CategoryViewModelMapper _mapper = new CategoryViewModelMapper();
 
     /// <inheritdoc />
     public CategoriesController(IAppBll uow)
@@ -23,9 +24,13 @@ public class CategoriesController : Controller
     // GET: Categories
     public async Task<IActionResult> Index()
     {
+        var dtos = (await _bll.CategoryService.AllAsync(User.GetUserId())).ToList();
+
+        var items = dtos.Select(x => _mapper.Map(x)).ToList();
+        
         var res = new CategoryViewModel()
         {
-            Categories = (await _bll.CategoryService.AllAsync(User.GetUserId())).ToList(),
+            Categories = items
         };
         return View(res);
     }

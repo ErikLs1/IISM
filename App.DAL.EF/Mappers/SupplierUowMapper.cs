@@ -18,6 +18,11 @@ public class SupplierUowMapper : IMapper<SupplierDalDto, Supplier>
             SupplierPhoneNumber = entity.SupplierPhoneNumber,
             SupplierEmail = entity.SupplierEmail,
             SupplierAddress = entity.SupplierAddress,
+            SupplierStreet = entity.SupplierStreet,
+            SupplierCity = entity.SupplierCity,
+            SupplierState = entity.SupplierState,
+            SupplierCountry = entity.SupplierCountry,
+            SupplierPostalCode = entity.SupplierPostalCode,
             StockOrders = entity.StockOrders == null
                 ? []
                 : entity.StockOrders
@@ -54,7 +59,12 @@ public class SupplierUowMapper : IMapper<SupplierDalDto, Supplier>
             SupplierName = dto.SupplierName,
             SupplierPhoneNumber = dto.SupplierPhoneNumber,
             SupplierEmail = dto.SupplierEmail,
-            SupplierAddress = dto.SupplierAddress
+            SupplierAddress = dto.SupplierAddress,
+            SupplierStreet = dto.SupplierStreet,
+            SupplierCity = dto.SupplierCity,
+            SupplierState = dto.SupplierState,
+            SupplierCountry = dto.SupplierCountry,
+            SupplierPostalCode = dto.SupplierPostalCode
         };
 
         if (dto.StockOrders != null)

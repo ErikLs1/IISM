@@ -3,6 +3,7 @@ using App.BLL.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using WebApp.Models.Index;
 using WebApp.Models.Index.Mappers;
 using WebApp.Models.Index.MvcDto;
@@ -37,7 +38,7 @@ public class ProductSuppliersController : Controller
         return View(res);
     }
 
-    /*public async Task<IActionResult> Details(Guid? id)
+    public async Task<IActionResult> Details(Guid? id)
     {
         if (id == null)
         {
@@ -51,59 +52,72 @@ public class ProductSuppliersController : Controller
             return NotFound();
         }
 
-        return View(entity);
+        return View(_mapper.Map(entity));
     }
 
-    public IActionResult Create()
+    private async Task PopulateSuppliersAndProducts(Guid? selectedSupplier = null,
+        Guid? selectedProduct  = null)
     {
-       return View();
+        // 1) fetch all suppliers & products
+        var suppliers = await _bll.SupplierService.AllAsync(User.GetUserId());
+        var products  = await _bll.ProductService.AllAsync( User.GetUserId());
+
+        // 2) build SelectLists of (value: Id, text: Name)
+        ViewBag.SupplierId =
+            new SelectList(suppliers, nameof(SupplierBllDto.Id), nameof(SupplierBllDto.SupplierName), selectedSupplier);
+
+        ViewBag.ProductId  =
+            new SelectList(products,  nameof(ProductBllDto.Id),  nameof(ProductBllDto.ProductName),  selectedProduct);
+    }
+    
+    public async Task<IActionResult> Create()
+    { 
+        await PopulateSuppliersAndProducts();
+        return View();
     }
     
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(ProductSupplierMvcDto entity)
     {
-        if (ModelState.IsValid)
+        if (!ModelState.IsValid)
         {
-            _bll.ProductSupplierService.Add(entity, User.GetUserId());
-            await _bll.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        } 
-        return View(entity);
+            await PopulateSuppliersAndProducts(entity.SupplierId, entity.ProductId);
+            return View(entity);
+        }
+        
+        _bll.ProductSupplierService.Add(_mapper.Map(entity), User.GetUserId());
+        await _bll.SaveChangesAsync();
+        return RedirectToAction(nameof(Index));
     }
 
     public async Task<IActionResult> Edit(Guid? id)
     {
-        if (id == null)
-        {
-            return NotFound();
-        }
-
+        if (id == null) return NotFound();
         var entity = await _bll.ProductSupplierService.FindAsync(id.Value, User.GetUserId());
-
-        if (entity == null)
-        {
-            return NotFound();
-        }
-        return View(entity);
+        if (entity == null) return NotFound();
+        
+        var vm = _mapper.Map(entity);
+        await PopulateSuppliersAndProducts(vm.SupplierId, vm.ProductId);
+        return View(_mapper.Map(entity));
     }
     
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, ProductSupplierMvcDto entity)
     {
-        if (id != entity.Id)
-        {
-            return NotFound();
-        }
+        if (id != entity.Id) return NotFound();
+        
 
-        if (ModelState.IsValid)
+        if (!ModelState.IsValid)
         {
-            _bll.ProductSupplierService.Update(entity);
-            await _bll.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            await PopulateSuppliersAndProducts(entity.SupplierId, entity.ProductId);
+            return View(entity);
         }
-        return View(entity);
+        
+        _bll.ProductSupplierService.Update(_mapper.Map(entity), User.GetUserId());
+        await _bll.SaveChangesAsync();
+        return RedirectToAction(nameof(Index));
     }
 
     public async Task<IActionResult> Delete(Guid? id)
@@ -120,7 +134,7 @@ public class ProductSuppliersController : Controller
             return NotFound();
         }
 
-        return View(entity);
+        return View(_mapper.Map(entity));
     }
 
     [HttpPost, ActionName("Delete")]
@@ -130,5 +144,5 @@ public class ProductSuppliersController : Controller
         await _bll.ProductSupplierService.RemoveAsync(id, User.GetUserId());
         await _bll.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
-    }*/
+    }
 }

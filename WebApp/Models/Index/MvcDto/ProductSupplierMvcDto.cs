@@ -10,9 +10,13 @@ public class ProductSupplierMvcDto
     [Display(Name = nameof(ProductSupplier.UnitCost), ResourceType = typeof(ProductSupplier))]
     public decimal UnitCost { get; set; }
     
+    public Guid SupplierId { get; set; }
+    
     [Display(Name = nameof(ProductSupplier.SupplierName), ResourceType = typeof(ProductSupplier))]
-    public string SupplierName { get; set; } = default!;
+    public string? SupplierName { get; set; }
+    
+    public Guid ProductId { get; set; }
     
     [Display(Name = nameof(ProductSupplier.ProductName), ResourceType = typeof(ProductSupplier))]
-    public string ProductName { get; set; } = default!;
+    public string? ProductName { get; set; }
 }

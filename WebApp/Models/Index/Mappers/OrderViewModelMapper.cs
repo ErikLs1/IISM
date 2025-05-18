@@ -15,11 +15,13 @@ public class OrderViewModelMapper
             Id = dto.Id,
             OrderShippingAddress = dto.OrderShippingAddress,
             OrderStatus = dto.OrderStatus,
-            OrderTotalPrice = dto.OrderTotalPrice
+            OrderTotalPrice = dto.OrderTotalPrice,
+            PersonId = dto.PersonId,
+            PersonFirstName = dto.Person?.PersonFirstName
         };
     }
     
-    /*public OrderBllDto Map(OrderMvcDto dto)
+    public OrderBllDto Map(OrderMvcDto dto)
     {
         if (dto is null)
             throw new ArgumentNullException(nameof(dto));
@@ -29,7 +31,8 @@ public class OrderViewModelMapper
             Id = dto.Id,
             OrderShippingAddress = dto.OrderShippingAddress,
             OrderStatus = dto.OrderStatus,
-            OrderTotalPrice = dto.OrderTotalPrice
+            OrderTotalPrice = dto.OrderTotalPrice,
+            PersonId = dto.PersonId
         };
-    }*/
+    }
 }

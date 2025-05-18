@@ -18,4 +18,7 @@ public class OrderMvcDto
     
     [Display(Name = nameof(Order.OrderTotalPrice), ResourceType = typeof(Order))]
     public decimal OrderTotalPrice { get; set; }
+    
+    public Guid PersonId { get; set; }
+    public string? PersonFirstName { get; set; }
 }

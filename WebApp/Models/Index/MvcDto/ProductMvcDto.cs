@@ -15,7 +15,9 @@ public class ProductMvcDto
     
     [Display(Name = nameof(Product.ProductPrice), ResourceType = typeof(Product))]
     public decimal ProductPrice { get; set; }
+
+    public string ProductStatus { get; set; } = default!;
     
     public Guid CategoryId { get; set; }
-    public string CategoryName { get; set; } = default!;
+    public string? CategoryName { get; set; }
 }

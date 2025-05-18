@@ -14,6 +14,7 @@ public class PaymentViewModelMapper
         {
             Id = dto.Id,
             OrderId = dto.OrderId,
+            ShippingAddress = dto.Order?.OrderShippingAddress,
             PaymentMethod = dto.PaymentMethod,
             PaymentStatus = dto.PaymentStatus,
             PaymentAmount = dto.PaymentAmount,
@@ -21,7 +22,7 @@ public class PaymentViewModelMapper
         };
     }
     
-    /*public PaymentBllDto Map(PaymentMvcDto dto)
+    public PaymentBllDto Map(PaymentMvcDto dto)
     {
         if (dto is null)
             throw new ArgumentNullException(nameof(dto));
@@ -35,5 +36,5 @@ public class PaymentViewModelMapper
             PaymentAmount = dto.PaymentAmount,
             PaymentDate = dto.PaymentDate,
         };
-    }*/
+    }
 }

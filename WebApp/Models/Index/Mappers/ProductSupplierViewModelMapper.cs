@@ -14,22 +14,24 @@ public class ProductSupplierViewModelMapper
         {
             Id = dto.Id,
             UnitCost = dto.UnitCost,
-            SupplierName = dto.Supplier!.SupplierName,
-            ProductName = dto.Product!.ProductName
+            SupplierId = dto.SupplierId,
+            SupplierName = dto.Supplier?.SupplierName,
+            ProductId = dto.ProductId,
+            ProductName = dto.Product?.ProductName,
         };
     }
     
-    // public ProductSupplierBllDto Map(ProductSupplierMvcDto dto)
-    // {
-    //     if (dto is null)
-    //         throw new ArgumentNullException(nameof(dto));
-    //     
-    //     return new ProductSupplierBllDto
-    //     {
-    //         Id = dto.Id,
-    //         UnitCost = dto.UnitCost,
-    //         SupplierName = dto.Supplier!.SupplierName,
-    //         ProductName = dto.Product!.ProductName
-    //     };
-    // }
+    public ProductSupplierBllDto Map(ProductSupplierMvcDto dto)
+    {
+        if (dto is null)
+            throw new ArgumentNullException(nameof(dto));
+        
+        return new ProductSupplierBllDto
+        {
+            Id = dto.Id,
+            UnitCost = dto.UnitCost,
+            SupplierId = dto.SupplierId,
+            ProductId = dto.ProductId
+        };
+    }
 }

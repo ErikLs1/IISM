@@ -22,6 +22,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Products.First().ProductPrice)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Products.First().ProductStatus)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -36,6 +39,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ProductPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductStatus)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">@Base.Resources.Common.EditLink</a> |

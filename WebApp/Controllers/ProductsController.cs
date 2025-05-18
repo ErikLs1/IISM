@@ -1,7 +1,9 @@
 using App.BLL.Contracts;
+using App.BLL.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using WebApp.Models.Index.Mappers;
 using WebApp.Models.Index.MvcDto;
 using WebApp.Models.Index.ViewModel;
@@ -35,7 +37,7 @@ public class ProductsController : Controller
         return View(res);
     }
 
-    /*public async Task<IActionResult> Details(Guid? id)
+    public async Task<IActionResult> Details(Guid? id)
     {
         if (id == null)
         {
@@ -49,12 +51,24 @@ public class ProductsController : Controller
             return NotFound();
         }
 
-        return View(entity);
+        return View(_mapper.Map(entity));
     }
 
-    public IActionResult Create()
+    
+    private async Task PopulateCategories(Guid? selectedId = null)
     {
-        return View();
+        var categories = await _bll.CategoryService.AllAsync(User.GetUserId());
+        ViewBag.CategoryId = new SelectList(
+            categories,
+            nameof(CategoryBllDto.Id),
+            nameof(CategoryBllDto.CategoryName),
+            selectedId
+        );
+    }
+    public async Task<IActionResult> Create()
+    {
+        await PopulateCategories();
+        return View(new ProductMvcDto());
     }
     
     [HttpPost]
@@ -63,7 +77,7 @@ public class ProductsController : Controller
     {
         if (ModelState.IsValid)
         {
-            _bll.ProductService.Add(entity, User.GetUserId());
+            _bll.ProductService.Add(_mapper.Map(entity), User.GetUserId());
             await _bll.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
@@ -83,7 +97,9 @@ public class ProductsController : Controller
         {
             return NotFound();
         }
-        return View(entity);
+        await PopulateCategories(entity.CategoryId);
+        
+        return View(_mapper.Map(entity));
     }
     
     [HttpPost]
@@ -97,7 +113,7 @@ public class ProductsController : Controller
 
         if (ModelState.IsValid)
         {
-            _bll.ProductService.Update(entity);
+            _bll.ProductService.Update(_mapper.Map(entity));
             await _bll.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
@@ -118,7 +134,7 @@ public class ProductsController : Controller
             return NotFound();
         }
 
-        return View(entity);
+        return View(_mapper.Map(entity));
     }
 
     [HttpPost, ActionName("Delete")]
@@ -128,5 +144,5 @@ public class ProductsController : Controller
         await _bll.ProductService.RemoveAsync(id, User.GetUserId());
         await _bll.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
-    }*/
+    }
 }

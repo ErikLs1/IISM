@@ -1,7 +1,9 @@
 using App.BLL.Contracts;
+using App.BLL.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using WebApp.Models.Index.Mappers;
 using WebApp.Models.Index.MvcDto;
 using WebApp.Models.Index.ViewModel;
@@ -35,7 +37,7 @@ public class PaymentsController : Controller
         return View(res);
     }
 
-    /*public async Task<IActionResult> Details(Guid? id)
+    public async Task<IActionResult> Details(Guid? id)
     {
         if (id == null)
         {
@@ -49,59 +51,66 @@ public class PaymentsController : Controller
             return NotFound();
         }
 
-        return View(entity);
+        return View(_mapper.Map(entity));
     }
 
-    public IActionResult Create()
+    private async Task PopulateOrders(Guid? selectedOrder = null)
     {
-        return View();
+        var orders = await _bll.OrderService.AllAsync(User.GetUserId());
+        // value = Id, text = ShippingAddress
+        ViewBag.OrderId = new SelectList(
+            orders,
+            nameof(OrderBllDto.Id),
+            nameof(OrderBllDto.OrderShippingAddress),
+            selectedOrder
+        );
+    }
+    
+    public async Task<IActionResult> Create()
+    {
+        await PopulateOrders();
+        return View(new PaymentMvcDto());
     }
     
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(PaymentMvcDto entity)
     {
-        if (ModelState.IsValid)
+        if (!ModelState.IsValid)
         {
-            _bll.PaymentService.Add(entity, User.GetUserId());
-            await _bll.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            await PopulateOrders(entity.OrderId);
+            return View(entity);
         }
-        return View(entity);
+
+        _bll.PaymentService.Add(_mapper.Map(entity), User.GetUserId());
+        await _bll.SaveChangesAsync();
+        return RedirectToAction(nameof(Index));
     }
 
     public async Task<IActionResult> Edit(Guid? id)
     {
-        if (id == null)
-        {
-            return NotFound();
-        }
-
+        if (id == null) return NotFound();
         var entity = await _bll.PaymentService.FindAsync(id.Value, User.GetUserId());
-        
-        if (entity == null)
-        {
-            return NotFound();
-        }
-        return View(entity);
+        if (entity == null) return NotFound();
+        await PopulateOrders(entity.OrderId);
+        return View(_mapper.Map(entity));
     }
     
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, PaymentMvcDto entity)
     {
-        if (id != entity.Id)
+        if (id != entity.Id) return NotFound();
+
+        if (!ModelState.IsValid)
         {
-            return NotFound();
+            await PopulateOrders(entity.OrderId);
+            return View(entity);
         }
 
-        if (ModelState.IsValid)
-        {
-            _bll.PaymentService.Update(entity);
-            await _bll.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-        return View(entity);
+        _bll.PaymentService.Update(_mapper.Map(entity), User.GetUserId());
+        await _bll.SaveChangesAsync();
+        return RedirectToAction(nameof(Index));
     }
 
     public async Task<IActionResult> Delete(Guid? id)
@@ -118,7 +127,7 @@ public class PaymentsController : Controller
             return NotFound();
         }
 
-        return View(entity);
+        return View(_mapper.Map(entity));
     }
 
     [HttpPost, ActionName("Delete")]
@@ -129,5 +138,4 @@ public class PaymentsController : Controller
         await _bll.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
-*/
 }

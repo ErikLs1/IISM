@@ -21,5 +21,6 @@ public class PaymentMvcDto
     
     [Display(Name = nameof(Payment.PaymentDate), ResourceType = typeof(Payment))]
     public DateTime PaymentDate { get; set; } = DateTime.UtcNow;
-
+    
+    public string? ShippingAddress { get; set; }
 }

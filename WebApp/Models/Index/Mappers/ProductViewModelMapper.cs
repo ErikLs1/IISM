@@ -16,7 +16,9 @@ public class ProductViewModelMapper
             ProductName = dto.ProductName,
             ProductDescription = dto.ProductDescription, 
             ProductPrice = dto.ProductPrice,
-            CategoryId = dto.CategoryId
+            ProductStatus = dto.ProductStatus,
+            CategoryId = dto.CategoryId,
+            CategoryName = dto.Category?.CategoryName
         };
     }
     
@@ -31,10 +33,8 @@ public class ProductViewModelMapper
             ProductName = dto.ProductName,
             ProductDescription = dto.ProductDescription, 
             ProductPrice = dto.ProductPrice,
-            Category = new CategoryBllDto()
-            {
-                Id = dto.CategoryId
-            }
+            ProductStatus = dto.ProductStatus,
+            CategoryId = dto.CategoryId
         };
     }
 }

@@ -90,7 +90,7 @@ public class CategoriesController : ControllerBase
     /// <returns></returns>
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    public async Task<ActionResult<Category>> CreateCategory(CategoryCreateDto category)
+    public async Task<ActionResult<CategoryDto>> CreateCategory(CategoryCreateDto category)
     {
         var bllEntity = _mapper.Map(category);
         _bll.CategoryService.Add(bllEntity!);

@@ -16,13 +16,11 @@ namespace WebApp.ApiControllers;
 public class OrdersController : ControllerBase
 {
     private readonly IAppBll _bll;
-    private readonly ILogger<OrdersController> _logger;
 
     /// <inheritdoc />
-    public OrdersController(IAppBll bll, ILogger<OrdersController> logger)
+    public OrdersController(IAppBll bll)
     {
         _bll = bll;
-        _logger = logger;
     }
 
     /// <summary>

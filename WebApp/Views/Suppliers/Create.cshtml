@@ -34,6 +34,31 @@
                 <span asp-validation-for="SupplierAddress" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="SupplierStreet" class="control-label"></label>
+                <input asp-for="SupplierStreet" class="form-control" />
+                <span asp-validation-for="SupplierStreet" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SupplierCity" class="control-label"></label>
+                <input asp-for="SupplierCity" class="form-control" />
+                <span asp-validation-for="SupplierCity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SupplierState" class="control-label"></label>
+                <input asp-for="SupplierState" class="form-control" />
+                <span asp-validation-for="SupplierState" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SupplierCountry" class="control-label"></label>
+                <input asp-for="SupplierCountry" class="form-control" />
+                <span asp-validation-for="SupplierCountry" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SupplierPostalCode" class="control-label"></label>
+                <input asp-for="SupplierPostalCode" class="form-control" />
+                <span asp-validation-for="SupplierPostalCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="@Base.Resources.Common.CreateButton" class="btn btn-primary" />
             </div>
         </form>

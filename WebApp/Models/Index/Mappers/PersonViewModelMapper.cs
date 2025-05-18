@@ -22,7 +22,7 @@ public class PersonViewModelMapper
         };
     }
     
-    /*public PersonBllDto Map(PersonMvcDto dto)
+    public PersonBllDto Map(PersonMvcDto dto)
     {
         if (dto is null)
             throw new ArgumentNullException(nameof(dto));
@@ -37,5 +37,5 @@ public class PersonViewModelMapper
             PersonGender = dto.PersonGender,
             PersonDateOfBirth = dto.PersonDateOfBirth
         };
-    }*/
+    }
 }

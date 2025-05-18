@@ -35,7 +35,7 @@ public class PaymentsController : Controller
         return View(res);
     }
 
-    public async Task<IActionResult> Details(Guid? id)
+    /*public async Task<IActionResult> Details(Guid? id)
     {
         if (id == null)
         {
@@ -129,4 +129,5 @@ public class PaymentsController : Controller
         await _bll.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
+*/
 }

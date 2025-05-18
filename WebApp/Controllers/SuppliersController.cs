@@ -50,7 +50,7 @@ public class SuppliersController : Controller
             return NotFound();
         }
 
-        return View(entity);
+        return View(_mapper.Map(entity));
     }
 
     public IActionResult Create()
@@ -64,7 +64,7 @@ public class SuppliersController : Controller
     {
         if (ModelState.IsValid)
         {
-            _bll.SupplierService.Add(entity, User.GetUserId());
+            _bll.SupplierService.Add(_mapper.Map(entity), User.GetUserId());
             await _bll.SaveChangesAsync();;
             return RedirectToAction(nameof(Index));
         }
@@ -84,7 +84,7 @@ public class SuppliersController : Controller
         {
             return NotFound();
         }
-        return View(entity);
+        return View(_mapper.Map(entity));
     }
     
     [HttpPost]
@@ -98,7 +98,7 @@ public class SuppliersController : Controller
 
         if (ModelState.IsValid)
         {
-            _bll.SupplierService.Update(entity);
+            _bll.SupplierService.Update(_mapper.Map(entity));
             await _bll.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
@@ -119,7 +119,7 @@ public class SuppliersController : Controller
             return NotFound();
         }
 
-        return View(entity);
+        return View(_mapper.Map(entity));
     }
 
     [HttpPost, ActionName("Delete")]

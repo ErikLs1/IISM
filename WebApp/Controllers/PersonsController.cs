@@ -49,7 +49,7 @@ public class PersonsController : Controller
             return NotFound();
         }
 
-        return View(entity);
+        return View(_mapper.Map(entity));
     }
 
     public IActionResult Create()
@@ -63,7 +63,7 @@ public class PersonsController : Controller
     {
         if (ModelState.IsValid)
         {
-            _bll.PersonService.Add(entity, User.GetUserId());
+            _bll.PersonService.Add(_mapper.Map(entity), User.GetUserId());
             await _bll.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
@@ -82,7 +82,7 @@ public class PersonsController : Controller
         {
             return NotFound();
         }
-        return View(entity);
+        return View(_mapper.Map(entity));
     }
     
     [HttpPost]
@@ -96,7 +96,7 @@ public class PersonsController : Controller
 
         if (ModelState.IsValid)
         {
-            _bll.PersonService.Update(entity);
+            _bll.PersonService.Update(_mapper.Map(entity));
             await _bll.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
@@ -116,7 +116,7 @@ public class PersonsController : Controller
             return NotFound();
         }
 
-        return View(entity);
+        return View(_mapper.Map(entity));
     }
 
     [HttpPost, ActionName("Delete")]

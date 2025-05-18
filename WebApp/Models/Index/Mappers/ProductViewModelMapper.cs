@@ -15,11 +15,12 @@ public class ProductViewModelMapper
             Id = dto.Id,
             ProductName = dto.ProductName,
             ProductDescription = dto.ProductDescription, 
-            ProductPrice = dto.ProductPrice
+            ProductPrice = dto.ProductPrice,
+            CategoryId = dto.CategoryId
         };
     }
     
-    /*public ProductBllDto Map(ProductMvcDto dto)
+    public ProductBllDto Map(ProductMvcDto dto)
     {
         if (dto is null)
             throw new ArgumentNullException(nameof(dto));
@@ -29,7 +30,11 @@ public class ProductViewModelMapper
             Id = dto.Id,
             ProductName = dto.ProductName,
             ProductDescription = dto.ProductDescription, 
-            ProductPrice = dto.ProductPrice
+            ProductPrice = dto.ProductPrice,
+            Category = new CategoryBllDto()
+            {
+                Id = dto.CategoryId
+            }
         };
-    }*/
+    }
 }

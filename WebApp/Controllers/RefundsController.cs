@@ -35,7 +35,7 @@ public class RefundsController : Controller
         return View(res);
     }
 
-    public async Task<IActionResult> Details(Guid? id)
+    /*public async Task<IActionResult> Details(Guid? id)
     {
         if (id == null)
         {
@@ -128,5 +128,5 @@ public class RefundsController : Controller
         await _bll.RefundService.RemoveAsync(id, User.GetUserId());
         await _bll.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
-    }
+    }*/
 }

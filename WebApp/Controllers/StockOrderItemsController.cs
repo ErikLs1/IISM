@@ -38,7 +38,7 @@ public class StockOrderItemsController : Controller
         return View(res);
     }
 
-    public async Task<IActionResult> Details(Guid? id)
+    /*public async Task<IActionResult> Details(Guid? id)
     {
         if (id == null)
         {
@@ -131,5 +131,5 @@ public class StockOrderItemsController : Controller
         await _bll.StockOrderItemService.RemoveAsync(id, User.GetUserId());
         await _bll.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
-    }
+    }*/
 }

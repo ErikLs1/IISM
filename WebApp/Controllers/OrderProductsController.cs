@@ -36,7 +36,7 @@ public class OrderProductsController : Controller
         return View(res);
     }
 
-    public async Task<IActionResult> Details(Guid? id)
+    /*public async Task<IActionResult> Details(Guid? id)
     {
         if (id == null)
         {
@@ -127,5 +127,5 @@ public class OrderProductsController : Controller
         await _bll.OrderProductService.RemoveAsync(id, User.GetUserId());
         await _bll.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
-    }
+    }*/
 }

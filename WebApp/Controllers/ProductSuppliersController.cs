@@ -37,7 +37,7 @@ public class ProductSuppliersController : Controller
         return View(res);
     }
 
-    public async Task<IActionResult> Details(Guid? id)
+    /*public async Task<IActionResult> Details(Guid? id)
     {
         if (id == null)
         {
@@ -130,5 +130,5 @@ public class ProductSuppliersController : Controller
         await _bll.ProductSupplierService.RemoveAsync(id, User.GetUserId());
         await _bll.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
-    }
+    }*/
 }

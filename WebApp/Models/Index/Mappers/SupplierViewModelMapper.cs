@@ -25,7 +25,7 @@ public class SupplierViewModelMapper
         };
     }
     
-    /*public SupplierBllDto Map(SupplierMvcDto dto)
+    public SupplierBllDto Map(SupplierMvcDto dto)
     {
         if (dto is null)
             throw new ArgumentNullException(nameof(dto));
@@ -43,5 +43,5 @@ public class SupplierViewModelMapper
             SupplierCountry = dto.SupplierCountry,
             SupplierPostalCode = dto.SupplierPostalCode
         };
-    }*/
+    }
 }

@@ -34,7 +34,7 @@ public class InventoriesController : Controller
         return View(res);
     }
 
-    public async Task<IActionResult> Details(Guid? id)
+    /*public async Task<IActionResult> Details(Guid? id)
     {
         if (id == null)
         {
@@ -128,5 +128,5 @@ public class InventoriesController : Controller
         await _bll.InventoryService.RemoveAsync(id, User.GetUserId());
         await _bll.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
-    }
+    }*/
 }

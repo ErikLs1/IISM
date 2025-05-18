@@ -3,12 +3,10 @@ using App.Resources.Domain;
 
 namespace WebApp.Models.Index.MvcDto;
 
-/// <summary>
-/// 
-/// </summary>
 public class RefundMvcDto
 {
     public Guid Id { get; set; }
+    public Guid OrderProductId { get; set; }
     
     [Display(Name = nameof(Refund.RefundAmount), ResourceType = typeof(Refund))]
     public decimal RefundAmount { get; set; } 

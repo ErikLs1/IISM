@@ -13,6 +13,8 @@ public class InventoryViewModelMapper
         return new InventoryMvcDto()
         {
             Id = dto.Id,
+            ProductId = dto.ProductId,
+            WarehouseId = dto.WarehouseId,
             Quantity = dto.Quantity,
             ProductName = dto.Product?.ProductName,
             ProductDescription = dto.Product?.ProductDescription,
@@ -20,7 +22,7 @@ public class InventoryViewModelMapper
         };
     }
     
-    /*public InventoryBllDto Map(InventoryMvcDto dto)
+    public InventoryBllDto Map(InventoryMvcDto dto)
     {
         if (dto is null)
             throw new ArgumentNullException(nameof(dto));
@@ -29,9 +31,8 @@ public class InventoryViewModelMapper
         {
             Id = dto.Id,
             Quantity = dto.Quantity,
-            ProductName = dto.Product?.ProductName,
-            ProductDescription = dto.Product?.ProductDescription,
-            WarehouseAddress = dto.Warehouse?.WarehouseAddress
+            ProductId = dto.ProductId,
+            WarehouseId = dto.WarehouseId
         };
-    }*/
+    }
 }

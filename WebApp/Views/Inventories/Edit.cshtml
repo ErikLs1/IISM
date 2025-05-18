@@ -13,16 +13,21 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="All" class="text-danger"></div>
-            @*<div class="form-group">
+            <div class="form-group">
                 <label asp-for="ProductId" class="control-label"></label>
-                <select asp-for="ProductId" class="form-control" asp-items="ViewBag.ProductId"></select>
+                <select asp-for="ProductId" asp-items="ViewBag.ProductId" class="form-control">
+                    <option value="">– Choose Product –</option>
+                </select>
                 <span asp-validation-for="ProductId" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="WarehouseId" class="control-label"></label>
-                <select asp-for="WarehouseId" class="form-control" asp-items="ViewBag.WarehouseId"></select>
+                <select asp-for="WarehouseId" asp-items="ViewBag.WarehouseId" class="form-control">
+                    <option value="">– Choose Warehouse –</option>
+                </select>
                 <span asp-validation-for="WarehouseId" class="text-danger"></span>
-            </div>*@
+            </div>
             <div class="form-group">
                 <label asp-for="Quantity" class="control-label"></label>
                 <input asp-for="Quantity" class="form-control" />

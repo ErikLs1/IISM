@@ -6,6 +6,8 @@ namespace WebApp.Models.Index.MvcDto;
 public class OrderProductMvcDto
 {
     public Guid Id { get; set; }
+    public Guid OrderId { get; set; }
+    public Guid ProductId { get; set; }
     
     [Display(Name = nameof(OrderProduct.Quantity), ResourceType = typeof(OrderProduct))]
     public int Quantity { get; set; }
@@ -14,5 +16,5 @@ public class OrderProductMvcDto
     public decimal TotalPrice { get; set; }
     
     [Display(Name = nameof(OrderProduct.ProductName), ResourceType = typeof(OrderProduct))]
-    public string ProductName { get; set; } = default!;
+    public string? ProductName { get; set; }
 }

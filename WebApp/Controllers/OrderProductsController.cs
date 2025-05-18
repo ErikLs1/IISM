@@ -3,7 +3,7 @@ using App.BLL.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
-using WebApp.Models.Index;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using WebApp.Models.Index.Mappers;
 using WebApp.Models.Index.MvcDto;
 using WebApp.Models.Index.ViewModel;
@@ -36,7 +36,7 @@ public class OrderProductsController : Controller
         return View(res);
     }
 
-    /*public async Task<IActionResult> Details(Guid? id)
+    public async Task<IActionResult> Details(Guid? id)
     {
         if (id == null)
         {
@@ -49,59 +49,71 @@ public class OrderProductsController : Controller
             return NotFound();
         }
 
-        return View(entity);
+        return View(_mapper.Map(entity));
     }
 
-    public IActionResult Create()
+    private async Task PopulateOrdersAndProducts(Guid? selectedOrder = null,
+        Guid? selectedProduct = null)
     {
-        return View();
+        var orders   = await _bll.OrderService.AllAsync(User.GetUserId());
+        var products = await _bll.ProductService.AllAsync(User.GetUserId());
+
+        ViewBag.OrderId = new SelectList(
+            orders,
+            nameof(OrderBllDto.Id),
+            nameof(OrderBllDto.Id),
+            selectedOrder);
+
+        ViewBag.ProductId = new SelectList(
+            products,
+            nameof(ProductBllDto.Id),
+            nameof(ProductBllDto.ProductName),
+            selectedProduct);
+    }
+    
+    public async Task<IActionResult> Create()
+    {
+        await PopulateOrdersAndProducts();
+        return View(new OrderProductMvcDto());
     }
     
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(OrderProductMvcDto entity)
     {
-        if (ModelState.IsValid)
+        if (!ModelState.IsValid)
         {
-            _bll.OrderProductService.Add(entity, User.GetUserId());
-            await _bll.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            await PopulateOrdersAndProducts(entity.OrderId, entity.ProductId);
+            return View(entity);
         }
-        return View(entity);
+        _bll.OrderProductService.Add(_mapper.Map(entity), User.GetUserId());
+        await _bll.SaveChangesAsync();
+        return RedirectToAction(nameof(Index));
     }
 
     public async Task<IActionResult> Edit(Guid? id)
     {
-        if (id == null)
-        {
-            return NotFound();
-        }
-
+        if (id == null) return NotFound();
         var entity = await _bll.OrderProductService.FindAsync(id.Value, User.GetUserId());
-        
-        if (entity == null)
-        {
-            return NotFound();
-        }
-        return View(entity);
+        if (entity == null) return NotFound();
+        await PopulateOrdersAndProducts(entity.OrderId, entity.ProductId);
+        return View(_mapper.Map(entity));
     }
     
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, OrderProductMvcDto entity)
     {
-        if (id != entity.Id)
-        {
-            return NotFound();
-        }
+        if (id != entity.Id) return NotFound();
 
-        if (ModelState.IsValid)
+        if (!ModelState.IsValid)
         {
-            _bll.OrderProductService.Update(entity);
-            await _bll.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            await PopulateOrdersAndProducts(entity.OrderId, entity.ProductId);
+            return View(entity);
         }
-        return View(entity);
+        _bll.OrderProductService.Update(_mapper.Map(entity));
+        await _bll.SaveChangesAsync();
+        return RedirectToAction(nameof(Index));
     }
 
     public async Task<IActionResult> Delete(Guid? id)
@@ -117,7 +129,7 @@ public class OrderProductsController : Controller
             return NotFound();
         }
 
-        return View(entity);
+        return View(_mapper.Map(entity));
     }
 
     [HttpPost, ActionName("Delete")]
@@ -127,5 +139,5 @@ public class OrderProductsController : Controller
         await _bll.OrderProductService.RemoveAsync(id, User.GetUserId());
         await _bll.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
-    }*/
+    }
 }

@@ -1,7 +1,9 @@
 using App.BLL.Contracts;
+using App.BLL.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using WebApp.Models.Index.Mappers;
 using WebApp.Models.Index.MvcDto;
 using WebApp.Models.Index.ViewModel;
@@ -34,7 +36,7 @@ public class InventoriesController : Controller
         return View(res);
     }
 
-    /*public async Task<IActionResult> Details(Guid? id)
+    public async Task<IActionResult> Details(Guid? id)
     {
         if (id == null)
         {
@@ -49,60 +51,74 @@ public class InventoriesController : Controller
             return NotFound();
         }
 
-        return View(entity);
+        return View(_mapper.Map(entity));
     }
     
-    public IActionResult Create()
+    private async Task PopulateProductsAndWarehouses(
+        Guid? selectedProduct   = null,
+        Guid? selectedWarehouse = null)
     {
-        
-        return View();
+        var products   = await _bll.ProductService.AllAsync(User.GetUserId());
+        var warehouses = await _bll.WarehouseService.AllAsync(User.GetUserId());
+
+        ViewBag.ProductId = new SelectList(
+            products,
+            nameof(ProductBllDto.Id),
+            nameof(ProductBllDto.ProductName),
+            selectedProduct);
+
+        ViewBag.WarehouseId = new SelectList(
+            warehouses,
+            nameof(WarehouseBllDto.Id),
+            nameof(WarehouseBllDto.WarehouseAddress),
+            selectedWarehouse);
+    }
+    
+    public async Task<IActionResult> Create()
+    {
+        await PopulateProductsAndWarehouses();
+        return View(new InventoryMvcDto());
     }
     
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(InventoryMvcDto entity)
     {
-        if (ModelState.IsValid)
+        if (!ModelState.IsValid)
         {
-            _bll.InventoryService.Add(entity, User.GetUserId());
-            await _bll.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            await PopulateProductsAndWarehouses(entity.ProductId, entity.WarehouseId);
+            return View(entity);
         }
-        return View(entity);
+        
+        _bll.InventoryService.Add(_mapper.Map(entity), User.GetUserId());
+        await _bll.SaveChangesAsync();
+        return RedirectToAction(nameof(Index));
     }
 
     public async Task<IActionResult> Edit(Guid? id)
     {
-        if (id == null)
-        {
-            return NotFound();
-        }
-
+        if (id == null) return NotFound();
         var entity = await _bll.InventoryService.FindAsync(id.Value, User.GetUserId());
-        if (entity == null)
-        {
-            return NotFound();
-        }
-        
-        return View(entity);
+        if (entity == null) return NotFound();
+        await PopulateProductsAndWarehouses(entity.ProductId, entity.WarehouseId);
+        return View(_mapper.Map(entity));
     }
     
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, InventoryMvcDto entity)
     {
-        if (id != entity.Id)
+        if (id != entity.Id) return NotFound();
+
+        if (!ModelState.IsValid)
         {
-            return NotFound();
+            await PopulateProductsAndWarehouses(entity.ProductId, entity.WarehouseId);
+            return View(entity);
         }
 
-        if (ModelState.IsValid)
-        {
-            _bll.InventoryService.Update(entity);
-            await _bll.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-        return View(entity);
+        _bll.InventoryService.Update(_mapper.Map(entity), User.GetUserId());
+        await _bll.SaveChangesAsync();
+        return RedirectToAction(nameof(Index));
     }
 
     public async Task<IActionResult> Delete(Guid? id)
@@ -118,7 +134,7 @@ public class InventoriesController : Controller
             return NotFound();
         }
 
-        return View(entity);
+        return View(_mapper.Map(entity));
     }
 
     [HttpPost, ActionName("Delete")]
@@ -128,5 +144,5 @@ public class InventoriesController : Controller
         await _bll.InventoryService.RemoveAsync(id, User.GetUserId());
         await _bll.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
-    }*/
+    }
 }

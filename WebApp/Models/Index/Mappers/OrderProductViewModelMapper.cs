@@ -13,13 +13,15 @@ public class OrderProductViewModelMapper
         return new OrderProductMvcDto
         {
             Id = dto.Id,
+            OrderId = dto.OrderId,
+            ProductId = dto.ProductId,
             Quantity = dto.Quantity,
             TotalPrice = dto.TotalPrice,
-            ProductName = dto.Product!.ProductName
+            ProductName = dto.Product?.ProductName
         };
     }
     
-    /*public OrderProductBllDto Map(OrderProductMvcDto dto)
+    public OrderProductBllDto Map(OrderProductMvcDto dto)
     {
         if (dto is null)
             throw new ArgumentNullException(nameof(dto));
@@ -27,9 +29,10 @@ public class OrderProductViewModelMapper
         return new OrderProductBllDto
         {
             Id = dto.Id,
+            OrderId = dto.OrderId,
+            ProductId = dto.ProductId,
             Quantity = dto.Quantity,
             TotalPrice = dto.TotalPrice,
-            ProductName = dto.Product!.ProductName
         };
-    }*/
+    }
 }

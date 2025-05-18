@@ -13,13 +13,14 @@ public class RefundViewModelMapper
         return new RefundMvcDto()
         {
             Id = dto.Id,
+            OrderProductId = dto.OrderProductId,
             RefundAmount = dto.RefundAmount,
             RefundReason = dto.RefundReason,
             RefundStatus = dto.RefundStatus
         };
     }
     
-    /*public RefundBllDto Map(RefundMvcDto dto)
+    public RefundBllDto Map(RefundMvcDto dto)
     {
         if (dto is null)
             throw new ArgumentNullException(nameof(dto));
@@ -27,9 +28,10 @@ public class RefundViewModelMapper
         return new RefundBllDto()
         {
             Id = dto.Id,
+            OrderProductId = dto.OrderProductId,
             RefundAmount = dto.RefundAmount,
             RefundReason = dto.RefundReason,
             RefundStatus = dto.RefundStatus
         };
-    }*/
+    }
 }

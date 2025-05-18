@@ -1,7 +1,5 @@
 @model WebApp.Models.Index.MvcDto.RefundMvcDto
 
-
-
 @{
     ViewData["Title"] = "Create";
 }
@@ -14,10 +12,15 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="All" class="text-danger"></div>
-            @*<div class="form-group">
+            <div class="form-group">
                 <label asp-for="OrderProductId" class="control-label"></label>
-                <select asp-for="OrderProductId" class ="form-control" asp-items="ViewBag.OrderProductId"></select>
-            </div>*@
+                <select asp-for="OrderProductId"
+                        asp-items="ViewBag.OrderProductId"
+                        class="form-control">
+                    <option value="">– Choose Product –</option>
+                </select>
+                <span asp-validation-for="OrderProductId" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <label asp-for="RefundAmount" class="control-label"></label>
                 <input asp-for="RefundAmount" class="form-control" />

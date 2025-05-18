@@ -8,9 +8,10 @@ public class InventoryMvcDto
 {
 
     public Guid Id { get; set; }
+    public Guid WarehouseId { get; set; }
+    public Guid ProductId { get; set; }
     
     [Display(Name = nameof(Inventory.Quantity), ResourceType = typeof(Inventory))]
-    
     public int Quantity { get; set; }
     
     [Display(Name = nameof(Inventory.ProductName), ResourceType = typeof(Inventory))]

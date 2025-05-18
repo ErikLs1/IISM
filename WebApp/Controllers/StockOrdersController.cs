@@ -3,6 +3,7 @@ using App.BLL.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using WebApp.Models.Index;
 using WebApp.Models.Index.Mappers;
 using WebApp.Models.Index.MvcDto;
@@ -37,7 +38,7 @@ public class StockOrdersController : Controller
         return View(res);
     }
 
-    /*public async Task<IActionResult> Details(Guid? id)
+    public async Task<IActionResult> Details(Guid? id)
     {
         if (id == null)
         {
@@ -51,77 +52,81 @@ public class StockOrdersController : Controller
             return NotFound();
         }
 
-        return View(entity);
+        return View(_mapper.Map(entity));
     }
 
-    public IActionResult Create()
+    private async Task PopulateSuppliersAndWarehouses(
+        Guid? selectedSupplier  = null,
+        Guid? selectedWarehouse = null)
     {
-        return View();
+        var suppliers  = await _bll.SupplierService.AllAsync(User.GetUserId());
+        var warehouses = await _bll.WarehouseService.AllAsync(User.GetUserId());
+
+        ViewBag.SupplierId = new SelectList(
+            suppliers,
+            nameof(SupplierBllDto.Id),
+            nameof(SupplierBllDto.SupplierName),
+            selectedSupplier);
+
+        ViewBag.WarehouseId = new SelectList(
+            warehouses,
+            nameof(WarehouseBllDto.Id),
+            nameof(WarehouseBllDto.WarehouseAddress),
+            selectedWarehouse);
+    }
+    
+    public async Task<IActionResult> Create()
+    {
+        await PopulateSuppliersAndWarehouses();
+        return View(new StockOrderMvcDto());
     }
     
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(StockOrderMvcDto entity)
     {
-        if (ModelState.IsValid)
+        if (!ModelState.IsValid)
         {
-            _bll.StockOrderService.Add(entity, User.GetUserId());
-            await _bll.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            await PopulateSuppliersAndWarehouses(entity.SupplierId, entity.WarehouseId);
+            return View(entity);
         }
-        return View(entity);
+        
+        _bll.StockOrderService.Add(_mapper.Map(entity), User.GetUserId());
+        await _bll.SaveChangesAsync();
+        return RedirectToAction(nameof(Index));
     }
 
     public async Task<IActionResult> Edit(Guid? id)
     {
-        if (id == null)
-        {
-            return NotFound();
-        }
-
+        if (id == null) return NotFound();
         var entity = await _bll.StockOrderService.FindAsync(id.Value, User.GetUserId());
-
-        
-        if (entity == null)
-        {
-            return NotFound();
-        }
-        return View(entity);
+        if (entity == null) return NotFound();
+        await PopulateSuppliersAndWarehouses(entity.SupplierId, entity.WarehouseId);
+        return View(_mapper.Map(entity));
     }
     
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, StockOrderMvcDto entity)
     {
-        if (id != entity.Id)
-        {
-            return NotFound();
-        }
+        if (id != entity.Id) return NotFound();
 
-        if (ModelState.IsValid)
+        if (!ModelState.IsValid)
         {
-            _bll.StockOrderService.Update(entity);
-            await _bll.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            await PopulateSuppliersAndWarehouses(entity.SupplierId, entity.WarehouseId);
+            return View(entity);
         }
-        return View(entity);
+        _bll.StockOrderService.Update(_mapper.Map(entity));
+        await _bll.SaveChangesAsync();
+        return RedirectToAction(nameof(Index));
     }
 
     public async Task<IActionResult> Delete(Guid? id)
     {
-        if (id == null)
-        {
-            return NotFound();
-        }
-
+        if (id == null) return NotFound();
         var entity = await _bll.StockOrderService.FindAsync(id.Value, User.GetUserId());
-
-        if (entity == null)
-        {
-            return NotFound();
-        }
-
-        return View(entity);
+        if (entity == null) return NotFound();
+        return View(_mapper.Map(entity));
     }
 
     [HttpPost, ActionName("Delete")]
@@ -131,5 +136,5 @@ public class StockOrdersController : Controller
         await _bll.StockOrderService.RemoveAsync(id, User.GetUserId());
         await _bll.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
-    }*/
+    }
 }

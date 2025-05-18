@@ -1,7 +1,9 @@
 using App.BLL.Contracts;
+using App.BLL.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using WebApp.Models.Index.Mappers;
 using WebApp.Models.Index.MvcDto;
 using WebApp.Models.Index.ViewModel;
@@ -35,98 +37,93 @@ public class RefundsController : Controller
         return View(res);
     }
 
-    /*public async Task<IActionResult> Details(Guid? id)
-    {
-        if (id == null)
-        {
-            return NotFound();
-        }
+     public async Task<IActionResult> Details(Guid? id)
+     {
+         if (id == null)
+         {
+             return NotFound();
+         }
 
-        var entity = await _bll.RefundService.FindAsync(id.Value, User.GetUserId());
+         var entity = await _bll.RefundService.FindAsync(id.Value, User.GetUserId());
 
-        if (entity == null)
-        {
-            return NotFound();
-        }
+         if (entity == null)
+         {
+             return NotFound();
+         }
 
-        return View(entity);
-    }
+         return View(_mapper.Map(entity));
+     }
 
-    public IActionResult Create()
-    {
-        return View();
-    }
-    
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(RefundMvcDto entity)
-    {
-        if (ModelState.IsValid)
-        {
-            _bll.RefundService.Add(entity, User.GetUserId());
-            await _bll.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-        return View(entity);
-    }
+     private async Task PopulateOrderProducts(Guid? selectedId = null)
+     {
+         var ops = await _bll.OrderProductService.AllAsync(User.GetUserId());
 
-    public async Task<IActionResult> Edit(Guid? id)
-    {
-        if (id == null)
-        {
-            return NotFound();
-        }
+         ViewBag.OrderProductId = new SelectList(
+             ops,
+             nameof(OrderProductBllDto.Id),
+             nameof(OrderProductBllDto.Id),
+             selectedId
+         );
+     }
+     public async Task<IActionResult> Create()
+     {
+         await PopulateOrderProducts();
+         return View(new RefundMvcDto());
+     }
+     
+     [HttpPost]
+     [ValidateAntiForgeryToken]
+     public async Task<IActionResult> Create(RefundMvcDto entity)
+     {
+         if (!ModelState.IsValid)
+         {
+             await PopulateOrderProducts(entity.OrderProductId);
+             return View(entity);
+         }
+         _bll.RefundService.Add(_mapper.Map(entity), User.GetUserId());
+         await _bll.SaveChangesAsync();
+         return RedirectToAction(nameof(Index));
+     }
 
-        var entity = await _bll.RefundService.FindAsync(id.Value, User.GetUserId());
+     public async Task<IActionResult> Edit(Guid? id)
+     {
+         if (id == null) return NotFound();
+         var entity = await _bll.RefundService.FindAsync(id.Value, User.GetUserId());
+         if (entity == null) return NotFound();
+         await PopulateOrderProducts(entity.OrderProductId);
+         return View(_mapper.Map(entity));
+     }
+     
+     [HttpPost]
+     [ValidateAntiForgeryToken]
+     public async Task<IActionResult> Edit(Guid id, RefundMvcDto entity)
+     {
+         if (id != entity.Id) return NotFound();
+         if (!ModelState.IsValid)
+         {
+             await PopulateOrderProducts(entity.OrderProductId);
+             return View(entity);
+         }
+         
+         _bll.RefundService.Update(_mapper.Map(entity));
+         await _bll.SaveChangesAsync();
+         return RedirectToAction(nameof(Index));
+     }
 
-        if (entity == null)
-        {
-            return NotFound();
-        }
-        return View(entity);
-    }
-    
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(Guid id, RefundMvcDto entity)
-    {
-        if (id != entity.Id)
-        {
-            return NotFound();
-        }
+     public async Task<IActionResult> Delete(Guid? id)
+     {
+         if (id == null) return NotFound();
+         var entity = await _bll.RefundService.FindAsync(id.Value, User.GetUserId());
+         if (entity == null) return NotFound();
+         return View(_mapper.Map(entity));
+     }
 
-        if (ModelState.IsValid)
-        {
-            _bll.RefundService.Update(entity);
-            await _bll.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-        return View(entity);
-    }
-
-    public async Task<IActionResult> Delete(Guid? id)
-    {
-        if (id == null)
-        {
-            return NotFound();
-        }
-
-        var entity = await _bll.RefundService.FindAsync(id.Value, User.GetUserId());
-
-        if (entity == null)
-        {
-            return NotFound();
-        }
-
-        return View(entity);
-    }
-
-    [HttpPost, ActionName("Delete")]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeleteConfirmed(Guid id)
-    {
-        await _bll.RefundService.RemoveAsync(id, User.GetUserId());
-        await _bll.SaveChangesAsync();
-        return RedirectToAction(nameof(Index));
-    }*/
+     [HttpPost, ActionName("Delete")]
+     [ValidateAntiForgeryToken]
+     public async Task<IActionResult> DeleteConfirmed(Guid id)
+     {
+         await _bll.RefundService.RemoveAsync(id, User.GetUserId());
+         await _bll.SaveChangesAsync();
+         return RedirectToAction(nameof(Index));
+     }
 }

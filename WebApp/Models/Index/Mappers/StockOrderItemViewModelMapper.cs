@@ -16,13 +16,15 @@ public class StockOrderItemViewModelMapper
         return new StockOrderItemMvcDto
         {
             Id = dto.Id,
+            StockOrderId = dto.StockOrderId,
+            ProductId = dto.ProductId,
             Quantity = dto.Quantity,
             Cost = dto.Cost,
-            ProductName = dto.Product!.ProductName
+            ProductName = dto.Product?.ProductName
         };
     }
     
-    /*public StockOrderItemBllDto Map(StockOrderItemMvcDto dto)
+    public StockOrderItemBllDto Map(StockOrderItemMvcDto dto)
     {
         if (dto is null)
             throw new ArgumentNullException(nameof(dto));
@@ -30,9 +32,10 @@ public class StockOrderItemViewModelMapper
         return new StockOrderItemBllDto
         {
             Id = dto.Id,
+            StockOrderId = dto.StockOrderId,
+            ProductId = dto.ProductId,
             Quantity = dto.Quantity,
             Cost = dto.Cost,
-            ProductName = dto.Product!.ProductName
         };
-    }*/
+    }
 }

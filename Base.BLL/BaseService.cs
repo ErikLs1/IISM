@@ -13,6 +13,15 @@ public class BaseService<TBllEntity, TDalEntity, TDalRepository> : BaseService<T
     public BaseService(IBaseUow serviceUow, TDalRepository serviceRepository, IMapper<TBllEntity, TDalEntity, Guid> mapper) : base(serviceUow, serviceRepository, mapper)
     {
     }
+
+    public override void Add(TBllEntity entity, Guid userId = default)
+    {
+        if (entity.Id == default)
+        {
+            entity.Id = Guid.NewGuid();
+        }
+        base.Add(entity, userId);
+    }
 }
 
 public class BaseService<TBllEntity, TDalEntity, TDalRepository, TKey> : IBaseService<TBllEntity, TKey>

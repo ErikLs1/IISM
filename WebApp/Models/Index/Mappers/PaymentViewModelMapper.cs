@@ -3,9 +3,6 @@ using WebApp.Models.Index.MvcDto;
 
 namespace WebApp.Models.Index.Mappers;
 
-/// <summary>
-/// 
-/// </summary>
 public class PaymentViewModelMapper
 {
     public PaymentMvcDto Map(PaymentBllDto dto)
@@ -23,4 +20,20 @@ public class PaymentViewModelMapper
             PaymentDate = dto.PaymentDate,
         };
     }
+    
+    /*public PaymentBllDto Map(PaymentMvcDto dto)
+    {
+        if (dto is null)
+            throw new ArgumentNullException(nameof(dto));
+        
+        return new PaymentBllDto()
+        {
+            Id = dto.Id,
+            OrderId = dto.OrderId,
+            PaymentMethod = dto.PaymentMethod,
+            PaymentStatus = dto.PaymentStatus,
+            PaymentAmount = dto.PaymentAmount,
+            PaymentDate = dto.PaymentDate,
+        };
+    }*/
 }

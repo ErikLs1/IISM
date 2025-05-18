@@ -21,4 +21,18 @@ public class StockOrderItemViewModelMapper
             ProductName = dto.Product!.ProductName
         };
     }
+    
+    /*public StockOrderItemBllDto Map(StockOrderItemMvcDto dto)
+    {
+        if (dto is null)
+            throw new ArgumentNullException(nameof(dto));
+        
+        return new StockOrderItemBllDto
+        {
+            Id = dto.Id,
+            Quantity = dto.Quantity,
+            Cost = dto.Cost,
+            ProductName = dto.Product!.ProductName
+        };
+    }*/
 }

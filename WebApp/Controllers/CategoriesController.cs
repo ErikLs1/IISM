@@ -48,7 +48,7 @@ public class CategoriesController : Controller
             return NotFound();
         }
 
-        return View(entity);
+        return View(_mapper.Map(entity));
     }
 
     public IActionResult Create()
@@ -62,7 +62,7 @@ public class CategoriesController : Controller
     {
         if (ModelState.IsValid)
         {
-            _bll.CategoryService.Add(entity, User.GetUserId());
+            _bll.CategoryService.Add(_mapper.Map(entity), User.GetUserId());
             await _bll.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
@@ -83,7 +83,7 @@ public class CategoriesController : Controller
             return NotFound();
         }
         
-        return View(entity);
+        return View(_mapper.Map(entity));
     }
     
     [HttpPost]
@@ -97,7 +97,7 @@ public class CategoriesController : Controller
 
         if (ModelState.IsValid)
         {
-            _bll.CategoryService.Update(entity);
+            _bll.CategoryService.Update(_mapper.Map(entity));
             await _bll.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
@@ -117,7 +117,7 @@ public class CategoriesController : Controller
             return NotFound();
         }
 
-        return View(entity);
+        return View(_mapper.Map(entity));
     }
 
     [HttpPost, ActionName("Delete")]

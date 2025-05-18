@@ -1,5 +1,6 @@
 using App.BLL.Contracts;
 using App.DTO.V1.DTO;
+using App.DTO.V1.Mappers;
 using Microsoft.AspNetCore.Mvc;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -14,6 +15,8 @@ namespace WebApp.ApiControllers;
 public class InventoriesController : ControllerBase
 {
     private readonly IAppBll _bll;
+    private readonly InventoryProductsMapper _inventoryProductsMapper = new InventoryProductsMapper();
+    private readonly WarehouseInventoryItemsMapper _warehouseItemsMapper = new WarehouseInventoryItemsMapper();
 
     /// <inheritdoc />
     public InventoriesController(IAppBll bll)
@@ -36,13 +39,7 @@ public class InventoriesController : ControllerBase
     {
         var data = await _bll.InventoryService.GetProductsByWarehouseIdAsync(warehouseId);
         var res = data
-            .Select(i => new WarehouseInventoryItemsDto()
-            {
-                ProductId = i.ProductId,
-                ProductName = i.Product!.ProductName,
-                ProductDescription = i.Product!.ProductDescription,
-                Quantity = i.Quantity
-            })
+            .Select(i => _warehouseItemsMapper.Map(i)!)
             .ToList();
         return res;
     }
@@ -60,18 +57,7 @@ public class InventoriesController : ControllerBase
     {
         var data = await _bll.InventoryService.GetAllInventoryProductsAsync();
         var res = data
-            .Select(p => new InventoryProductsDto()
-            {
-                WarehouseId = p.WarehouseId,
-                ProductId = p.ProductId,
-                ProductName = p.ProductName,
-                CategoryName = p.CategoryName,
-                ProductPrice = Math.Round(p.ProductPrice * 1.5m, 2),
-                WarehouseCity = p.WarehouseCity,
-                WarehouseState = p.WarehouseState,
-                WarehouseCountry = p.WarehouseCountry,
-                ProductDescription = p.ProductDescription
-            })
+            .Select(p => _inventoryProductsMapper.Map(p)!)
             .ToList();
         return res;
     }
@@ -95,18 +81,7 @@ public class InventoriesController : ControllerBase
         var data = await _bll.InventoryService.GetFilteredInventoryProductsAsync(
             minPrice, maxPrice, category, productName);
         var res = data
-            .Select(p => new InventoryProductsDto()
-            {
-                WarehouseId = p.WarehouseId,
-                ProductId = p.ProductId,
-                ProductName = p.ProductName,
-                CategoryName = p.CategoryName,
-                ProductPrice = p.ProductPrice,
-                WarehouseCity = p.WarehouseCity,
-                WarehouseState = p.WarehouseState,
-                WarehouseCountry = p.WarehouseCountry,
-                ProductDescription = p.ProductDescription
-            })
+            .Select(p => _inventoryProductsMapper.Map(p)!)
             .ToList();
         return res;
     }

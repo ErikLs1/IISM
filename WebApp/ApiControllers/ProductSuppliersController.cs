@@ -18,6 +18,7 @@ public class ProductSuppliersController : ControllerBase
 {
     private readonly IAppBll _bll;
     private readonly ProductSuppliersMapper _mapper = new ProductSuppliersMapper();
+    private readonly ProductSupplierFiltersMapper _filtersMapper = new ProductSupplierFiltersMapper();
 
     /// <inheritdoc />
     public ProductSuppliersController(IAppBll bll)
@@ -34,15 +35,7 @@ public class ProductSuppliersController : ControllerBase
     public async Task<ActionResult<ProductSupplierFiltersDto>> GetFilters()
     {
         var filters = await _bll.ProductSupplierService.GetProductSupplierFilterAsync();
-        var dto = new ProductSupplierFiltersDto()
-        {
-            States = filters.States,
-            Cities = filters.Cities,
-            Countries = filters.Countries,
-            Categories = filters.Categories,
-            Suppliers = filters.Suppliers
-        };
-
+        var dto = _filtersMapper.Map(filters);
         return Ok(dto);
     }
     
@@ -74,7 +67,7 @@ public class ProductSuppliersController : ControllerBase
         var data = await _bll.ProductSupplierService.GetPagedDataAsync(
             pageIndex, pageSize, city, state, country, category, supplier);
         var dto = data.Items.Select(x => _mapper.Map(x)!);
-        var res = new PagedData<ProductSupplierDto>()
+        var res = new PagedData<ProductSupplierDto>
         {
             Items = dto,
             TotalCount = data.TotalCount,

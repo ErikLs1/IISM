@@ -17,6 +17,7 @@ public class WarehousesController : ControllerBase
 {
     private readonly IAppBll _bll;
     private readonly WarehouseMapper _mapper = new WarehouseMapper();
+    private readonly WarehouseFiltersMapper _filtersMapper = new WarehouseFiltersMapper();
     
     /// <inheritdoc />
     public WarehousesController(IAppBll bll)
@@ -171,14 +172,7 @@ public class WarehousesController : ControllerBase
     public async Task<ActionResult<WarehouseFiltersDto>> GetFilters()
     {
         var filters = await _bll.WarehouseService.GetWarehouseFiltersAsync();
-        var dto = new WarehouseFiltersDto()
-        {
-            States = filters.States,
-            Streets = filters.Streets,
-            Cities = filters.Cities,
-            Countries = filters.Countries
-        };
-
+        var dto = _filtersMapper.Map(filters);
         return Ok(dto);
     }
 }

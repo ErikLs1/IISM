@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using App.BLL.Contracts;
 using App.DTO.V1.DTO;
+using App.DTO.V1.Mappers;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using Base.Helpers;
@@ -18,6 +19,7 @@ public class PersonsController : ControllerBase
 {
 
     private readonly IAppBll _bll;
+    private readonly ProfileInfoMapper _mapper = new ProfileInfoMapper();
     
     /// <inheritdoc />
     public PersonsController(IAppBll bll)
@@ -36,19 +38,10 @@ public class PersonsController : ControllerBase
     public async Task<ActionResult<ProfileInfoDto>> GetProfileInfo()
     {
         var userId = User.GetUserId();
+        var email = User.FindFirstValue(ClaimTypes.Email)!;
         var bll = await _bll.PersonService.GetProfileAsync(userId);
-        var res = new ProfileInfoDto()
-        {
-            UserId = User.GetUserId(),
-            PersonFirstName = bll.PersonFirstName,
-            PersonLastName = bll.PersonLastName,
-            PersonPhoneNumber = bll.PersonPhoneNumber,
-            PersonAddress = bll.PersonAddress,
-            PersonGender = bll.PersonGender,
-            PersonDateOfBirth = bll.PersonBirthDate,
-            Email = User.FindFirstValue(ClaimTypes.Email)!
-        };
-        
+        var res = _mapper.Map(bll, userId, email)
+            ?? throw new InvalidOperationException("Profile not found");
         return res;
     }
 }

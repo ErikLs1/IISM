@@ -21,7 +21,7 @@ public class StockOrderService : BaseService<StockOrderBllDto, StockOrderDalDto,
         _uow = uow;
     }
     
-    // TODO PROPER MAPPING
+    // TODO REFACTORING (LATER)
     public async Task<StockOrderBllDto> PlaceStockOrderAsync(CreateStockOrderDto dto)
     {
         var order = new StockOrderDalDto()

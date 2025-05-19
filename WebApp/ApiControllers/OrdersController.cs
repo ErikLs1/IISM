@@ -1,6 +1,7 @@
 using App.BLL.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using App.DTO.V1.DTO;
+using App.DTO.V1.Mappers;
 using Asp.Versioning;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -16,6 +17,9 @@ namespace WebApp.ApiControllers;
 public class OrdersController : ControllerBase
 {
     private readonly IAppBll _bll;
+    private readonly CreateOrderMapper _createOrderMapper = new CreateOrderMapper();
+    private readonly UserOrdersMapper _userOrdersMapper = new UserOrdersMapper();
+    private readonly PlacedOrdersMapper _placedOrdersMapper = new PlacedOrdersMapper();
 
     /// <inheritdoc />
     public OrdersController(IAppBll bll)
@@ -33,11 +37,8 @@ public class OrdersController : ControllerBase
     public async Task<IActionResult> PlaceTheOrder(CreateOrderDto dto)
     {
         var userId = User.GetUserId();
-        
         var personId = await _bll.PersonService.GetPersonIdByUserIdAsync(userId);
-        
-        var bllDto = await _bll.OrderService.PlaceOrderAsync(personId, dto);
-
+        var bllDto = await _bll.OrderService.PlaceOrderAsync(personId, _createOrderMapper.Map(dto)!);
         return CreatedAtAction("", new
         {
             id = bllDto.Id,
@@ -55,11 +56,10 @@ public class OrdersController : ControllerBase
     public async Task<ActionResult<IEnumerable<UserOrdersDto>>> GetUsersOrders()
     {
         var userId = User.GetUserId();
-        
         var personId = await _bll.PersonService.GetPersonIdByUserIdAsync(userId);
-
         var userOrders = await _bll.OrderService.GetUsersOrdersAsync(personId);
-        return Ok(userOrders);
+        var mapped = userOrders.Select(x => _userOrdersMapper.Map(x));
+        return Ok(mapped);
     }
     
     /// <summary>
@@ -73,7 +73,8 @@ public class OrdersController : ControllerBase
     public async Task<ActionResult<IEnumerable<PlacedOrderDto>>> GetAllPlacedOrder()
     {
         var orders = await _bll.OrderService.GetAllPlacedOrdersAsync();
-        return Ok(orders);
+        var mapped =  orders.Select(x => _placedOrdersMapper.Map(x));
+        return Ok(mapped);
     }
     
     // TODO MAPPER
@@ -87,14 +88,8 @@ public class OrdersController : ControllerBase
     public async Task<IActionResult> ChangeOrderStatus(
         [FromBody] ChangeOrderStatusDto dto)
     {
-        try
-        {
+       
             await _bll.OrderService.ChangeOrderStatusAsync(dto.OrderId, dto.OrderStatus);
             return NoContent();
-        }
-        catch (InvalidOperationException)
-        {
-            return NotFound();
-        }
     }
 }

@@ -1,5 +1,6 @@
 using App.BLL.Contracts;
 using App.BLL.DTO;
+using App.BLL.Mappers;
 using App.DAL.Contracts;
 using App.DAL.DTO;
 using Base.BLL;
@@ -9,6 +10,7 @@ namespace App.BLL.Services;
 
 public class InventoryService : BaseService<InventoryBllDto, InventoryDalDto, IInventoryRepository>, IInventoryService
 {
+    private readonly InventoryProductsBllMapper _mapper = new InventoryProductsBllMapper();
     public InventoryService(
         IAppUow serviceUow, 
         IMapper<InventoryBllDto, InventoryDalDto> mapper) : base(serviceUow, serviceUow.InventoryRepository, mapper)
@@ -24,58 +26,15 @@ public class InventoryService : BaseService<InventoryBllDto, InventoryDalDto, II
     public async Task<IEnumerable<InventoryProductsBllDto>> GetAllInventoryProductsAsync()
     {
         var products = await ServiceRepository.GetAllInventoryProductsAsync();
-        return products.Select(e => new InventoryProductsBllDto()
-        {
-            WarehouseId = e.WarehouseId,
-            ProductId = e.ProductId,
-            ProductName = e.ProductName,
-            CategoryName = e.CategoryName,
-            ProductPrice = e.ProductPrice,
-            WarehouseCity = e.WarehouseCity,
-            WarehouseState = e.WarehouseState,
-            WarehouseCountry = e.WarehouseCountry,
-            ProductDescription = e.ProductDescription
-        }).ToList();
+        return products.Select(e => _mapper.Map(e)!).ToList();
     }
 
     public async Task<IEnumerable<InventoryProductsBllDto>> GetFilteredInventoryProductsAsync(
         decimal? minPrice, decimal? maxPrice, string? category, string? productName)
     {
-        // Get all records
-        var allProducts = await ServiceRepository.GetAllInventoryProductsAsync();
-
-        // Mapping
-        var query = allProducts
-            .Select(e => new InventoryProductsBllDto()
-            {
-                WarehouseId = e.WarehouseId,
-                ProductId = e.ProductId,
-                ProductName = e.ProductName,
-                CategoryName = e.CategoryName,
-                ProductPrice = Math.Round(e.ProductPrice * 1.5m, 2),
-                WarehouseCity = e.WarehouseCity,
-                WarehouseState = e.WarehouseState,
-                WarehouseCountry = e.WarehouseCountry,
-                ProductDescription = e.ProductDescription
-            })
-            .AsQueryable();
-        
-        // Filters
-        // TODO - MOVE FILTERING TO REPOSITORY
-        if (minPrice.HasValue)
-            query = query.Where(x => x.ProductPrice >= minPrice.Value);
-
-        if (maxPrice.HasValue)
-            query = query.Where(x => x.ProductPrice <= maxPrice.Value);
-        
-        if (!string.IsNullOrEmpty(category))
-            query = query.Where(x => x.CategoryName == category);
-        
-        if (!string.IsNullOrEmpty(productName))
-            query = query.Where(x => x.ProductName
-                .Contains(productName, StringComparison.OrdinalIgnoreCase));
-
-        return query.ToList();
+        var allProducts = await ServiceRepository.GetFilteredInventoryProductsAsync(
+            minPrice, maxPrice, category, productName);
+        return allProducts.Select(x => _mapper.Map(x)!);
     }
 
     public async override Task<IEnumerable<InventoryBllDto>> AllAsync(Guid userId = default)

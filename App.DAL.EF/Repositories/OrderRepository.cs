@@ -14,24 +14,25 @@ public class OrderRepository : BaseRepository<OrderDalDto, Order>, IOrderReposit
     {
     }
 
-    // TODO - MAPPER LATER
-    public async Task<List<Order>> GetOrdersByPersonIdAsync(Guid personId)
+    public async Task<List<OrderDalDto>> GetOrdersByPersonIdAsync(Guid personId)
     {
         var res = await GetQuery()
             .Where(o => o.PersonId == personId)
             .Include(o => o.OrderProducts)!
             .ThenInclude(op => op.Product)
+            .Select(x => Mapper.Map(x)!)
             .ToListAsync();
 
         return res;
     }
 
-    public async Task<List<Order>> GetAllPlacedOrdersAsync()
+    public async Task<List<OrderDalDto>> GetAllPlacedOrdersAsync()
     {
         return await GetQuery()
             .Include(o => o.OrderProducts)!
             .ThenInclude(op => op.Product)
             .Include(o => o.Person)
+            .Select(x => Mapper.Map(x)!)
             .ToListAsync();
     }
 

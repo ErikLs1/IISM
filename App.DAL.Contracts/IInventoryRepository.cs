@@ -10,4 +10,11 @@ public interface IInventoryRepository : IBaseRepository<InventoryDalDto>
     Task<IEnumerable<InventoryDalDto>> GetProductsByWarehouseIdAsync(Guid warehouseId);
 
     Task<IEnumerable<InventoryProductsDalDto>> GetAllInventoryProductsAsync();
+
+    Task<IEnumerable<InventoryProductsDalDto>> GetFilteredInventoryProductsAsync(
+        decimal? minPrice,
+        decimal? maxPrice,
+        string? category,
+        string? productName
+    );
 }

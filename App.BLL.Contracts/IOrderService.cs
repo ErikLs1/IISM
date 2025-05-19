@@ -7,10 +7,10 @@ namespace App.BLL.Contracts;
 public interface IOrderService : IBaseService<OrderBllDto>
 {
     // TODO - CHANGE DTO TYPE
-    Task<OrderBllDto> PlaceOrderAsync(Guid personId, CreateOrderDto dto);
+    Task<OrderBllDto> PlaceOrderAsync(Guid personId, CreateOrderBllDto dto);
     
     // TODO - CHANGE DTO TYPE
-    Task<IEnumerable<UserOrdersDto>> GetUsersOrdersAsync(Guid personId);
-    Task<IEnumerable<PlacedOrderDto>> GetAllPlacedOrdersAsync();
+    Task<IEnumerable<UserOrdersBllDto>> GetUsersOrdersAsync(Guid personId);
+    Task<IEnumerable<PlacedOrderBllDto>> GetAllPlacedOrdersAsync();
     Task ChangeOrderStatusAsync(Guid orderId, string newStatus);
 }

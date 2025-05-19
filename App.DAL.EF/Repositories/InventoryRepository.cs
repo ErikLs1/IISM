@@ -9,11 +9,11 @@ namespace App.DAL.EF.Repositories;
 
 public class InventoryRepository : BaseRepository<InventoryDalDto, Inventory>, IInventoryRepository
 {
+    private readonly InventoryProductsUowMapper _mapper = new InventoryProductsUowMapper();
     public InventoryRepository(AppDbContext repositoryDbContext) : base(repositoryDbContext, new InventoryUowMapper())
     {
     }
 
-    // TODO MAPPING
     public async Task<Inventory?> FindByWarehouseIdAndProductIdAsync(Guid warehouseId, Guid productId)
     {
         var res = await GetQuery()
@@ -35,24 +35,37 @@ public class InventoryRepository : BaseRepository<InventoryDalDto, Inventory>, I
 
     public async Task<IEnumerable<InventoryProductsDalDto>> GetAllInventoryProductsAsync()
     {
-        var product = await GetQuery()
-            .Include(i => i.Product)
-            .ThenInclude(i => i!.Category)
+        var products = await GetQuery()
+            .Include(i => i.Product).ThenInclude(i => i!.Category)
             .Include(i => i.Warehouse)
+            .Select(i => _mapper.Map(i)!)
             .ToListAsync();
 
-        return product.Select(e => new InventoryProductsDalDto()
-        {
-            WarehouseId = e.WarehouseId,
-            ProductId = e.ProductId,
-            ProductName = e.Product!.ProductName,
-            CategoryName = e.Product!.Category!.CategoryName,
-            ProductPrice = e.Product!.ProductPrice,
-            WarehouseCity = e.Warehouse!.WarehouseCity,
-            WarehouseState = e.Warehouse!.WarehouseState,
-            WarehouseCountry = e.Warehouse!.WarehouseCountry,
-            ProductDescription = e.Product!.ProductDescription,
-        }).ToList();
+        return products;
+    }
+
+    public async Task<IEnumerable<InventoryProductsDalDto>> GetFilteredInventoryProductsAsync(
+        decimal? minPrice, decimal? maxPrice, string? category, string? productName)
+    {
+        IQueryable<Inventory> query = GetQuery();
+        query = GetQuery()
+            .Include(i => i.Product).ThenInclude(i => i!.Category)
+            .Include(i => i.Warehouse);
+        
+        if (minPrice != null)
+            query = query.Where(x => x.Product!.ProductPrice >= minPrice.Value);
+
+        if (maxPrice != null)
+            query = query.Where(x => x.Product!.ProductPrice <= maxPrice.Value);
+        
+        if (!string.IsNullOrEmpty(category))
+            query = query.Where(x => x.Product!.Category!.CategoryName == category);
+        
+        if (!string.IsNullOrEmpty(productName))
+            query = query.Where(x => x.Product!.ProductName
+                .Contains(productName, StringComparison.OrdinalIgnoreCase));
+
+        return await query.Select(i => _mapper.Map(i)!).ToListAsync();
     }
 
     public async override Task<IEnumerable<InventoryDalDto>> AllAsync(Guid userId = default)

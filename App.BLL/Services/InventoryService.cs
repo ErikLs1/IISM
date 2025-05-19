@@ -5,6 +5,7 @@ using App.DAL.Contracts;
 using App.DAL.DTO;
 using Base.BLL;
 using Base.Contracts;
+using Base.Helpers;
 
 namespace App.BLL.Services;
 
@@ -29,12 +30,19 @@ public class InventoryService : BaseService<InventoryBllDto, InventoryDalDto, II
         return products.Select(e => _mapper.Map(e)!).ToList();
     }
 
-    public async Task<IEnumerable<InventoryProductsBllDto>> GetFilteredInventoryProductsAsync(
-        decimal? minPrice, decimal? maxPrice, string? category, string? productName)
+    public async Task<PagedData<InventoryProductsBllDto>> GetPagedDataAsync(
+        int pageIndex, int pageSize, decimal? minPrice, decimal? maxPrice, string? category, string? productName)
     {
-        var allProducts = await ServiceRepository.GetFilteredInventoryProductsAsync(
-            minPrice, maxPrice, category, productName);
-        return allProducts.Select(x => _mapper.Map(x)!);
+        var allProducts = await ServiceRepository.GetPagedDataAsync(
+            pageIndex, pageSize, minPrice, maxPrice, category, productName);
+        var bllData = allProducts.Items.Select(x => _mapper.Map(x)!).ToList();
+        return new PagedData<InventoryProductsBllDto>
+        {
+            Items = bllData,
+            TotalCount = allProducts.TotalCount,
+            PageIndex = allProducts.PageIndex,
+            PageSize = allProducts.PageSize
+        };;
     }
 
     public async override Task<IEnumerable<InventoryBllDto>> AllAsync(Guid userId = default)

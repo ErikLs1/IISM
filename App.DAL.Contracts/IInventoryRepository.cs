@@ -1,6 +1,7 @@
 using App.DAL.DTO;
 using App.Domain;
 using Base.DAL.Contracts;
+using Base.Helpers;
 
 namespace App.DAL.Contracts;
 
@@ -11,12 +12,9 @@ public interface IInventoryRepository : IBaseRepository<InventoryDalDto>
 
     Task<IEnumerable<InventoryProductsDalDto>> GetAllInventoryProductsAsync();
 
-    Task<IEnumerable<InventoryProductsDalDto>> GetFilteredInventoryProductsAsync(
-        decimal? minPrice,
-        decimal? maxPrice,
-        string? category,
-        string? productName
-    );
+    Task<PagedData<InventoryProductsDalDto>> GetPagedDataAsync(
+        int pageIndex, int pageSize,
+        decimal? minPrice, decimal? maxPrice, string? category, string? name);
 
     Task<int> GetProductQuantityOnWarehouseByWarehouseIdAsync(Guid warehouseId);
 }

@@ -3,6 +3,7 @@ using App.DAL.DTO;
 using App.DAL.EF.Mappers;
 using App.Domain;
 using Base.DAL.EF;
+using Base.Helpers;
 using Microsoft.EntityFrameworkCore;
 
 namespace App.DAL.EF.Repositories;
@@ -44,8 +45,9 @@ public class InventoryRepository : BaseRepository<InventoryDalDto, Inventory>, I
         return products;
     }
 
-    public async Task<IEnumerable<InventoryProductsDalDto>> GetFilteredInventoryProductsAsync(
-        decimal? minPrice, decimal? maxPrice, string? category, string? productName)
+    public async  Task<PagedData<InventoryProductsDalDto>> GetPagedDataAsync(
+        int pageIndex, int pageSize,
+        decimal? minPrice, decimal? maxPrice, string? category, string? name)
     {
         IQueryable<Inventory> query = GetQuery()
             .Include(i => i.Product).ThenInclude(i => i!.Category)
@@ -60,17 +62,34 @@ public class InventoryRepository : BaseRepository<InventoryDalDto, Inventory>, I
         if (!string.IsNullOrEmpty(category))
             query = query.Where(x => x.Product!.Category!.CategoryName == category);
         
-        if (!string.IsNullOrEmpty(productName))
+        if (!string.IsNullOrEmpty(name))
         {
-            var lower = productName.ToLower();
+            var lower = name.ToLower();
             query = query.Where(i =>
                 i.Product!.ProductName
                     .ToLower()
                     .Contains(lower)
             );
         }
+        
+        var totalCount = await query.CountAsync();
 
-        return await query.Select(i => _mapper.Map(i)!).ToListAsync();
+        var pageEntities = await query
+            .Skip((pageIndex - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+
+        var dalDto = pageEntities
+            .Select(e => _mapper.Map(e)!)  
+            .ToList();
+        
+        return new PagedData<InventoryProductsDalDto>
+        {
+            Items = dalDto,
+            TotalCount = totalCount,
+            PageIndex = pageIndex,
+            PageSize = pageSize
+        };
     }
 
     public async Task<int> GetProductQuantityOnWarehouseByWarehouseIdAsync(Guid warehouseId)

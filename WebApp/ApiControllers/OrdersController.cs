@@ -77,7 +77,6 @@ public class OrdersController : ControllerBase
         return Ok(mapped);
     }
     
-    // TODO MAPPER
     /// <summary>
     /// 
     /// </summary>
@@ -92,4 +91,6 @@ public class OrdersController : ControllerBase
             await _bll.OrderService.ChangeOrderStatusAsync(dto.OrderId, dto.OrderStatus);
             return NoContent();
     }
+    // TODO CONTROLLER FOR FILTERING ORDERS
+    
 }

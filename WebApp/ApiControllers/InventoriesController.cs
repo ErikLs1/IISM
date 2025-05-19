@@ -3,6 +3,7 @@ using App.DTO.V1.DTO;
 using App.DTO.V1.Mappers;
 using Microsoft.AspNetCore.Mvc;
 using Asp.Versioning;
+using Base.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 
@@ -44,7 +45,6 @@ public class InventoriesController : ControllerBase
         return res;
     }
     
-    // TODO - Pagination later
     /// <summary>
     /// 
     /// </summary>
@@ -71,19 +71,27 @@ public class InventoriesController : ControllerBase
     [Produces("application/json")]
     [ProducesResponseType(typeof(IEnumerable<InventoryProductsDto>), 200)]
     [ProducesResponseType(404)]
-    public async Task<ActionResult<IEnumerable<InventoryProductsDto>>> GetFilteredInventoryProducts(
+    public async Task<ActionResult<PagedData<InventoryProductsDto>>> GetFilteredInventoryProducts(
+        [FromQuery] int pageIndex,
+        [FromQuery] int pageSize,
         [FromQuery] decimal? minPrice,
         [FromQuery] decimal? maxPrice,
         [FromQuery] string? category,
         [FromQuery] string? productName
         )
     {
-        var data = await _bll.InventoryService.GetFilteredInventoryProductsAsync(
-            minPrice, maxPrice, category, productName);
-        var res = data
+        var data = await _bll.InventoryService.GetPagedDataAsync(
+            pageIndex, pageSize, minPrice, maxPrice, category, productName);
+        var res = data.Items
             .Select(p => _inventoryProductsMapper.Map(p)!)
             .ToList();
-        return res;
+        return new PagedData<InventoryProductsDto>
+        {
+            Items = res,
+            TotalCount = data.TotalCount,
+            PageIndex = data.PageIndex,
+            PageSize = data.PageSize
+        };
     }
     
     // TODO CONTROLLER FOR FILTERING ORDERS

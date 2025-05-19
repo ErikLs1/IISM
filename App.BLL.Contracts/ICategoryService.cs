@@ -5,5 +5,6 @@ namespace App.BLL.Contracts;
 
 public interface ICategoryService : IBaseService<CategoryBllDto>
 {
+    Task<CategoryNamesBllDto> GetDistinctCategoryNamesAsync();
     
 }

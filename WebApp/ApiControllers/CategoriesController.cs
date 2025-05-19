@@ -11,12 +11,12 @@ namespace WebApp.ApiControllers;
 /// <inheritdoc />
 [ApiVersion( "1.0" )]
 [ApiController]
-[Route("api/v{version:apiVersion}/[controller]")]
-[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+[Route("api/v{version:apiVersion}/[controller]/[action]")]
 public class CategoriesController : ControllerBase
 {
     private readonly IAppBll _bll;
     private readonly CategoryMapper _mapper = new CategoryMapper();
+    private readonly CategoryNamesMapper _categoryNamesMapper = new CategoryNamesMapper();
 
     /// <inheritdoc />
     public CategoriesController(IAppBll bll)
@@ -32,7 +32,8 @@ public class CategoriesController : ControllerBase
     [HttpGet]
     [Produces("application/json")]
     [ProducesResponseType(typeof(IEnumerable<CategoryDto>), StatusCodes.Status200OK)]
-    [ProducesResponseType(404)]
+    [ProducesResponseType(404)] 
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public async Task<ActionResult<IEnumerable<CategoryDto>>> GetCategories()
     {
         var data = await _bll.CategoryService.AllAsync();
@@ -48,6 +49,7 @@ public class CategoriesController : ControllerBase
     [HttpGet("{id}")]
     [ProducesResponseType(typeof(IEnumerable<CategoryDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(404)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public async Task<ActionResult<CategoryDto>> GetCategory(Guid id)
     {
         var category = await _bll.CategoryService.FindAsync(id);
@@ -69,6 +71,7 @@ public class CategoriesController : ControllerBase
     [HttpPut("{id}")]
     [ProducesResponseType(typeof(IEnumerable<CategoryDto>), StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public async Task<IActionResult> UpdateCategory(Guid id, CategoryDto category)
     {
         if (id != category.Id)
@@ -89,6 +92,7 @@ public class CategoriesController : ControllerBase
     /// <returns></returns>
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public async Task<ActionResult<CategoryDto>> CreateCategory(CategoryCreateDto category)
     {
         var bllEntity = _mapper.Map(category);
@@ -108,10 +112,24 @@ public class CategoriesController : ControllerBase
     /// <returns></returns>
     [HttpDelete("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public async Task<IActionResult> DeleteCategory(Guid id)
     {
         await _bll.CategoryService.RemoveAsync(id);
         await _bll.SaveChangesAsync();
         return NoContent();
+    }
+    
+    /// <summary>
+    /// Gets all distinct product category names
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet]
+    [ProducesResponseType(typeof(CategoryNamesDto), StatusCodes.Status200OK)]
+    public async Task<ActionResult<CategoryNamesDto>> GetDistinctCategoryNames()
+    {
+        var filters = await _bll.CategoryService.GetDistinctCategoryNamesAsync();
+        var dto = _categoryNamesMapper.Map(filters);
+        return Ok(dto);
     }
 }

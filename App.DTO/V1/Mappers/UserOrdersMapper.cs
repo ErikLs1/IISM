@@ -14,12 +14,12 @@ public class UserOrdersMapper
             OrderTotalPrice = entity.OrderTotalPrice,
             OrderShippingAddress = entity.OrderShippingAddress,
             OrderStatus = entity.OrderStatus,
-            Products = entity.Products!.Select(op => new OrderProductDto
+            Products = entity.Products.Select(op => new OrderProductDto
             {
                 Quantity = op.Quantity,
                 OrderProductPrice = op.TotalPrice,
-                ProductName = op.Product!.ProductName,
-                ProductDescription = op.Product!.ProductDescription
+                ProductName = op.ProductName,
+                ProductDescription = op.ProductDescription
             })
         };
 

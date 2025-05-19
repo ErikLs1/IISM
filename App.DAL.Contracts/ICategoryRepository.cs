@@ -5,5 +5,5 @@ namespace App.DAL.Contracts;
 
 public interface ICategoryRepository : IBaseRepository<CategoryDalDto>
 {
-    
+    Task<CategoryNamesDalDto> GetDistinctCategoryNamesAsync();
 }

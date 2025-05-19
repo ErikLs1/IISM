@@ -26,6 +26,7 @@ public class OrderService : BaseService<OrderBllDto, OrderDalDto, IOrderReposito
     {
         var order = new OrderDalDto()
         {
+            Id = Guid.NewGuid(),
             PersonId = personId,
             OrderShippingAddress = dto.ShippingAddress,
             OrderStatus = "PENDING", // TODO ENUM (LATER)

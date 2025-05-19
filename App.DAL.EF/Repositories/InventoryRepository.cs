@@ -47,23 +47,28 @@ public class InventoryRepository : BaseRepository<InventoryDalDto, Inventory>, I
     public async Task<IEnumerable<InventoryProductsDalDto>> GetFilteredInventoryProductsAsync(
         decimal? minPrice, decimal? maxPrice, string? category, string? productName)
     {
-        IQueryable<Inventory> query = GetQuery();
-        query = GetQuery()
+        IQueryable<Inventory> query = GetQuery()
             .Include(i => i.Product).ThenInclude(i => i!.Category)
             .Include(i => i.Warehouse);
         
         if (minPrice != null)
-            query = query.Where(x => x.Product!.ProductPrice >= minPrice.Value);
+            query = query.Where(x => x.Product!.ProductPrice * 1.5m >= minPrice.Value);
 
         if (maxPrice != null)
-            query = query.Where(x => x.Product!.ProductPrice <= maxPrice.Value);
+            query = query.Where(x => x.Product!.ProductPrice * 1.5m <= maxPrice.Value);
         
         if (!string.IsNullOrEmpty(category))
             query = query.Where(x => x.Product!.Category!.CategoryName == category);
         
         if (!string.IsNullOrEmpty(productName))
-            query = query.Where(x => x.Product!.ProductName
-                .Contains(productName, StringComparison.OrdinalIgnoreCase));
+        {
+            var lower = productName.ToLower();
+            query = query.Where(i =>
+                i.Product!.ProductName
+                    .ToLower()
+                    .Contains(lower)
+            );
+        }
 
         return await query.Select(i => _mapper.Map(i)!).ToListAsync();
     }

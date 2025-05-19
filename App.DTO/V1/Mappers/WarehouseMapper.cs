@@ -57,8 +57,13 @@ public class WarehouseMapper : IMapper<WarehouseDto, WarehouseBllDto>
 
         var res = new WarehouseBllDto()
         {
-            Id = Guid.NewGuid(), // Move to service?
+            // Id = Guid.NewGuid(), // Move to service?
             WarehouseAddress = entity.WarehouseAddress,
+            WarehouseStreet = entity.WarehouseStreet,
+            WarehouseCity = entity.WarehouseCity,
+            WarehouseState = entity.WarehouseState,
+            WarehouseCountry = entity.WarehouseCountry,
+            WarehousePostalCode = entity.WarehousePostalCode,
             WarehouseEmail = entity.WarehouseEmail,
             WarehouseCapacity = entity.WarehouseCapacity
         };

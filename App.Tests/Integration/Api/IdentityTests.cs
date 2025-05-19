@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace App.Tests.Integration.Api;
 
-public class IdentityTests : IClassFixture<CustomWebApplicationFactory<Program>>
+public class IdentityTests : IClassFixture<CustomWebApplicationFactory<Program>>, IAsyncLifetime
 {
     private readonly HttpClient _client;
     private readonly CustomWebApplicationFactory<Program> _factory;
@@ -20,6 +20,25 @@ public class IdentityTests : IClassFixture<CustomWebApplicationFactory<Program>>
         });
     }
     
+    public async Task InitializeAsync()
+    {
+        var registrationData = new RegisterDto
+        {
+            Email       = "bob@test.ee",
+            FirstName   = "Bob",
+            LastName    = "Somebody",
+            Password    = "Abc123-",
+            Address     = "123 Main St",
+            PhoneNumber = "5553225",
+            Gender      = "Male",
+            DateOfBirth = new DateOnly(1990, 1, 1),
+        };
+
+        var _ = await _client.PostAsJsonAsync("/api/v1/account/register", registrationData);
+    }
+
+    public Task DisposeAsync() => Task.CompletedTask;
+    
     
     [Fact]
     public async Task Register_User()
@@ -30,7 +49,11 @@ public class IdentityTests : IClassFixture<CustomWebApplicationFactory<Program>>
             Email = "test@test.ee",
             FirstName = "Test",
             LastName = "User",
-            Password = "Password.123"
+            Password = "Abc123-",
+            Address = "123 Main St",
+            PhoneNumber = "555325",
+            Gender = "Male",
+            DateOfBirth = new DateOnly(1990,1,1),
         };
 
         // Act
@@ -50,7 +73,7 @@ public class IdentityTests : IClassFixture<CustomWebApplicationFactory<Program>>
         // Arrange
         var loginData = new LoginDto()
         {
-            Email = "user@test.ee",
+            Email = "bob@test.ee",
             Password = "Abc123-"
         };
 
@@ -65,13 +88,13 @@ public class IdentityTests : IClassFixture<CustomWebApplicationFactory<Program>>
         Assert.True(responseData.RefreshToken.Length == Guid.NewGuid().ToString().Length);
     }
     
-     [Fact]
+    [Fact]
     public async Task Login_Existing_User_Check_Rights()
     {
         // Arrange
         var loginData = new LoginDto()
         {
-            Email = "user@test.ee",
+            Email = "bob@test.ee",
             Password = "Abc123-"
         };
 
@@ -88,14 +111,14 @@ public class IdentityTests : IClassFixture<CustomWebApplicationFactory<Program>>
         
         _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", responseData.Jwt);
         
-        var getResponse = await _client.GetAsync("/api/v1/persons");
+        var getResponse = await _client.GetAsync("/api/v1/persons/getProfileInfo");
         getResponse.EnsureSuccessStatusCode();
     }
 
     [Fact]
     public async Task No_Bearer_Header_Unauthorized()
     {
-        var getResponse = await _client.GetAsync("/api/v1/persons");
+        var getResponse = await _client.GetAsync("/api/v1/orders/getUsersOrders");
         Assert.Equal(HttpStatusCode.Unauthorized, getResponse.StatusCode);
     }
     
@@ -105,7 +128,7 @@ public class IdentityTests : IClassFixture<CustomWebApplicationFactory<Program>>
         // Arrange
         var loginData = new LoginDto()
         {
-            Email = "user@test.ee",
+            Email = "bob@test.ee",
             Password = "Abc123-"
         };
 
@@ -122,13 +145,13 @@ public class IdentityTests : IClassFixture<CustomWebApplicationFactory<Program>>
         
         _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", responseData.Jwt);
         
-        var getResponse = await _client.GetAsync("/api/v1/persons");
+        var getResponse = await _client.GetAsync("/api/v1/persons/getProfileInfo");
         getResponse.EnsureSuccessStatusCode();
 
         
         // Wait for JWT to expire
         await Task.Delay(3000);
-        var getResponseAuthExpired = await _client.GetAsync("/api/v1/persons");
+        var getResponseAuthExpired = await _client.GetAsync("/api/v1/persons/getProfileInfo");
         
         Assert.Equal(HttpStatusCode.Unauthorized, getResponseAuthExpired.StatusCode);
     }
@@ -140,7 +163,7 @@ public class IdentityTests : IClassFixture<CustomWebApplicationFactory<Program>>
         // Arrange
         var loginData = new LoginDto()
         {
-            Email = "user@test.ee",
+            Email = "bob@test.ee",
             Password = "Abc123-"
         };
 
@@ -157,14 +180,14 @@ public class IdentityTests : IClassFixture<CustomWebApplicationFactory<Program>>
         
         _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", responseData.Jwt);
         
-        var getResponse = await _client.GetAsync("/api/v1/persons");
+        var getResponse = await _client.GetAsync("/api/v1/persons/getProfileInfo");
         getResponse.EnsureSuccessStatusCode();
 
         
         // Wait for JWT to expire
         await Task.Delay(3000);
 
-        var getResponseAuthExpired = await _client.GetAsync("/api/v1/persons");
+        var getResponseAuthExpired = await _client.GetAsync("/api/v1/persons/getProfileInfo");
         
         Assert.Equal(HttpStatusCode.Unauthorized, getResponseAuthExpired.StatusCode);
         
@@ -181,7 +204,62 @@ public class IdentityTests : IClassFixture<CustomWebApplicationFactory<Program>>
         
         _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", refreshedResponseData.Jwt);
         
-        var getResponse2 = await _client.GetAsync("/api/v1/persons");
+        var getResponse2 = await _client.GetAsync("/api/v1/persons/getProfileInfo");
         getResponse2.EnsureSuccessStatusCode();
+    }
+    
+    [Fact]
+    public async Task UserWithNoRoles_CannotAccess_ManagerController()
+    {
+        // Arrange
+        var loginData = new LoginDto()
+        {
+            Email = "bob@test.ee",
+            Password = "Abc123-"
+        };
+
+        // Act
+        var response = await _client.PostAsJsonAsync("/api/v1/account/login", loginData);
+
+        // Assert
+        response.EnsureSuccessStatusCode();
+        var responseData = await response.Content.ReadFromJsonAsync<JwtResponseDto>();
+        Assert.NotNull(responseData);
+        Assert.True(responseData.Jwt.Length > 128);
+        Assert.True(responseData.RefreshToken.Length == Guid.NewGuid().ToString().Length);
+        
+        
+        _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", responseData.Jwt);
+        
+        var getResponse = await _client.GetAsync("/api/v1/warehouses/getWarehouses");
+        Assert.Equal(HttpStatusCode.Forbidden, getResponse.StatusCode);
+    }
+    
+    [Fact]
+    public async Task UserWithManagerRole_CanAccess_ManagerController()
+    {
+        // Arrange
+        var loginData = new LoginDto()
+        {
+            Email = "manager@test.ee",
+            Password = "Abc123-"
+        };
+
+        // Act
+        var response = await _client.PostAsJsonAsync("/api/v1/account/login", loginData);
+
+        // Assert
+        response.EnsureSuccessStatusCode();
+        var responseData = await response.Content.ReadFromJsonAsync<JwtResponseDto>();
+        Assert.NotNull(responseData);
+        Assert.True(responseData.Jwt.Length > 128);
+        Assert.True(responseData.RefreshToken.Length == Guid.NewGuid().ToString().Length);
+        
+        
+        _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", responseData.Jwt);
+        
+        var getResponse = await _client.GetAsync("/api/v1/warehouses/getWarehouses");
+        getResponse.EnsureSuccessStatusCode();
+        
     }
 }

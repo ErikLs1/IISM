@@ -9,7 +9,7 @@ public class OrderProductBllDto : IDomainId
     public Guid OrderId { get; set; }
     public int Quantity { get; set; }
     public decimal TotalPrice { get; set; }
-    public decimal OrderProductPrice { get; set; }
+    // public decimal OrderProductPrice { get; set; }
     public string ProductName { get; set; } = default!;
     public string ProductDescription { get; set; } = default!;
     

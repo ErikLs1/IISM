@@ -17,7 +17,8 @@ public class UserOrdersBllMapper
             Products = entity.OrderProducts!.Select(op => new OrderProductBllDto
             {
                 Quantity = op.Quantity,
-                OrderProductPrice = op.TotalPrice,
+                // OrderProductPrice = op.TotalPrice,
+                TotalPrice = op.TotalPrice,
                 ProductName = op.Product!.ProductName,
                 ProductDescription = op.Product!.ProductDescription
             })

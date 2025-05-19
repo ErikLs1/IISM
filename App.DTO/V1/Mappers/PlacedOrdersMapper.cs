@@ -21,8 +21,8 @@ public class PlacedOrdersMapper
             {
                 Quantity = op.Quantity,
                 OrderProductPrice = op.TotalPrice,
-                ProductName = op.Product!.ProductName,
-                ProductDescription = op.Product!.ProductDescription
+                ProductName = op.ProductName,
+                ProductDescription = op.ProductDescription
             })
         };
 

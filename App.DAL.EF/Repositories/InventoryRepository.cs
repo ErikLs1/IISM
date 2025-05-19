@@ -68,6 +68,13 @@ public class InventoryRepository : BaseRepository<InventoryDalDto, Inventory>, I
         return await query.Select(i => _mapper.Map(i)!).ToListAsync();
     }
 
+    public async Task<int> GetProductQuantityOnWarehouseByWarehouseIdAsync(Guid warehouseId)
+    {
+        return await GetQuery()
+            .Where(w => w.WarehouseId == warehouseId)
+            .SumAsync(i => i.Quantity);
+    }
+
     public async override Task<IEnumerable<InventoryDalDto>> AllAsync(Guid userId = default)
     {
         return await GetQuery(userId)

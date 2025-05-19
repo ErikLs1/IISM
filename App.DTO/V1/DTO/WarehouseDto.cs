@@ -22,4 +22,5 @@ public class WarehouseDto : IDomainId
     
     [Required]
     public int WarehouseCapacity { get; set; } = default!;
+    public int WarehouseAvailableCapacity { get; set; } = default!;
 }

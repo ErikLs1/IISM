@@ -17,4 +17,6 @@ public interface IInventoryRepository : IBaseRepository<InventoryDalDto>
         string? category,
         string? productName
     );
+
+    Task<int> GetProductQuantityOnWarehouseByWarehouseIdAsync(Guid warehouseId);
 }

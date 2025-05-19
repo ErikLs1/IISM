@@ -17,13 +17,17 @@ public class PlacedOrderBllMapper
             TotalNumberOfProducts = entity.OrderProducts!.Sum(op => op.Quantity),
             OrderedAt = entity.CreatedAt,
             OrderStatus = entity.OrderStatus,
-            Products = entity.OrderProducts!.Select(op => new OrderProductBllDto
-            {
-                Quantity = op.Quantity,
-                OrderProductPrice = op.TotalPrice,
-                ProductName = op.Product!.ProductName,
-                ProductDescription = op.Product!.ProductDescription
-            })
+            Products = entity.OrderProducts == null
+                ? new List<OrderProductBllDto>()
+                : entity.OrderProducts
+                    .Select(op => new OrderProductBllDto
+                    {
+                        Quantity = op.Quantity,
+                        TotalPrice = op.TotalPrice,
+                        ProductName = op.Product?.ProductName!,
+                        ProductDescription = op.Product?.ProductDescription!,
+                    })
+                    .ToList()
         };
 
         return dto;

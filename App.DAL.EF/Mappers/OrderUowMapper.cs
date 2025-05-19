@@ -17,6 +17,7 @@ public class OrderUowMapper : IMapper<OrderDalDto, Order>
             PersonId = entity.PersonId,
             OrderShippingAddress = entity.OrderShippingAddress,
             OrderStatus = entity.OrderStatus,
+            CreatedAt = entity.CreatedAt,
             OrderTotalPrice = entity.OrderTotalPrice,
             Person = entity.Person == null
                 ? null
@@ -38,7 +39,17 @@ public class OrderUowMapper : IMapper<OrderDalDto, Order>
                         ProductId = o.ProductId,
                         OrderId = o.ProductId,
                         Quantity = o.Quantity,
-                        TotalPrice = o.TotalPrice
+                        TotalPrice = o.TotalPrice,
+                        Product = o.Product == null
+                            ? null
+                            : new ProductDalDto {
+                                Id = o.Product.Id,
+                                CategoryId = o.Product.CategoryId,
+                                ProductName = o.Product.ProductName,
+                                ProductDescription = o.Product.ProductDescription,
+                                ProductPrice = o.Product.ProductPrice,
+                                ProductStatus = o.Product.ProductStatus
+                            }
                     }).ToList(),
             Payments = entity.Payments == null
                 ? []

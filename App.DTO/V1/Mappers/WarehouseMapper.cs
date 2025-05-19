@@ -20,7 +20,8 @@ public class WarehouseMapper : IMapper<WarehouseDto, WarehouseBllDto>
             WarehouseCountry = entity.WarehouseCountry,
             WarehousePostalCode = entity.WarehousePostalCode,
             WarehouseEmail = entity.WarehouseEmail,
-            WarehouseCapacity = entity.WarehouseCapacity
+            WarehouseCapacity = entity.WarehouseCapacity,
+            WarehouseAvailableCapacity = entity.WarehouseAvailableCapacity
         };
 
         return res;

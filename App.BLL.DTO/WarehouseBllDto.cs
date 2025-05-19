@@ -13,6 +13,7 @@ public class WarehouseBllDto : IDomainId
     public string WarehousePostalCode { get; set; } = default!;
     public string WarehouseEmail { get; set; } = default!;
     public int WarehouseCapacity { get; set; }
+    public int WarehouseAvailableCapacity { get; set; }
     public ICollection<StockOrderBllDto>? StockOrders { get; set; } = new List<StockOrderBllDto>();
     public ICollection<InventoryBllDto>? Inventories { get; set; }= new List<InventoryBllDto>();
 }

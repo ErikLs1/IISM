@@ -27,9 +27,12 @@ public class ProductSuppliersController : ControllerBase
     }
     
     /// <summary>
-    /// 
+    /// Returns distinct filter values (cities, states, countries, product categories, supplier names) that
+    /// currently exist.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>
+    /// A list of filter values.
+    /// </returns>
     [HttpGet]
     [ProducesResponseType(typeof(ProductSupplierFiltersDto), 200)]
     public async Task<ActionResult<ProductSupplierFiltersDto>> GetFilters()
@@ -40,16 +43,18 @@ public class ProductSuppliersController : ControllerBase
     }
     
     /// <summary>
-    /// 
+    /// Returns a page of product suppliers matching the specified filters.
     /// </summary>
-    /// <param name="pageIndex"></param>
-    /// <param name="pageSize"></param>
-    /// <param name="city"></param>
-    /// <param name="state"></param>
-    /// <param name="country"></param>
-    /// <param name="category"></param>
-    /// <param name="supplier"></param>
-    /// <returns></returns>
+    /// <param name="pageIndex">Page index</param>
+    /// <param name="pageSize">Number of items per page.</param>
+    /// <param name="city">(Optional) Supplier city name.</param>
+    /// <param name="state">(Optional) Supplier state name.</param>
+    /// <param name="country">(Optional) Supplier country name.</param>
+    /// <param name="category">(Optional) product category name.</param>
+    /// <param name="supplier">(Optional) Supplier name.</param>
+    /// <returns>
+    /// A list of product suppliers matching the filters.
+    /// </returns>
     [HttpGet]
     [Produces("application/json")]
     [ProducesResponseType(typeof(PagedData<ProductSupplierDto>), 200)]

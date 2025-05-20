@@ -32,10 +32,10 @@ public class InventoriesController : ControllerBase
     /// <param name="warehouseId"></param>
     /// <returns></returns>
     [HttpGet]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "manager")]
     [Produces("application/json")]
     [ProducesResponseType(typeof(IEnumerable<WarehouseInventoryItemsDto>), 200)]
     [ProducesResponseType(404)]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public async Task<ActionResult<IEnumerable<WarehouseInventoryItemsDto>>> GetProductsForWarehouse([FromQuery] Guid warehouseId)
     {
         var data = await _bll.InventoryService.GetProductsByWarehouseIdAsync(warehouseId);

@@ -1,5 +1,4 @@
 using App.BLL.Contracts;
-using App.BLL.DTO;
 using Microsoft.AspNetCore.Mvc;
 using App.DTO.V1.DTO;
 using App.DTO.V1.Mappers;
@@ -26,10 +25,12 @@ public class StockOrdersController : ControllerBase
     }
 
     /// <summary>
-    /// 
+    /// Places a new stock order.
     /// </summary>
-    /// <param name="dto"></param>
-    /// <returns></returns>
+    /// <param name="dto">The details of the order.</param>
+    /// <returns>
+    /// 201 Created meaning that the order was created and stock added to warehouse.
+    /// </returns>
     [HttpPost]
     public async Task<IActionResult> PlaceStockOrder(CreateStockOrderDto dto)
     {

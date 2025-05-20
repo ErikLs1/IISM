@@ -34,12 +34,12 @@ public class WarehouseFilterTests : IClassFixture<CustomWebApplicationFactory<Pr
 
         var seed = new (string City, string State, string Country, int Count)[]
         {
-            ("Tallinn",  "Harjumaa", "EE", 3),
-            ("Keila",    "Harjumaa", "EE", 2),
-            ("Tartu",    "Tartumaa", "EE", 3),
-            ("Elva",     "Tartumaa", "EE", 1),
-            ("Riga",     "Riga-State", "LV",3),
-            ("Vilnius",  "Vilniaus", "LT", 2)
+            ("Tallinn", "Harjumaa", "EE", 3),
+            ("Keila", "Harjumaa", "EE", 2),
+            ("Tartu", "Tartumaa", "EE", 3),
+            ("Elva", "Tartumaa", "EE", 1),
+            ("Riga", "Riga-State", "LV",3),
+            ("Vilnius", "Vilniaus", "LT", 2)
         };
 
         int id = 1;
@@ -116,9 +116,9 @@ public class WarehouseFilterTests : IClassFixture<CustomWebApplicationFactory<Pr
         Assert.NotNull(filters);
         Assert.Equal(3, filters.Countries.Count());
         Assert.Equal(6, filters.Cities.Count());
-        Assert.Contains("Tallinn",  filters.Cities);
+        Assert.Contains("Tallinn", filters.Cities);
         Assert.Contains("Harjumaa", filters.States);
-        Assert.Contains("EE",       filters.Countries);
+        Assert.Contains("EE", filters.Countries);
     }
     
     [Fact]

@@ -87,10 +87,7 @@ public class OrdersController : ControllerBase
     public async Task<IActionResult> ChangeOrderStatus(
         [FromBody] ChangeOrderStatusDto dto)
     {
-       
             await _bll.OrderService.ChangeOrderStatusAsync(dto.OrderId, dto.OrderStatus);
             return NoContent();
     }
-    // TODO CONTROLLER FOR FILTERING ORDERS
-    
 }

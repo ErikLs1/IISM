@@ -10,6 +10,6 @@ public class CreateStockOrderDto
     [Required]
     public Guid WarehouseId { get; set; }
     
-    [Required]
+    [Required, MinLength(1)]
     public List<StockOrderItemDto> Products { get; set; } = default!;
 }

@@ -10,8 +10,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "!Solution Item", "!Solution
 	ProjectSection(SolutionItems) = preProject
 		..\Directory.Build.props = ..\Directory.Build.props
 		..\README.md = ..\README.md
-		..\docker-compose.yml = ..\docker-compose.yml
-		..\Dockerfile = ..\Dockerfile
+		Dockerfile = Dockerfile
+		.dockerignore = .dockerignore
+		docker-compose.yml = docker-compose.yml
+		.env = .env
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Domain", "App.Domain\App.Domain.csproj", "{9D68292A-6B37-4F39-99AB-43ACE670BA60}"

@@ -3489,7 +3489,10 @@
         },
         "runtime": {
           "bin/placeholder/App.BLL.dll": {}
-        }
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
       },
       "App.BLL.Contracts/1.0.0": {
         "type": "project",

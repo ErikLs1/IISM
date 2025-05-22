@@ -31,10 +31,22 @@ services:
       ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=iism;Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}"
     networks:
       - default
+  
+  frontend:
+    build:
+      context: /Users/eriklihhats/WebstormProjects/icd0006-24-25-s/iism_front
+      dockerfile: Dockerfile
+    image: iism-front:latest
+    ports:
+      - "3000:3000"
+    depends_on:
+      - webapp
+    networks:
+      - default
 
 volumes:
   postgres-data:
 
 networks:
   default:
-    name: infra
+    name: infra 

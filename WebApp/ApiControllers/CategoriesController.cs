@@ -33,7 +33,7 @@ public class CategoriesController : ControllerBase
     [Produces("application/json")]
     [ProducesResponseType(typeof(IEnumerable<CategoryDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(404)] 
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public async Task<ActionResult<IEnumerable<CategoryDto>>> GetCategories()
     {
         var data = await _bll.CategoryService.AllAsync();
